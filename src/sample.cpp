@@ -36,6 +36,31 @@ Rcpp::NumericVector rdirichlet_cpp(Rcpp::NumericVector alpha) {
    return(results);
 }
 
+// Generate one sample from a Dirichlet distribution using the stick breaking definition.
+//
+// @param n how many samples to generate
+// @param alpha the Dirichlet hyperparameter, with p entries
+// @return a numeric matrix, n*p
+// @export
+// [[Rcpp::export]]
+Rcpp::NumericMatrix rdirichlet_beta_cpp(unsigned int n, Rcpp::NumericVector alpha) {
+
+   unsigned int p = alpha.size();
+   double phi;
+
+   Rcpp::NumericMatrix r(n, p);
+
+   for (unsigned int k = 0; k < n; k++) {
+      for (unsigned int i = 0; i < p - 1; ++i) {
+         phi = R::rbeta(alpha[i], sum( alpha[Range(i+1, p)] ) );
+         r(k, i) = (1 - sum(r(k, _))) * phi;
+      }
+      r(k, p - 1) = 1 - sum(r(k, _));
+   }
+
+   return(r);
+}
+
 
 // Generate a Dirichlet-Dirichlet-Gamma population.
 
