@@ -243,7 +243,7 @@ Rcpp::NumericMatrix rdirdirgamma_beta_cpp(
 //
 // @export
 // [[Rcpp::export]]
-Rcpp::NumericVector sample_ABC_rdirdirgamma_cpp_internal(
+RcppGSL::Matrix sample_ABC_rdirdirgamma_cpp(
       const int &n, const int &m,
       const double &alpha_0, const double &beta_0,
       const Rcpp::NumericVector &nu_0,
@@ -271,7 +271,7 @@ Rcpp::NumericVector sample_ABC_rdirdirgamma_cpp_internal(
       sd_obs[k] = Rcpp::sd(mtx_obs(_, k));
    }
 
-   return(sd_obs);
+   Rcout << "Computed observed sd" << std::endl;
 
    // Generate observations
    Rcpp::NumericVector mu_gen(p);
@@ -280,11 +280,22 @@ Rcpp::NumericVector sample_ABC_rdirdirgamma_cpp_internal(
    Rcpp::NumericVector mu_diff(p);
    Rcpp::NumericVector sd_diff(p);
 
-   for (int i = 0; i < reps; ++i) {
+   Rcout << "Starting generating data" << std::endl;
+
+   for (int t = 0; t < reps; ++t) {
+
+      Rcout << "Allocating gen data" << std::endl;
+
       RcppGSL::Matrix mtx_gen(n, p);
       // Rcpp::NumericMatrix mtx_gen(n, p);
 
+      Rcout << "Generating from Dirichlet..." << std::endl;
+
       mtx_gen = rdirdirgamma_cpp(n, m, alpha_0, beta_0, nu_0);
+
+      return(mtx_gen);
+
+      Rcout << "Computed generated mean/sd" << std::endl;
 
       for (int k = 0; k < p; ++k) {
          // mu_gen[k] = Rcpp::colMeans(mtx_gen);
@@ -293,6 +304,9 @@ Rcpp::NumericVector sample_ABC_rdirdirgamma_cpp_internal(
          mu_gen[k] = gsl_stats_mean((&col.vector)->data, 1, n_obs);
          sd_gen[k] = gsl_stats_sd((&col.vector)->data, 1, n_obs);
       }
+
+
+      Rcout << "Computed generated mean/sd differences" << std::endl;
 
       mu_diff = mu_gen - mu_obs;
       sd_diff = sd_gen - sd_obs;
@@ -306,14 +320,19 @@ Rcpp::NumericVector sample_ABC_rdirdirgamma_cpp_internal(
       // mtx_norms(i, 1) = gsl_blas_dnrm2( (&vec_mu_diff.vector)->data );
       // mtx_norms(i, 2) = gsl_blas_dnrm2( (&vec_sd_diff.vector)->data );
 
-      mtx_norms(i, 1) = sum(pow(mu_diff, p_norm));
-      mtx_norms(i, 2) = sum(pow(sd_diff, p_norm));
+      mtx_norms(t, 1) = sum(pow(mu_diff, p_norm));
+      mtx_norms(t, 2) = sum(pow(sd_diff, p_norm));
 
 
    }
 
    // return(mtx_norms);
 
+   // avoid complaining
+   RcppGSL::Matrix mtx_gen(n, p);
+   return(mtx_gen);
+
+}
 
 
 // Perform ABC sampling and distance calculation using the stick breaking procedure.
