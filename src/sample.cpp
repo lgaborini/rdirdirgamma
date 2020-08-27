@@ -20,13 +20,14 @@ using namespace Rcpp;
 // @return a numeric vector
 // @export
 // [[Rcpp::export]]
-Rcpp::NumericVector rdirichlet_cpp(Rcpp::NumericVector alpha) {
+Rcpp::NumericVector rdirichlet_cpp(const Rcpp::NumericVector &alpha, const unsigned long int seed = 0) {
 
    int n = alpha.size();
    Rcpp::NumericVector results(n);
 
    // Allocate random number generator
    gsl_rng *r = gsl_rng_alloc(gsl_rng_mt19937);
+   gsl_rng_set(r, seed);
 
    gsl_ran_dirichlet(r, n, alpha.begin(), results.begin());
 
@@ -60,6 +61,9 @@ Rcpp::NumericMatrix rdirichlet_beta_cpp(unsigned int n, Rcpp::NumericVector alph
 
    return(r);
 }
+
+
+
 
 
 // Generate a Dirichlet-Dirichlet-Gamma population.
@@ -102,6 +106,7 @@ RcppGSL::Matrix rdirdirgamma_cpp(
    // The nu part
    // M <- ridirichlet_beta(n = m, a = as.numeric(nu_0))
    for (int i = 0; i < m; ++i) {
+
       // RcppGSL::VectorView rowview = gsl_matrix_row(M, i);
       // gsl_ran_dirichlet(r, p, nu_0.begin(), *rowview);
 
