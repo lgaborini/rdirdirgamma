@@ -314,5 +314,80 @@ Rcpp::NumericVector sample_ABC_rdirdirgamma_cpp_internal(
 
    // return(mtx_norms);
 
+
+
+// Perform ABC sampling and distance calculation using the stick breaking procedure.
+//
+// @export
+// [[Rcpp::export]]
+Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
+      const int &n, const int &m,
+      const double &alpha_0, const double &beta_0,
+      const Rcpp::NumericVector &nu_0,
+      const Rcpp::NumericMatrix &mtx_obs,
+      const int &reps,
+      const int &p_norm = 2
+) {
+
+   int p = nu_0.size();
+
+   // Allocate distances between summary statistics
+   Rcpp::NumericMatrix mtx_norms(reps, 2);
+
+   // Precompute observed summary statistics
+   Rcpp::NumericVector mu_obs(p);
+   Rcpp::NumericVector sd_obs(p);
+
+   mu_obs = Rcpp::colMeans(mtx_obs);
+
+   for (int k = 0; k < p; ++k) {
+      sd_obs[k] = Rcpp::sd(mtx_obs(_, k));
+   }
+
+   Rcout << "Computed observed sd" << std::endl;
+
+   // Generate observations
+   Rcpp::NumericVector mu_gen(p);
+   Rcpp::NumericVector sd_gen(p);
+
+   Rcpp::NumericVector mu_diff(p);
+   Rcpp::NumericVector sd_diff(p);
+
+   Rcout << "Starting generating data" << std::endl;
+
+   for (int t = 0; t < reps; ++t) {
+
+      Rcout << "Allocating gen data" << std::endl;
+
+      Rcpp::NumericMatrix mtx_gen(n, p);
+
+      Rcout << "Generating from Dirichlet..." << std::endl;
+
+      mtx_gen = rdirdirgamma_beta_cpp(n, m, alpha_0, beta_0, nu_0);
+
+      Rcout << "Computed generated mean/sd" << std::endl;
+
+      mu_gen = colMeans(mtx_gen);
+      // sd_gen = Rcpp::sd(mtx_gen);
+
+      for (int k = 0; k < p; ++k) {
+         sd_gen[k] = sd(mtx_gen(_, k));
+      }
+
+      Rcout << "Computed generated mean/sd differences" << std::endl;
+
+      mu_diff = mu_gen - mu_obs;
+      sd_diff = sd_gen - sd_obs;
+
+      // Compute distances between summary statistics
+
+      mtx_norms(t, 1) = sum(pow(mu_diff, p_norm));
+      mtx_norms(t, 2) = sum(pow(sd_diff, p_norm));
+
+
+   }
+
+   return(mtx_norms);
+
 }
 
