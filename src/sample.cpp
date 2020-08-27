@@ -375,7 +375,7 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
    // Allocate distances between summary statistics
    Rcpp::NumericMatrix mtx_norms(reps, 2);
 
-   Rcout << "Computing summary statistics" << std::endl;
+   // Rcout << "Computing summary statistics" << std::endl;
 
    // Precompute observed summary statistics
    Rcpp::NumericVector mu_obs(p);
@@ -384,10 +384,10 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
    mu_obs = Rcpp::colMeans(mtx_obs);
 
    for (unsigned int k = 0; k < p; ++k) {
-      sd_obs(k) = Rcpp::sd(mtx_obs(_, k));
+      sd_obs[k] = Rcpp::sd(mtx_obs(_, k));
    }
 
-   Rcout << "Computed observed sd" << std::endl;
+   // Rcout << "Computed observed sd" << std::endl;
 
    // Generate observations
    Rcpp::NumericVector mu_gen(p);
@@ -396,27 +396,27 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
    Rcpp::NumericVector mu_diff(p);
    Rcpp::NumericVector sd_diff(p);
 
-   Rcout << "Starting generating data" << std::endl;
+   // Rcout << "Starting generating data" << std::endl;
 
    for (unsigned int t = 0; t < reps; ++t) {
 
-      Rcout << "Allocating gen data" << std::endl;
+      // Rcout << "Allocating gen data" << std::endl;
 
       Rcpp::NumericMatrix mtx_gen(n, p);
 
-      Rcout << "Generating from Dirichlet..." << std::endl;
+      // Rcout << "Generating from Dirichlet..." << std::endl;
 
       mtx_gen = rdirdirgamma_beta_cpp(n, m, alpha_0, beta_0, nu_0);
 
-      Rcout << "Computing generated mean/sd" << std::endl;
+      // Rcout << "Computing generated mean/sd" << std::endl;
 
       mu_gen = colMeans(mtx_gen);
 
       for (unsigned int k = 0; k < p; ++k) {
-         sd_gen(k) = sd(mtx_gen(_, k));
+         sd_gen[k] = sd(mtx_gen(_, k));
       }
 
-      Rcout << "Computed generated mean/sd differences" << std::endl;
+      // Rcout << "Computed generated mean/sd differences" << std::endl;
 
       mu_diff = mu_gen - mu_obs;
       sd_diff = sd_gen - sd_obs;
