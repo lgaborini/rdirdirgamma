@@ -296,6 +296,8 @@ RcppGSL::Matrix sample_ABC_rdirdirgamma_cpp(
 
    for (unsigned int t = 0; t < reps; ++t) {
 
+      if(t % 1000 == 0) Rcpp::checkUserInterrupt();
+
       Rcout << "Allocating gen data" << std::endl;
 
       RcppGSL::Matrix mtx_gen(n, p);
@@ -401,6 +403,8 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
    // Rcout << "Starting generating data" << std::endl;
 
    for (unsigned int t = 0; t < reps; ++t) {
+
+      if(t % 1000 == 0) Rcpp::checkUserInterrupt();
 
       // Rcout << "Allocating gen data" << std::endl;
 
