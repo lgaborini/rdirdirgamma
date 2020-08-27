@@ -331,8 +331,8 @@ RcppGSL::Matrix sample_ABC_rdirdirgamma_cpp(
       // mtx_norms(i, 1) = gsl_blas_dnrm2( (&vec_mu_diff.vector)->data );
       // mtx_norms(i, 2) = gsl_blas_dnrm2( (&vec_sd_diff.vector)->data );
 
-      mtx_norms(t, 1) = sum(pow(mu_diff, p_norm));
-      mtx_norms(t, 2) = sum(pow(sd_diff, p_norm));
+      mtx_norms(t, 0) = sum(pow(mu_diff, p_norm));
+      mtx_norms(t, 1) = sum(pow(sd_diff, p_norm));
 
 
    }
@@ -423,8 +423,8 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
 
       // Compute distances between summary statistics
 
-      mtx_norms(t, 1) = sum(pow(mu_diff, p_norm));
-      mtx_norms(t, 2) = sum(pow(sd_diff, p_norm));
+      mtx_norms(t, 0) = sum(pow(mu_diff, p_norm));
+      mtx_norms(t, 1) = sum(pow(sd_diff, p_norm));
 
 
    }
