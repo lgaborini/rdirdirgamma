@@ -67,12 +67,12 @@ Rcpp::NumericMatrix rdirichlet_beta_cpp(unsigned int n, Rcpp::NumericVector alph
 
    Rcpp::NumericMatrix r(n, p);
 
-   for (unsigned int k = 0; k < n; k++) {
-      for (unsigned int i = 0; i < p - 1; ++i) {
-         phi = R::rbeta(alpha[i], sum( alpha[Range(i+1, p)] ) );
-         r(k, i) = (1 - sum(r(k, _))) * phi;
+   for (unsigned int i = 0; i < n; i++) {
+      for (unsigned int k = 0; k < p - 1; ++k) {
+         phi = R::rbeta(alpha[k], sum( alpha[Range(k + 1, p - 1)] ) );
+         r(i, k) = (1 - sum(r(i, _))) * phi;
       }
-      r(k, p - 1) = 1 - sum(r(k, _));
+      r(i, p - 1) = 1 - sum(r(i, _));
    }
 
    return(r);
@@ -119,13 +119,13 @@ RcppGSL::Matrix rdirdirgamma_cpp(
    }
 
    // The Gamma part
-   for (int i = 0; i < m; ++i) {
-      vec_gamma[i] = gsl_ran_gamma(r, shape, scale);
+   for (int j = 0; j < m; ++j) {
+      vec_gamma[j] = gsl_ran_gamma(r_RNG, shape, scale);
    }
 
    // The nu part
    // M <- ridirichlet_beta(n = m, a = as.numeric(nu_0))
-   for (int i = 0; i < m; ++i) {
+   for (int j = 0; j < m; ++j) {
 
       // RcppGSL::VectorView rowview = gsl_matrix_row(M, i);
       // gsl_ran_dirichlet(r, p, nu_0.begin(), *rowview);
@@ -135,22 +135,22 @@ RcppGSL::Matrix rdirdirgamma_cpp(
 
       // The mu*Gamma part
       // Rescale by the concentration parameter
-      gsl_blas_dscal(vec_gamma[i], &rowview_source.vector);
+      gsl_blas_dscal(vec_gamma[j], &rowview_source.vector);
    }
 
    // The mu*Gamma part
    // M_alpha <- t(t(M) %*% diag(vec_gamma))
 
    // The observations
-   for (int i = 0; i < m; ++i) {
+   for (int j = 0; j < m; ++j) {
       // RcppGSL::VectorView rowview = gsl_matrix_row(M, i);
       // gsl_ran_dirichlet(r, p, nu_0.begin(), *rowview);
 
-      gsl_vector_const_view rowview_source = gsl_matrix_const_row(M, i);
+      gsl_vector_const_view rowview_source = gsl_matrix_const_row(M, j);
 
-      for (int j = 0; j < n; ++j) {
-         gsl_vector_view rowview_obs = gsl_matrix_row(X, i*m + j);
-         gsl_ran_dirichlet(r, p, (&rowview_source.vector)->data, (&rowview_obs.vector)->data);
+      for (int i = 0; i < n; ++i) {
+         gsl_vector_view rowview_obs = gsl_matrix_row(X, j*n + i);
+         gsl_ran_dirichlet(r_RNG, p, (&rowview_source.vector)->data, (&rowview_obs.vector)->data);
       }
    }
 
