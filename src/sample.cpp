@@ -190,12 +190,13 @@ Rcpp::NumericMatrix rdirdirgamma_beta_cpp(
    Rcpp::NumericMatrix X(m*n, p);
 
    // Save temporary observations for a single source
-   Rcpp::NumericMatrix X_single(n, p);
+   Rcpp::NumericMatrix X_source(n, p);
 
    // The Gamma part
-   for (int j = 0; j < m; ++j) {
-      vec_gamma[j] = R::rgamma(alpha_0, beta_0);
-   }
+   // for (int j = 0; j < m; ++j) {
+   //    vec_gamma[j] = R::rgamma(alpha_0, beta_0);
+   // }
+   vec_gamma = Rcpp::rgamma(m, alpha_0, 1/beta_0);
 
    // The nu part
    // M <- ridirichlet_beta(n = m, a = as.numeric(nu_0))
@@ -212,19 +213,20 @@ Rcpp::NumericMatrix rdirdirgamma_beta_cpp(
    // The mu*Gamma part
    // M_alpha <- t(t(M) %*% diag(vec_gamma))
 
-   // The observations
+   // Generate the observations
+
+   // j-th source
    for (int j = 0; j < m; ++j) {
-      X_single = rdirichlet_beta_cpp(n, M(j, _));
-//
-//       for (int k = 0; k < p; ++k) {
-//          X(Range(j, j + n - 1), k) = X_single(Range(0, n - 1), k);
-//       }
+
+      // Cannot do this
+      // X(Range(j, j + n - 1), _) = X_source;
+
+      X_source = rdirichlet_beta_cpp(n, M(j, _));
 
       for (int i = 0; i < n; ++i) {
-         X(j*m + i, _) = X_single(i, _);
+         X(j*n + i, _) = X_source(i, _);
       }
 
-      // X(Range(j, j + n - 1), _) = X_single;
    }
 
    // return(

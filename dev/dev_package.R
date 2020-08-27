@@ -25,10 +25,10 @@ points(mtx_gamma[,1], mtx_gamma[,2], col = 'red')
 
 
 n <- 100
-m <- 10
+m <- 5
 alpha_0 <- 1e1
-beta_0 <- 1e1
-conc <- 10
+beta_0 <- 1e-1
+conc <- 5
 nu_0 <- rep(1, p)
 nu_0 <- nu_0 / sum(nu_0) * conc
 
