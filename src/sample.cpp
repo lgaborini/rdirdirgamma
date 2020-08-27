@@ -8,10 +8,24 @@
 #include <gsl/gsl_randist.h>
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_math.h>
+#include <sys/time.h>
 
 // [[Rcpp::depends(RcppGSL)]]
 
 using namespace Rcpp;
+
+// Global RNG
+
+// Allocate random number generator
+gsl_rng *r_RNG = gsl_rng_alloc(gsl_rng_mt19937);
+
+unsigned long int random_seed()
+{
+   struct timeval tv;
+   gettimeofday(&tv,0);
+   return (tv.tv_sec + tv.tv_usec);
+}
+
 
 
 // Generate one sample from a Dirichlet distribution.
@@ -25,14 +39,16 @@ Rcpp::NumericVector rdirichlet_cpp(const Rcpp::NumericVector &alpha, const unsig
    int n = alpha.size();
    Rcpp::NumericVector results(n);
 
-   // Allocate random number generator
-   gsl_rng *r = gsl_rng_alloc(gsl_rng_mt19937);
-   gsl_rng_set(r, seed);
+   if (seed == 0) {
+      gsl_rng_set(r_RNG, random_seed());
+   } else {
+      gsl_rng_set(r_RNG, seed);
+   }
 
-   gsl_ran_dirichlet(r, n, alpha.begin(), results.begin());
+   gsl_ran_dirichlet(r_RNG, n, alpha.begin(), results.begin());
 
    // Release random number generator
-   gsl_rng_free(r);
+   // gsl_rng_free(r);
 
    return(results);
 }
@@ -76,13 +92,15 @@ Rcpp::NumericMatrix rdirichlet_beta_cpp(unsigned int n, Rcpp::NumericVector alph
 // @param alpha_0 between-source Gamma hyperparameter, a scalar
 // @param beta_0 between-source Gamma hyperparameter, a scalar
 // @param nu_0 between-source alpha hyperparameter, a numeric vector.
+// @param seed seed of the RNG (if 0, a random seed is used)
 // @export
 //
 // [[Rcpp::export]]
 RcppGSL::Matrix rdirdirgamma_cpp(
       const int &n, const int &m,
       const double &alpha_0, const double &beta_0,
-      const Rcpp::NumericVector &nu_0
+      const Rcpp::NumericVector &nu_0,
+      const unsigned int seed = 0
    ) {
 
    const int p = nu_0.size();
@@ -94,9 +112,11 @@ RcppGSL::Matrix rdirdirgamma_cpp(
    const double shape = alpha_0;
    const double scale = 1/beta_0;
 
-
-   // Allocate random number generator
-   gsl_rng *r = gsl_rng_alloc(gsl_rng_mt19937);
+   if (seed == 0) {
+      gsl_rng_set(r_RNG, random_seed());
+   } else {
+      gsl_rng_set(r_RNG, seed);
+   }
 
    // The Gamma part
    for (int i = 0; i < m; ++i) {
@@ -110,8 +130,8 @@ RcppGSL::Matrix rdirdirgamma_cpp(
       // RcppGSL::VectorView rowview = gsl_matrix_row(M, i);
       // gsl_ran_dirichlet(r, p, nu_0.begin(), *rowview);
 
-      gsl_vector_view rowview_source = gsl_matrix_row(M, i);
-      gsl_ran_dirichlet(r, p, nu_0.begin(), (&rowview_source.vector)->data);
+      gsl_vector_view rowview_source = gsl_matrix_row(M, j);
+      gsl_ran_dirichlet(r_RNG, p, nu_0.begin(), (&rowview_source.vector)->data);
 
       // The mu*Gamma part
       // Rescale by the concentration parameter
@@ -155,7 +175,8 @@ Rcpp::NumericVector sample_ABC_rdirdirgamma_cpp_internal(
       const Rcpp::NumericVector &nu_0,
       const Rcpp::NumericMatrix &mtx_obs,
       const int &reps,
-      const int &p_norm = 2
+      const int &p_norm = 2,
+      const unsigned int seed = 0
 ) {
 
    int p = nu_0.size();
