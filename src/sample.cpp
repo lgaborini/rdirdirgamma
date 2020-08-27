@@ -28,15 +28,15 @@ unsigned long int random_seed()
 
 
 
-// Generate one sample from a Dirichlet distribution.
-//
-// @param alpha the Dirichlet hyperparameter
-// @return a numeric vector
-// @export
+//' Generate one sample from a Dirichlet distribution.
+//'
+//' @param alpha the Dirichlet hyperparameter
+//' @return a numeric vector
+//' @export
 // [[Rcpp::export]]
 Rcpp::NumericVector rdirichlet_cpp(const Rcpp::NumericVector &alpha, const unsigned long int seed = 0) {
 
-   int n = alpha.size();
+   unsigned int n = alpha.size();
    Rcpp::NumericVector results(n);
 
    if (seed == 0) {
@@ -53,12 +53,12 @@ Rcpp::NumericVector rdirichlet_cpp(const Rcpp::NumericVector &alpha, const unsig
    return(results);
 }
 
-// Generate one sample from a Dirichlet distribution using the stick breaking definition.
-//
-// @param n how many samples to generate
-// @param alpha the Dirichlet hyperparameter, with p entries
-// @return a numeric matrix, n*p
-// @export
+//' Generate one sample from a Dirichlet distribution using the stick breaking definition (safer).
+//'
+//' @param n how many samples to generate
+//' @param alpha the Dirichlet hyperparameter, with p entries
+//' @return a numeric matrix, n*p
+//' @export
 // [[Rcpp::export]]
 Rcpp::NumericMatrix rdirichlet_beta_cpp(unsigned int n, Rcpp::NumericVector alpha) {
 
@@ -82,28 +82,27 @@ Rcpp::NumericMatrix rdirichlet_beta_cpp(unsigned int n, Rcpp::NumericVector alph
 
 
 
-// Generate a Dirichlet-Dirichlet-Gamma population.
-
-// Generate samples from m sources and p parameters, n sample per source.
-// The between-source alpha hyperparameter used to generate the source parameters is mandatory.
-
-// @param n number of samples per source
-// @param m number of sources
-// @param alpha_0 between-source Gamma hyperparameter, a scalar
-// @param beta_0 between-source Gamma hyperparameter, a scalar
-// @param nu_0 between-source alpha hyperparameter, a numeric vector.
-// @param seed seed of the RNG (if 0, a random seed is used)
-// @export
-//
+//' Generate a Dirichlet-Dirichlet-Gamma population (unsafe).
+//'
+//' Generate samples from m sources and p parameters, n sample per source.
+//' The between-source alpha hyperparameter used to generate the source parameters is mandatory.
+//'
+//' @param n number of samples per source
+//' @param m number of sources
+//' @param alpha_0 between-source Gamma hyperparameter, a scalar
+//' @param beta_0 between-source Gamma hyperparameter, a scalar
+//' @param nu_0 between-source alpha hyperparameter, a numeric vector.
+//' @export
+//'
 // [[Rcpp::export]]
 RcppGSL::Matrix rdirdirgamma_cpp(
-      const int &n, const int &m,
+      const unsigned int &n, const unsigned int &m,
       const double &alpha_0, const double &beta_0,
       const Rcpp::NumericVector &nu_0,
       const unsigned int seed = 0
    ) {
 
-   const int p = nu_0.size();
+   const unsigned int p = nu_0.size();
 
    RcppGSL::Vector vec_gamma(m);
    RcppGSL::Matrix M(m, p);
@@ -119,13 +118,13 @@ RcppGSL::Matrix rdirdirgamma_cpp(
    }
 
    // The Gamma part
-   for (int j = 0; j < m; ++j) {
+   for (unsigned int j = 0; j < m; ++j) {
       vec_gamma[j] = gsl_ran_gamma(r_RNG, shape, scale);
    }
 
    // The nu part
    // M <- ridirichlet_beta(n = m, a = as.numeric(nu_0))
-   for (int j = 0; j < m; ++j) {
+   for (unsigned int j = 0; j < m; ++j) {
 
       // RcppGSL::VectorView rowview = gsl_matrix_row(M, i);
       // gsl_ran_dirichlet(r, p, nu_0.begin(), *rowview);
@@ -142,13 +141,13 @@ RcppGSL::Matrix rdirdirgamma_cpp(
    // M_alpha <- t(t(M) %*% diag(vec_gamma))
 
    // The observations
-   for (int j = 0; j < m; ++j) {
+   for (unsigned int j = 0; j < m; ++j) {
       // RcppGSL::VectorView rowview = gsl_matrix_row(M, i);
       // gsl_ran_dirichlet(r, p, nu_0.begin(), *rowview);
 
       gsl_vector_const_view rowview_source = gsl_matrix_const_row(M, j);
 
-      for (int i = 0; i < n; ++i) {
+      for (unsigned int i = 0; i < n; ++i) {
          gsl_vector_view rowview_obs = gsl_matrix_row(X, j*n + i);
          gsl_ran_dirichlet(r_RNG, p, (&rowview_source.vector)->data, (&rowview_obs.vector)->data);
       }
@@ -164,26 +163,26 @@ RcppGSL::Matrix rdirdirgamma_cpp(
    return(X);
 }
 
-// Generate a Dirichlet-Dirichlet-Gamma population.
-
-// Generate samples from m sources and p parameters, n sample per source.
-// The between-source alpha hyperparameter used to generate the source parameters is mandatory.
-
-// @param n number of samples per source
-// @param m number of sources
-// @param alpha_0 between-source Gamma hyperparameter, a scalar
-// @param beta_0 between-source Gamma hyperparameter, a scalar
-// @param nu_0 between-source alpha hyperparameter, a numeric vector.
-// @export
-//
+//' Generate a Dirichlet-Dirichlet-Gamma population (safer).
+//'
+//' Generate samples from m sources and p parameters, n sample per source.
+//' The between-source alpha hyperparameter used to generate the source parameters is mandatory.
+//'
+//' @param n number of samples per source
+//' @param m number of sources
+//' @param alpha_0 between-source Gamma hyperparameter, a scalar
+//' @param beta_0 between-source Gamma hyperparameter, a scalar
+//' @param nu_0 between-source alpha hyperparameter, a numeric vector.
+//' @export
+//'
 // [[Rcpp::export]]
 Rcpp::NumericMatrix rdirdirgamma_beta_cpp(
-      const int &n, const int &m,
+      const unsigned int &n, const unsigned int &m,
       const double &alpha_0, const double &beta_0,
       const Rcpp::NumericVector &nu_0
    ) {
 
-   const int p = nu_0.size();
+   const unsigned int p = nu_0.size();
 
    Rcpp::NumericVector vec_gamma(m);
    Rcpp::NumericMatrix M(m, p);
@@ -203,7 +202,7 @@ Rcpp::NumericMatrix rdirdirgamma_beta_cpp(
 
    M = rdirichlet_beta_cpp(m, nu_0);
 
-   for (int j = 0; j < m; ++j) {
+   for (unsigned int j = 0; j < m; ++j) {
 
       // The mu*Gamma part
       // Rescale by the concentration parameter
@@ -216,14 +215,14 @@ Rcpp::NumericMatrix rdirdirgamma_beta_cpp(
    // Generate the observations
 
    // j-th source
-   for (int j = 0; j < m; ++j) {
+   for (unsigned int j = 0; j < m; ++j) {
 
       // Cannot do this
       // X(Range(j, j + n - 1), _) = X_source;
 
       X_source = rdirichlet_beta_cpp(n, M(j, _));
 
-      for (int i = 0; i < n; ++i) {
+      for (unsigned int i = 0; i < n; ++i) {
          X(j*n + i, _) = X_source(i, _);
       }
 
@@ -241,22 +240,32 @@ Rcpp::NumericMatrix rdirdirgamma_beta_cpp(
 
 
 
-// Perform ABC sampling and distance calculation.
-//
-// @export
+//' Perform ABC sampling and distance calculation.
+//'
+//' @param alpha_0 hyperparameter
+//' @param beta_0 hyperparameter
+//' @param nu_0 hyperparameter
+//' @param mtx_obs the observed data matrix
+//' @param method passed to [stats::dist()]
+//' @param reps repetitions to average distances (default: 1)
+//' @param n passed to [rdirdirgamma_cpp()]
+//' @param m passed to [rdirdirgamma_cpp()]
+//' @param p_norm
+//' @param seed
+//' @export
 // [[Rcpp::export]]
 RcppGSL::Matrix sample_ABC_rdirdirgamma_cpp(
-      const int &n, const int &m,
+      const unsigned int &n, const unsigned int &m,
       const double &alpha_0, const double &beta_0,
       const Rcpp::NumericVector &nu_0,
       const Rcpp::NumericMatrix &mtx_obs,
-      const int &reps,
-      const int &p_norm = 2,
+      const unsigned int &reps,
+      const unsigned int &p_norm = 2,
       const unsigned int seed = 0
 ) {
 
-   int p = nu_0.size();
-   int n_obs = mtx_obs.nrow();
+   unsigned int p = nu_0.size();
+   unsigned int n_obs = mtx_obs.nrow();
 
    // Allocate distances between summary statistics
    Rcpp::NumericMatrix mtx_norms(reps, 2);
@@ -267,7 +276,7 @@ RcppGSL::Matrix sample_ABC_rdirdirgamma_cpp(
 
    mu_obs = Rcpp::colMeans(mtx_obs);
 
-   for (int k = 0; k < p; ++k) {
+   for (unsigned int k = 0; k < p; ++k) {
       // gsl_vector_view col = gsl_matrix_const_column(mtx_obs, k);
       // sd_obs[k] = gsl_stats_mean((&col.vector)->data, 1, n_obs);
       sd_obs[k] = Rcpp::sd(mtx_obs(_, k));
@@ -284,7 +293,7 @@ RcppGSL::Matrix sample_ABC_rdirdirgamma_cpp(
 
    Rcout << "Starting generating data" << std::endl;
 
-   for (int t = 0; t < reps; ++t) {
+   for (unsigned int t = 0; t < reps; ++t) {
 
       Rcout << "Allocating gen data" << std::endl;
 
@@ -299,7 +308,7 @@ RcppGSL::Matrix sample_ABC_rdirdirgamma_cpp(
 
       Rcout << "Computed generated mean/sd" << std::endl;
 
-      for (int k = 0; k < p; ++k) {
+      for (unsigned int k = 0; k < p; ++k) {
          // mu_gen[k] = Rcpp::colMeans(mtx_gen);
 
          gsl_vector_const_view col = gsl_matrix_const_column(mtx_gen, k);
@@ -337,23 +346,36 @@ RcppGSL::Matrix sample_ABC_rdirdirgamma_cpp(
 }
 
 
-// Perform ABC sampling and distance calculation using the stick breaking procedure.
-//
-// @export
+//' Perform ABC sampling and distance calculation using the stick breaking procedure.
+//'
+//' @param alpha_0 hyperparameter
+//' @param beta_0 hyperparameter
+//' @param nu_0 hyperparameter
+//' @param mtx_obs the observed data matrix
+//' @param method passed to [stats::dist()]
+//' @param reps repetitions to average distances (default: 1)
+//' @param n passed to [rdirdirgamma_cpp()]
+//' @param m passed to [rdirdirgamma_cpp()]
+//' @param p_norm
+//' @param seed
+//' @export
+//'
 // [[Rcpp::export]]
 Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
-      const int &n, const int &m,
+      const unsigned int &n, const unsigned int &m,
       const double &alpha_0, const double &beta_0,
       const Rcpp::NumericVector &nu_0,
       const Rcpp::NumericMatrix &mtx_obs,
-      const int &reps,
-      const int &p_norm = 2
+      const unsigned int &reps,
+      const unsigned int &p_norm = 2
 ) {
 
-   int p = nu_0.size();
+   unsigned int p = nu_0.size();
 
    // Allocate distances between summary statistics
    Rcpp::NumericMatrix mtx_norms(reps, 2);
+
+   Rcout << "Computing summary statistics" << std::endl;
 
    // Precompute observed summary statistics
    Rcpp::NumericVector mu_obs(p);
@@ -361,8 +383,8 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
 
    mu_obs = Rcpp::colMeans(mtx_obs);
 
-   for (int k = 0; k < p; ++k) {
-      sd_obs[k] = Rcpp::sd(mtx_obs(_, k));
+   for (unsigned int k = 0; k < p; ++k) {
+      sd_obs(k) = Rcpp::sd(mtx_obs(_, k));
    }
 
    Rcout << "Computed observed sd" << std::endl;
@@ -376,7 +398,7 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
 
    Rcout << "Starting generating data" << std::endl;
 
-   for (int t = 0; t < reps; ++t) {
+   for (unsigned int t = 0; t < reps; ++t) {
 
       Rcout << "Allocating gen data" << std::endl;
 
@@ -386,13 +408,12 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
 
       mtx_gen = rdirdirgamma_beta_cpp(n, m, alpha_0, beta_0, nu_0);
 
-      Rcout << "Computed generated mean/sd" << std::endl;
+      Rcout << "Computing generated mean/sd" << std::endl;
 
       mu_gen = colMeans(mtx_gen);
-      // sd_gen = Rcpp::sd(mtx_gen);
 
-      for (int k = 0; k < p; ++k) {
-         sd_gen[k] = sd(mtx_gen(_, k));
+      for (unsigned int k = 0; k < p; ++k) {
+         sd_gen(k) = sd(mtx_gen(_, k));
       }
 
       Rcout << "Computed generated mean/sd differences" << std::endl;

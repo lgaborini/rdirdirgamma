@@ -60,7 +60,7 @@ points(mtx_obs_beta[,1], mtx_obs_beta[,2], col = 'red')
 
 
 
-sample_ABC_rdirdirgamma_cpp_wrapper(
+sample_ABC_rdirdirgamma_beta_cpp(
    n = n,
    m = m,
    alpha_0 = alpha_0,
