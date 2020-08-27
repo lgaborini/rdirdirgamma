@@ -5,8 +5,8 @@
 \title{Perform ABC sampling and distance calculation.}
 \usage{
 sample_ABC_rdirdirgamma_cpp(
-  n,
-  m,
+  n_sample,
+  m_sample,
   alpha_0,
   beta_0,
   nu_0,
@@ -17,9 +17,9 @@ sample_ABC_rdirdirgamma_cpp(
 )
 }
 \arguments{
-\item{n}{passed to [rdirdirgamma_cpp()]}
+\item{n_sample}{passed to [rdirdirgamma_cpp()]}
 
-\item{m}{passed to [rdirdirgamma_cpp()]}
+\item{m_sample}{passed to [rdirdirgamma_cpp()]}
 
 \item{alpha_0}{hyperparameter}
 

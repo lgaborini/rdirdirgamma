@@ -61,8 +61,8 @@ points(mtx_obs_beta[,1], mtx_obs_beta[,2], col = 'red')
 
 
 mtx_ABC <- sample_ABC_rdirdirgamma_beta_cpp(
-   n = n,
-   m = m,
+   n_sample = n,
+   m_sample = m,
    alpha_0 = alpha_0,
    beta_0 = beta_0,
    nu_0 = nu_0,
@@ -74,8 +74,8 @@ mtx_ABC <- sample_ABC_rdirdirgamma_beta_cpp(
 # Crashing
 #
 # sample_ABC_rdirdirgamma_cpp(
-#    n = n,
-#    m = m,
+#    n_sample = n,
+#    m_sample = m,
 #    alpha_0 = alpha_0,
 #    beta_0 = beta_0,
 #    nu_0 = nu_0,

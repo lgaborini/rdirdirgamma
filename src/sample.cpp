@@ -248,14 +248,14 @@ Rcpp::NumericMatrix rdirdirgamma_beta_cpp(
 //' @param mtx_obs the observed data matrix
 //' @param method passed to [stats::dist()]
 //' @param reps repetitions to average distances (default: 1)
-//' @param n passed to [rdirdirgamma_cpp()]
-//' @param m passed to [rdirdirgamma_cpp()]
+//' @param n_sample passed to [rdirdirgamma_cpp()]
+//' @param m_sample passed to [rdirdirgamma_cpp()]
 //' @param p_norm
 //' @param seed
 //' @export
 // [[Rcpp::export]]
 RcppGSL::Matrix sample_ABC_rdirdirgamma_cpp(
-      const unsigned int &n, const unsigned int &m,
+      const unsigned int &n_sample, const unsigned int &m_sample,
       const double &alpha_0, const double &beta_0,
       const Rcpp::NumericVector &nu_0,
       const Rcpp::NumericMatrix &mtx_obs,
@@ -263,9 +263,10 @@ RcppGSL::Matrix sample_ABC_rdirdirgamma_cpp(
       const unsigned int &p_norm = 2,
       const unsigned int seed = 0
 ) {
-
-   unsigned int p = nu_0.size();
-   unsigned int n_obs = mtx_obs.nrow();
+   const unsigned int n = n_sample;
+   const unsigned int m = m_sample;
+   const unsigned int p = nu_0.size();
+   const unsigned int n_obs = mtx_obs.nrow();
 
    // Allocate distances between summary statistics
    Rcpp::NumericMatrix mtx_norms(reps, 2);
@@ -353,16 +354,15 @@ RcppGSL::Matrix sample_ABC_rdirdirgamma_cpp(
 //' @param nu_0 hyperparameter
 //' @param mtx_obs the observed data matrix
 //' @param method passed to [stats::dist()]
-//' @param reps repetitions to average distances (default: 1)
-//' @param n passed to [rdirdirgamma_cpp()]
-//' @param m passed to [rdirdirgamma_cpp()]
-//' @param p_norm
-//' @param seed
+//' @param reps ABC repetitions (default: 1)
+//' @param n_sample passed to [rdirdirgamma_cpp()]
+//' @param m_sample passed to [rdirdirgamma_cpp()]
+//' @param p_norm exponent for the L^p norm
 //' @export
 //'
 // [[Rcpp::export]]
 Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
-      const unsigned int &n, const unsigned int &m,
+      const unsigned int &n_sample, const unsigned int &m_sample,
       const double &alpha_0, const double &beta_0,
       const Rcpp::NumericVector &nu_0,
       const Rcpp::NumericMatrix &mtx_obs,
@@ -370,7 +370,9 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
       const unsigned int &p_norm = 2
 ) {
 
-   unsigned int p = nu_0.size();
+   const unsigned int n = n_sample;
+   const unsigned int m = m_sample;
+   const unsigned int p = nu_0.size();
 
    // Allocate distances between summary statistics
    Rcpp::NumericMatrix mtx_norms(reps, 2);

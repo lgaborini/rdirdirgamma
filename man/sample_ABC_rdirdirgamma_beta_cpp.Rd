@@ -5,8 +5,8 @@
 \title{Perform ABC sampling and distance calculation using the stick breaking procedure.}
 \usage{
 sample_ABC_rdirdirgamma_beta_cpp(
-  n,
-  m,
+  n_sample,
+  m_sample,
   alpha_0,
   beta_0,
   nu_0,
@@ -16,9 +16,9 @@ sample_ABC_rdirdirgamma_beta_cpp(
 )
 }
 \arguments{
-\item{n}{passed to [rdirdirgamma_cpp()]}
+\item{n_sample}{passed to [rdirdirgamma_cpp()]}
 
-\item{m}{passed to [rdirdirgamma_cpp()]}
+\item{m_sample}{passed to [rdirdirgamma_cpp()]}
 
 \item{alpha_0}{hyperparameter}
 
@@ -28,7 +28,9 @@ sample_ABC_rdirdirgamma_beta_cpp(
 
 \item{mtx_obs}{the observed data matrix}
 
-\item{reps}{repetitions to average distances (default: 1)}
+\item{reps}{ABC repetitions (default: 1)}
+
+\item{p_norm}{exponent for the L^p norm}
 
 \item{method}{passed to [stats::dist()]}
 }

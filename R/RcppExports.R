@@ -60,13 +60,13 @@ rdirdirgamma_beta_cpp <- function(n, m, alpha_0, beta_0, nu_0) {
 #' @param mtx_obs the observed data matrix
 #' @param method passed to [stats::dist()]
 #' @param reps repetitions to average distances (default: 1)
-#' @param n passed to [rdirdirgamma_cpp()]
-#' @param m passed to [rdirdirgamma_cpp()]
+#' @param n_sample passed to [rdirdirgamma_cpp()]
+#' @param m_sample passed to [rdirdirgamma_cpp()]
 #' @param p_norm
 #' @param seed
 #' @export
-sample_ABC_rdirdirgamma_cpp <- function(n, m, alpha_0, beta_0, nu_0, mtx_obs, reps, p_norm = 2L, seed = 0L) {
-    .Call('_rdirdirgamma_sample_ABC_rdirdirgamma_cpp', PACKAGE = 'rdirdirgamma', n, m, alpha_0, beta_0, nu_0, mtx_obs, reps, p_norm, seed)
+sample_ABC_rdirdirgamma_cpp <- function(n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, reps, p_norm = 2L, seed = 0L) {
+    .Call('_rdirdirgamma_sample_ABC_rdirdirgamma_cpp', PACKAGE = 'rdirdirgamma', n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, reps, p_norm, seed)
 }
 
 #' Perform ABC sampling and distance calculation using the stick breaking procedure.
@@ -76,14 +76,13 @@ sample_ABC_rdirdirgamma_cpp <- function(n, m, alpha_0, beta_0, nu_0, mtx_obs, re
 #' @param nu_0 hyperparameter
 #' @param mtx_obs the observed data matrix
 #' @param method passed to [stats::dist()]
-#' @param reps repetitions to average distances (default: 1)
-#' @param n passed to [rdirdirgamma_cpp()]
-#' @param m passed to [rdirdirgamma_cpp()]
-#' @param p_norm
-#' @param seed
+#' @param reps ABC repetitions (default: 1)
+#' @param n_sample passed to [rdirdirgamma_cpp()]
+#' @param m_sample passed to [rdirdirgamma_cpp()]
+#' @param p_norm exponent for the L^p norm
 #' @export
 #'
-sample_ABC_rdirdirgamma_beta_cpp <- function(n, m, alpha_0, beta_0, nu_0, mtx_obs, reps, p_norm = 2L) {
-    .Call('_rdirdirgamma_sample_ABC_rdirdirgamma_beta_cpp', PACKAGE = 'rdirdirgamma', n, m, alpha_0, beta_0, nu_0, mtx_obs, reps, p_norm)
+sample_ABC_rdirdirgamma_beta_cpp <- function(n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, reps, p_norm = 2L) {
+    .Call('_rdirdirgamma_sample_ABC_rdirdirgamma_beta_cpp', PACKAGE = 'rdirdirgamma', n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, reps, p_norm)
 }
 
