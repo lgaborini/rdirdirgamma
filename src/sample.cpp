@@ -164,6 +164,80 @@ RcppGSL::Matrix rdirdirgamma_cpp(
    return(X);
 }
 
+// Generate a Dirichlet-Dirichlet-Gamma population.
+
+// Generate samples from m sources and p parameters, n sample per source.
+// The between-source alpha hyperparameter used to generate the source parameters is mandatory.
+
+// @param n number of samples per source
+// @param m number of sources
+// @param alpha_0 between-source Gamma hyperparameter, a scalar
+// @param beta_0 between-source Gamma hyperparameter, a scalar
+// @param nu_0 between-source alpha hyperparameter, a numeric vector.
+// @export
+//
+// [[Rcpp::export]]
+Rcpp::NumericMatrix rdirdirgamma_beta_cpp(
+      const int &n, const int &m,
+      const double &alpha_0, const double &beta_0,
+      const Rcpp::NumericVector &nu_0
+   ) {
+
+   const int p = nu_0.size();
+
+   Rcpp::NumericVector vec_gamma(m);
+   Rcpp::NumericMatrix M(m, p);
+   Rcpp::NumericMatrix X(m*n, p);
+
+   // Save temporary observations for a single source
+   Rcpp::NumericMatrix X_single(n, p);
+
+   // The Gamma part
+   for (int j = 0; j < m; ++j) {
+      vec_gamma[j] = R::rgamma(alpha_0, beta_0);
+   }
+
+   // The nu part
+   // M <- ridirichlet_beta(n = m, a = as.numeric(nu_0))
+
+   M = rdirichlet_beta_cpp(m, nu_0);
+
+   for (int j = 0; j < m; ++j) {
+
+      // The mu*Gamma part
+      // Rescale by the concentration parameter
+      M(j, _) = M(j, _) * vec_gamma[j];
+   }
+
+   // The mu*Gamma part
+   // M_alpha <- t(t(M) %*% diag(vec_gamma))
+
+   // The observations
+   for (int j = 0; j < m; ++j) {
+      X_single = rdirichlet_beta_cpp(n, M(j, _));
+//
+//       for (int k = 0; k < p; ++k) {
+//          X(Range(j, j + n - 1), k) = X_single(Range(0, n - 1), k);
+//       }
+
+      for (int i = 0; i < n; ++i) {
+         X(j*m + i, _) = X_single(i, _);
+      }
+
+      // X(Range(j, j + n - 1), _) = X_single;
+   }
+
+   // return(
+   //    Rcpp::List::create(
+   //       Rcpp::Named("mtx_sources") = M,
+   //       Rcpp::Named("mtx_data") = X
+   //    )
+   // );
+
+   return(X);
+}
+
+
 
 // Perform ABC sampling and distance calculation.
 //
