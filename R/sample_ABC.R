@@ -1,4 +1,4 @@
-sample_ABC_rdirdirgamma_cpp <- function(
+sample_ABC_rdirdirgamma_cpp_wrapper <- function(
    alpha_0, beta_0, nu_0,
    mtx_obs,
    method = 'euclidean', p = 2,

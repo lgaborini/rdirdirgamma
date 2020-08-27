@@ -7,19 +7,32 @@
 using namespace Rcpp;
 
 // rdirichlet_cpp
-Rcpp::NumericVector rdirichlet_cpp(Rcpp::NumericVector alpha);
-RcppExport SEXP _rdirdirgamma_rdirichlet_cpp(SEXP alphaSEXP) {
+Rcpp::NumericVector rdirichlet_cpp(const Rcpp::NumericVector& alpha, const unsigned long int seed);
+RcppExport SEXP _rdirdirgamma_rdirichlet_cpp(SEXP alphaSEXP, SEXP seedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type alpha(alphaSEXP);
+    Rcpp::traits::input_parameter< const unsigned long int >::type seed(seedSEXP);
+    rcpp_result_gen = Rcpp::wrap(rdirichlet_cpp(alpha, seed));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rdirichlet_beta_cpp
+Rcpp::NumericMatrix rdirichlet_beta_cpp(unsigned int n, Rcpp::NumericVector alpha);
+RcppExport SEXP _rdirdirgamma_rdirichlet_beta_cpp(SEXP nSEXP, SEXP alphaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< unsigned int >::type n(nSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type alpha(alphaSEXP);
-    rcpp_result_gen = Rcpp::wrap(rdirichlet_cpp(alpha));
+    rcpp_result_gen = Rcpp::wrap(rdirichlet_beta_cpp(n, alpha));
     return rcpp_result_gen;
 END_RCPP
 }
 // rdirdirgamma_cpp
-RcppGSL::Matrix rdirdirgamma_cpp(const int& n, const int& m, const double& alpha_0, const double& beta_0, const Rcpp::NumericVector& nu_0);
-RcppExport SEXP _rdirdirgamma_rdirdirgamma_cpp(SEXP nSEXP, SEXP mSEXP, SEXP alpha_0SEXP, SEXP beta_0SEXP, SEXP nu_0SEXP) {
+RcppGSL::Matrix rdirdirgamma_cpp(const int& n, const int& m, const double& alpha_0, const double& beta_0, const Rcpp::NumericVector& nu_0, const unsigned int seed);
+RcppExport SEXP _rdirdirgamma_rdirdirgamma_cpp(SEXP nSEXP, SEXP mSEXP, SEXP alpha_0SEXP, SEXP beta_0SEXP, SEXP nu_0SEXP, SEXP seedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -28,13 +41,29 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double& >::type alpha_0(alpha_0SEXP);
     Rcpp::traits::input_parameter< const double& >::type beta_0(beta_0SEXP);
     Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type nu_0(nu_0SEXP);
-    rcpp_result_gen = Rcpp::wrap(rdirdirgamma_cpp(n, m, alpha_0, beta_0, nu_0));
+    Rcpp::traits::input_parameter< const unsigned int >::type seed(seedSEXP);
+    rcpp_result_gen = Rcpp::wrap(rdirdirgamma_cpp(n, m, alpha_0, beta_0, nu_0, seed));
     return rcpp_result_gen;
 END_RCPP
 }
-// sample_ABC_rdirdirgamma_cpp_internal
-Rcpp::NumericVector sample_ABC_rdirdirgamma_cpp_internal(const int& n, const int& m, const double& alpha_0, const double& beta_0, const Rcpp::NumericVector& nu_0, const Rcpp::NumericMatrix& mtx_obs, const int& reps, const int& p_norm);
-RcppExport SEXP _rdirdirgamma_sample_ABC_rdirdirgamma_cpp_internal(SEXP nSEXP, SEXP mSEXP, SEXP alpha_0SEXP, SEXP beta_0SEXP, SEXP nu_0SEXP, SEXP mtx_obsSEXP, SEXP repsSEXP, SEXP p_normSEXP) {
+// rdirdirgamma_beta_cpp
+Rcpp::NumericMatrix rdirdirgamma_beta_cpp(const int& n, const int& m, const double& alpha_0, const double& beta_0, const Rcpp::NumericVector& nu_0);
+RcppExport SEXP _rdirdirgamma_rdirdirgamma_beta_cpp(SEXP nSEXP, SEXP mSEXP, SEXP alpha_0SEXP, SEXP beta_0SEXP, SEXP nu_0SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const int& >::type n(nSEXP);
+    Rcpp::traits::input_parameter< const int& >::type m(mSEXP);
+    Rcpp::traits::input_parameter< const double& >::type alpha_0(alpha_0SEXP);
+    Rcpp::traits::input_parameter< const double& >::type beta_0(beta_0SEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type nu_0(nu_0SEXP);
+    rcpp_result_gen = Rcpp::wrap(rdirdirgamma_beta_cpp(n, m, alpha_0, beta_0, nu_0));
+    return rcpp_result_gen;
+END_RCPP
+}
+// sample_ABC_rdirdirgamma_cpp
+RcppGSL::Matrix sample_ABC_rdirdirgamma_cpp(const int& n, const int& m, const double& alpha_0, const double& beta_0, const Rcpp::NumericVector& nu_0, const Rcpp::NumericMatrix& mtx_obs, const int& reps, const int& p_norm, const unsigned int seed);
+RcppExport SEXP _rdirdirgamma_sample_ABC_rdirdirgamma_cpp(SEXP nSEXP, SEXP mSEXP, SEXP alpha_0SEXP, SEXP beta_0SEXP, SEXP nu_0SEXP, SEXP mtx_obsSEXP, SEXP repsSEXP, SEXP p_normSEXP, SEXP seedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -46,15 +75,37 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type mtx_obs(mtx_obsSEXP);
     Rcpp::traits::input_parameter< const int& >::type reps(repsSEXP);
     Rcpp::traits::input_parameter< const int& >::type p_norm(p_normSEXP);
-    rcpp_result_gen = Rcpp::wrap(sample_ABC_rdirdirgamma_cpp_internal(n, m, alpha_0, beta_0, nu_0, mtx_obs, reps, p_norm));
+    Rcpp::traits::input_parameter< const unsigned int >::type seed(seedSEXP);
+    rcpp_result_gen = Rcpp::wrap(sample_ABC_rdirdirgamma_cpp(n, m, alpha_0, beta_0, nu_0, mtx_obs, reps, p_norm, seed));
+    return rcpp_result_gen;
+END_RCPP
+}
+// sample_ABC_rdirdirgamma_beta_cpp
+Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(const int& n, const int& m, const double& alpha_0, const double& beta_0, const Rcpp::NumericVector& nu_0, const Rcpp::NumericMatrix& mtx_obs, const int& reps, const int& p_norm);
+RcppExport SEXP _rdirdirgamma_sample_ABC_rdirdirgamma_beta_cpp(SEXP nSEXP, SEXP mSEXP, SEXP alpha_0SEXP, SEXP beta_0SEXP, SEXP nu_0SEXP, SEXP mtx_obsSEXP, SEXP repsSEXP, SEXP p_normSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const int& >::type n(nSEXP);
+    Rcpp::traits::input_parameter< const int& >::type m(mSEXP);
+    Rcpp::traits::input_parameter< const double& >::type alpha_0(alpha_0SEXP);
+    Rcpp::traits::input_parameter< const double& >::type beta_0(beta_0SEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type nu_0(nu_0SEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type mtx_obs(mtx_obsSEXP);
+    Rcpp::traits::input_parameter< const int& >::type reps(repsSEXP);
+    Rcpp::traits::input_parameter< const int& >::type p_norm(p_normSEXP);
+    rcpp_result_gen = Rcpp::wrap(sample_ABC_rdirdirgamma_beta_cpp(n, m, alpha_0, beta_0, nu_0, mtx_obs, reps, p_norm));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_rdirdirgamma_rdirichlet_cpp", (DL_FUNC) &_rdirdirgamma_rdirichlet_cpp, 1},
-    {"_rdirdirgamma_rdirdirgamma_cpp", (DL_FUNC) &_rdirdirgamma_rdirdirgamma_cpp, 5},
-    {"_rdirdirgamma_sample_ABC_rdirdirgamma_cpp_internal", (DL_FUNC) &_rdirdirgamma_sample_ABC_rdirdirgamma_cpp_internal, 8},
+    {"_rdirdirgamma_rdirichlet_cpp", (DL_FUNC) &_rdirdirgamma_rdirichlet_cpp, 2},
+    {"_rdirdirgamma_rdirichlet_beta_cpp", (DL_FUNC) &_rdirdirgamma_rdirichlet_beta_cpp, 2},
+    {"_rdirdirgamma_rdirdirgamma_cpp", (DL_FUNC) &_rdirdirgamma_rdirdirgamma_cpp, 6},
+    {"_rdirdirgamma_rdirdirgamma_beta_cpp", (DL_FUNC) &_rdirdirgamma_rdirdirgamma_beta_cpp, 5},
+    {"_rdirdirgamma_sample_ABC_rdirdirgamma_cpp", (DL_FUNC) &_rdirdirgamma_sample_ABC_rdirdirgamma_cpp, 9},
+    {"_rdirdirgamma_sample_ABC_rdirdirgamma_beta_cpp", (DL_FUNC) &_rdirdirgamma_sample_ABC_rdirdirgamma_beta_cpp, 8},
     {NULL, NULL, 0}
 };
 
