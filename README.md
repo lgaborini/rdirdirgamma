@@ -5,7 +5,7 @@
 <!-- badges: end -->
 
 This package contains optimized code to sample from Dirichlet distribution, a specific hierarchical model (Dirichlet-Dirichlet-Gamma), and to perform ABC.  
-Sampling is performed using Rcpp / RcppGSL.  
+Sampling is performed using [Rcpp](https://cran.r-project.org/web/packages/Rcpp/index.html) / [RcppGSL](https://cran.r-project.org/web/packages/RcppGSL/index.html).  
 It has been written as part of my PhD thesis.
 
 ## Disclaimer
@@ -26,7 +26,7 @@ remotes::install_github("lgaborini/rdirdirgamma")
 This package requires GSL libraries.  
 On Linux/Mac it should work without problems.
 
-On Windows, one needs to install them separately:
+On Windows, one needs to install them separately (refs: [1](https://stackoverflow.com/questions/46536015/building-an-r-package-that-uses-the-gsl-on-windows), [2](https://stackoverflow.com/questions/55976547/linking-gsl-libraries-to-rcppgsl-in-windows-10)):
 
 1. download the `local323.zip` package from [here](http://www.stats.ox.ac.uk/pub/Rtools/libs.html) and extract it somewhere.
 2. create the environmental variable `LIB_GSL` and point to the extracted path (e.g. `C:/local323_LIB_GSL`).  
@@ -66,3 +66,14 @@ alpha <- c(1, 1, 1)
 x <- rdirichlet_beta_cpp(n = n_samples, alpha = alpha)
 x
 ```
+
+## TODO
+
+- [ ] Complete README
+- [ ] Improve time-based RNG in GSL: set the seed once
+- [ ] Fix segfault when sampling ABC using the unstable Dirichlet definition
+- [ ] Implement ABC tests
+- [ ] Better parameter checking
+
+
+
