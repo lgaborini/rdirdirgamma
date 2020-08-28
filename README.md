@@ -30,7 +30,7 @@ On Windows, one needs to install them separately (refs: [1](https://stackoverflo
 
 1. download the `local323.zip` package from [here](http://www.stats.ox.ac.uk/pub/Rtools/libs.html) and extract it somewhere.
 2. create the environmental variable `LIB_GSL` and point to the extracted path (e.g. `C:/local323_LIB_GSL`).  
-You can do it using the `.Renviron` file, either project-wide or user-wide (`%HOME%/.Renviron`).
+You can do it using the `.Renviron` file, either project-wide or user-wide (`%HOME%/.Renviron`): open it quickly with `usethis::edit_r_environ()`.
 3. be sure that the file `src/Makevars.win` reads the GSL settings:
 
 ```sh
