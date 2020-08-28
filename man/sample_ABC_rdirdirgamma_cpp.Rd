@@ -17,22 +17,33 @@ sample_ABC_rdirdirgamma_cpp(
 )
 }
 \arguments{
-\item{n_sample}{passed to [rdirdirgamma_cpp()]}
+\item{n_sample}{number of samples per source}
 
-\item{m_sample}{passed to [rdirdirgamma_cpp()]}
+\item{m_sample}{number of sources}
 
-\item{alpha_0}{hyperparameter}
+\item{alpha_0}{between-source Gamma hyperparameter, a scalar}
 
-\item{beta_0}{hyperparameter}
+\item{beta_0}{between-source Gamma hyperparameter, a scalar}
 
-\item{nu_0}{hyperparameter}
+\item{nu_0}{between-source Dirichlet hyperparameter, a numeric vector}
 
 \item{mtx_obs}{the observed data matrix}
 
 \item{reps}{repetitions to average distances (default: 1)}
 
-\item{method}{passed to [stats::dist()]}
+\item{p_norm}{exponent of the L^p norm}
+
+\item{seed}{the RNG seed: if 0 (default), generate a time-based seed}
+}
+\value{
+a reps*2 matrix of distances between summary statistics
 }
 \description{
-Perform ABC sampling and distance calculation.
+Samples from Dirichlet using [rdirdirgamma_cpp()].
+}
+\details{
+Summary statistics between datasets:
+
+- mean
+- standard deviation
 }

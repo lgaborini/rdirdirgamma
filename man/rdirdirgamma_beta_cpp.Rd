@@ -15,7 +15,7 @@ rdirdirgamma_beta_cpp(n, m, alpha_0, beta_0, nu_0)
 
 \item{beta_0}{between-source Gamma hyperparameter, a scalar}
 
-\item{nu_0}{between-source alpha hyperparameter, a numeric vector.}
+\item{nu_0}{between-source Dirichlet hyperparameter, a numeric vector}
 }
 \description{
 Generate samples from m sources and p parameters, n sample per source.

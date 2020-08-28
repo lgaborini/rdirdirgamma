@@ -4,13 +4,14 @@
 #' Generate one sample from a Dirichlet distribution.
 #'
 #' @param alpha the Dirichlet hyperparameter
+#' @param seed the RNG seed: if 0 (default), generate a time-based seed
 #' @return a numeric vector
 #' @export
 rdirichlet_cpp <- function(alpha, seed = 0L) {
     .Call('_rdirdirgamma_rdirichlet_cpp', PACKAGE = 'rdirdirgamma', alpha, seed)
 }
 
-#' Generate one sample from a Dirichlet distribution using the stick breaking definition (safer).
+#' Generate from a Dirichlet distribution using the stick breaking definition (safer).
 #'
 #' @param n how many samples to generate
 #' @param alpha the Dirichlet hyperparameter, with p entries
@@ -29,9 +30,9 @@ rdirichlet_beta_cpp <- function(n, alpha) {
 #' @param m number of sources
 #' @param alpha_0 between-source Gamma hyperparameter, a scalar
 #' @param beta_0 between-source Gamma hyperparameter, a scalar
-#' @param nu_0 between-source alpha hyperparameter, a numeric vector.
+#' @param nu_0 between-source Dirichlet hyperparameter, a numeric vector
 #' @export
-#'
+#' @inheritParams rdirichlet_cpp
 rdirdirgamma_cpp <- function(n, m, alpha_0, beta_0, nu_0, seed = 0L) {
     .Call('_rdirdirgamma_rdirdirgamma_cpp', PACKAGE = 'rdirdirgamma', n, m, alpha_0, beta_0, nu_0, seed)
 }
@@ -41,47 +42,47 @@ rdirdirgamma_cpp <- function(n, m, alpha_0, beta_0, nu_0, seed = 0L) {
 #' Generate samples from m sources and p parameters, n sample per source.
 #' The between-source alpha hyperparameter used to generate the source parameters is mandatory.
 #'
-#' @param n number of samples per source
-#' @param m number of sources
-#' @param alpha_0 between-source Gamma hyperparameter, a scalar
-#' @param beta_0 between-source Gamma hyperparameter, a scalar
-#' @param nu_0 between-source alpha hyperparameter, a numeric vector.
 #' @export
-#'
+#' @inheritParams rdirdirgamma_cpp
 rdirdirgamma_beta_cpp <- function(n, m, alpha_0, beta_0, nu_0) {
     .Call('_rdirdirgamma_rdirdirgamma_beta_cpp', PACKAGE = 'rdirdirgamma', n, m, alpha_0, beta_0, nu_0)
 }
 
 #' Perform ABC sampling and distance calculation.
 #'
-#' @param alpha_0 hyperparameter
-#' @param beta_0 hyperparameter
-#' @param nu_0 hyperparameter
+#' Samples from Dirichlet using [rdirdirgamma_cpp()].
+#'
+#' Summary statistics between datasets:
+#'
+#' - mean
+#' - standard deviation
+#'
 #' @param mtx_obs the observed data matrix
-#' @param method passed to [stats::dist()]
 #' @param reps repetitions to average distances (default: 1)
-#' @param n_sample passed to [rdirdirgamma_cpp()]
-#' @param m_sample passed to [rdirdirgamma_cpp()]
-#' @param p_norm
-#' @param seed
+#' @param n_sample number of samples per source
+#' @param m_sample number of sources
+#' @param p_norm exponent of the L^p norm
+#' @return a reps*2 matrix of distances between summary statistics
 #' @export
+#' @inheritParams rdirdirgamma_cpp
 sample_ABC_rdirdirgamma_cpp <- function(n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, reps, p_norm = 2L, seed = 0L) {
     .Call('_rdirdirgamma_sample_ABC_rdirdirgamma_cpp', PACKAGE = 'rdirdirgamma', n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, reps, p_norm, seed)
 }
 
 #' Perform ABC sampling and distance calculation using the stick breaking procedure.
 #'
-#' @param alpha_0 hyperparameter
-#' @param beta_0 hyperparameter
-#' @param nu_0 hyperparameter
-#' @param mtx_obs the observed data matrix
-#' @param method passed to [stats::dist()]
-#' @param reps ABC repetitions (default: 1)
-#' @param n_sample passed to [rdirdirgamma_cpp()]
-#' @param m_sample passed to [rdirdirgamma_cpp()]
-#' @param p_norm exponent for the L^p norm
-#' @export
+#' Samples from Dirichlet using [rdirdirgamma_beta_cpp()].
 #'
+#' Summary statistics between datasets:
+#'
+#' - mean
+#' - standard deviation
+#'
+#' @param n_sample passed to [rdirdirgamma_beta_cpp()]
+#' @param m_sample passed to [rdirdirgamma_beta_cpp()]
+#' @export
+#' @return a reps*2 matrix of distances between summary statistics
+#' @inheritParams sample_ABC_rdirdirgamma_cpp
 sample_ABC_rdirdirgamma_beta_cpp <- function(n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, reps, p_norm = 2L) {
     .Call('_rdirdirgamma_sample_ABC_rdirdirgamma_beta_cpp', PACKAGE = 'rdirdirgamma', n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, reps, p_norm)
 }

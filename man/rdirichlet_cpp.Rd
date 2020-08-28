@@ -8,6 +8,8 @@ rdirichlet_cpp(alpha, seed = 0L)
 }
 \arguments{
 \item{alpha}{the Dirichlet hyperparameter}
+
+\item{seed}{the RNG seed: if 0 (default), generate a time-based seed}
 }
 \value{
 a numeric vector

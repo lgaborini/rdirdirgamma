@@ -1,4 +1,3 @@
-// https://github.com/michealhan/bbc_model/blob/8a45e0a7d87b0396b8556d9790743d592a23f899/gibbs_run.cpp
 
 // #include <Rcpp.h>
 #include <RcppGSL.h>
@@ -31,6 +30,7 @@ unsigned long int random_seed()
 //' Generate one sample from a Dirichlet distribution.
 //'
 //' @param alpha the Dirichlet hyperparameter
+//' @param seed the RNG seed: if 0 (default), generate a time-based seed
 //' @return a numeric vector
 //' @export
 // [[Rcpp::export]]
@@ -53,14 +53,21 @@ Rcpp::NumericVector rdirichlet_cpp(const Rcpp::NumericVector &alpha, const unsig
    return(results);
 }
 
-//' Generate one sample from a Dirichlet distribution using the stick breaking definition (safer).
+// TODO:
+// check out the numerically stable Dirichlet RNG
+//
+// https://github.com/michealhan/bbc_model/blob/8a45e0a7d87b0396b8556d9790743d592a23f899/gibbs_run.cpp
+
+
+
+//' Generate from a Dirichlet distribution using the stick breaking definition (safer).
 //'
 //' @param n how many samples to generate
 //' @param alpha the Dirichlet hyperparameter, with p entries
 //' @return a numeric matrix, n*p
 //' @export
 // [[Rcpp::export]]
-Rcpp::NumericMatrix rdirichlet_beta_cpp(unsigned int n, Rcpp::NumericVector alpha) {
+Rcpp::NumericMatrix rdirichlet_beta_cpp(const unsigned int n, Rcpp::NumericVector alpha) {
 
    unsigned int p = alpha.size();
    double phi;
@@ -91,9 +98,9 @@ Rcpp::NumericMatrix rdirichlet_beta_cpp(unsigned int n, Rcpp::NumericVector alph
 //' @param m number of sources
 //' @param alpha_0 between-source Gamma hyperparameter, a scalar
 //' @param beta_0 between-source Gamma hyperparameter, a scalar
-//' @param nu_0 between-source alpha hyperparameter, a numeric vector.
+//' @param nu_0 between-source Dirichlet hyperparameter, a numeric vector
 //' @export
-//'
+//' @inheritParams rdirichlet_cpp
 // [[Rcpp::export]]
 RcppGSL::Matrix rdirdirgamma_cpp(
       const unsigned int &n, const unsigned int &m,
@@ -168,18 +175,13 @@ RcppGSL::Matrix rdirdirgamma_cpp(
 //' Generate samples from m sources and p parameters, n sample per source.
 //' The between-source alpha hyperparameter used to generate the source parameters is mandatory.
 //'
-//' @param n number of samples per source
-//' @param m number of sources
-//' @param alpha_0 between-source Gamma hyperparameter, a scalar
-//' @param beta_0 between-source Gamma hyperparameter, a scalar
-//' @param nu_0 between-source alpha hyperparameter, a numeric vector.
 //' @export
-//'
+//' @inheritParams rdirdirgamma_cpp
 // [[Rcpp::export]]
 Rcpp::NumericMatrix rdirdirgamma_beta_cpp(
       const unsigned int &n, const unsigned int &m,
       const double &alpha_0, const double &beta_0,
-      const Rcpp::NumericVector &nu_0
+      const Rcpp::NumericVector nu_0
    ) {
 
    const unsigned int p = nu_0.size();
@@ -188,6 +190,9 @@ Rcpp::NumericMatrix rdirdirgamma_beta_cpp(
    Rcpp::NumericMatrix M(m, p);
    Rcpp::NumericMatrix X(m*n, p);
 
+   const double shape = alpha_0;
+   const double scale = 1/beta_0;
+
    // Save temporary observations for a single source
    Rcpp::NumericMatrix X_source(n, p);
 
@@ -195,7 +200,7 @@ Rcpp::NumericMatrix rdirdirgamma_beta_cpp(
    // for (int j = 0; j < m; ++j) {
    //    vec_gamma[j] = R::rgamma(alpha_0, beta_0);
    // }
-   vec_gamma = Rcpp::rgamma(m, alpha_0, 1/beta_0);
+   vec_gamma = Rcpp::rgamma(m, shape, scale);
 
    // The nu part
    // M <- ridirichlet_beta(n = m, a = as.numeric(nu_0))
@@ -242,17 +247,21 @@ Rcpp::NumericMatrix rdirdirgamma_beta_cpp(
 
 //' Perform ABC sampling and distance calculation.
 //'
-//' @param alpha_0 hyperparameter
-//' @param beta_0 hyperparameter
-//' @param nu_0 hyperparameter
+//' Samples from Dirichlet using [rdirdirgamma_cpp()].
+//'
+//' Summary statistics between datasets:
+//'
+//' - mean
+//' - standard deviation
+//'
 //' @param mtx_obs the observed data matrix
-//' @param method passed to [stats::dist()]
 //' @param reps repetitions to average distances (default: 1)
-//' @param n_sample passed to [rdirdirgamma_cpp()]
-//' @param m_sample passed to [rdirdirgamma_cpp()]
-//' @param p_norm
-//' @param seed
+//' @param n_sample number of samples per source
+//' @param m_sample number of sources
+//' @param p_norm exponent of the L^p norm
+//' @return a reps*2 matrix of distances between summary statistics
 //' @export
+//' @inheritParams rdirdirgamma_cpp
 // [[Rcpp::export]]
 RcppGSL::Matrix sample_ABC_rdirdirgamma_cpp(
       const unsigned int &n_sample, const unsigned int &m_sample,
@@ -263,8 +272,10 @@ RcppGSL::Matrix sample_ABC_rdirdirgamma_cpp(
       const unsigned int &p_norm = 2,
       const unsigned int seed = 0
 ) {
+   // too lazy
    const unsigned int n = n_sample;
    const unsigned int m = m_sample;
+
    const unsigned int p = nu_0.size();
    const unsigned int n_obs = mtx_obs.nrow();
 
@@ -351,17 +362,18 @@ RcppGSL::Matrix sample_ABC_rdirdirgamma_cpp(
 
 //' Perform ABC sampling and distance calculation using the stick breaking procedure.
 //'
-//' @param alpha_0 hyperparameter
-//' @param beta_0 hyperparameter
-//' @param nu_0 hyperparameter
-//' @param mtx_obs the observed data matrix
-//' @param method passed to [stats::dist()]
-//' @param reps ABC repetitions (default: 1)
-//' @param n_sample passed to [rdirdirgamma_cpp()]
-//' @param m_sample passed to [rdirdirgamma_cpp()]
-//' @param p_norm exponent for the L^p norm
-//' @export
+//' Samples from Dirichlet using [rdirdirgamma_beta_cpp()].
 //'
+//' Summary statistics between datasets:
+//'
+//' - mean
+//' - standard deviation
+//'
+//' @param n_sample passed to [rdirdirgamma_beta_cpp()]
+//' @param m_sample passed to [rdirdirgamma_beta_cpp()]
+//' @export
+//' @return a reps*2 matrix of distances between summary statistics
+//' @inheritParams sample_ABC_rdirdirgamma_cpp
 // [[Rcpp::export]]
 Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
       const unsigned int &n_sample, const unsigned int &m_sample,

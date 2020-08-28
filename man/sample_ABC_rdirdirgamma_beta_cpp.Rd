@@ -16,24 +16,31 @@ sample_ABC_rdirdirgamma_beta_cpp(
 )
 }
 \arguments{
-\item{n_sample}{passed to [rdirdirgamma_cpp()]}
+\item{n_sample}{passed to [rdirdirgamma_beta_cpp()]}
 
-\item{m_sample}{passed to [rdirdirgamma_cpp()]}
+\item{m_sample}{passed to [rdirdirgamma_beta_cpp()]}
 
-\item{alpha_0}{hyperparameter}
+\item{alpha_0}{between-source Gamma hyperparameter, a scalar}
 
-\item{beta_0}{hyperparameter}
+\item{beta_0}{between-source Gamma hyperparameter, a scalar}
 
-\item{nu_0}{hyperparameter}
+\item{nu_0}{between-source Dirichlet hyperparameter, a numeric vector}
 
 \item{mtx_obs}{the observed data matrix}
 
-\item{reps}{ABC repetitions (default: 1)}
+\item{reps}{repetitions to average distances (default: 1)}
 
-\item{p_norm}{exponent for the L^p norm}
-
-\item{method}{passed to [stats::dist()]}
+\item{p_norm}{exponent of the L^p norm}
+}
+\value{
+a reps*2 matrix of distances between summary statistics
 }
 \description{
-Perform ABC sampling and distance calculation using the stick breaking procedure.
+Samples from Dirichlet using [rdirdirgamma_beta_cpp()].
+}
+\details{
+Summary statistics between datasets:
+
+- mean
+- standard deviation
 }

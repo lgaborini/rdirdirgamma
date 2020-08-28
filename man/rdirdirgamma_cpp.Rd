@@ -15,7 +15,9 @@ rdirdirgamma_cpp(n, m, alpha_0, beta_0, nu_0, seed = 0L)
 
 \item{beta_0}{between-source Gamma hyperparameter, a scalar}
 
-\item{nu_0}{between-source alpha hyperparameter, a numeric vector.}
+\item{nu_0}{between-source Dirichlet hyperparameter, a numeric vector}
+
+\item{seed}{the RNG seed: if 0 (default), generate a time-based seed}
 }
 \description{
 Generate samples from m sources and p parameters, n sample per source.

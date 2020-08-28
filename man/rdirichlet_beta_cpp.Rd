@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{rdirichlet_beta_cpp}
 \alias{rdirichlet_beta_cpp}
-\title{Generate one sample from a Dirichlet distribution using the stick breaking definition (safer).}
+\title{Generate from a Dirichlet distribution using the stick breaking definition (safer).}
 \usage{
 rdirichlet_beta_cpp(n, alpha)
 }
@@ -15,5 +15,5 @@ rdirichlet_beta_cpp(n, alpha)
 a numeric matrix, n*p
 }
 \description{
-Generate one sample from a Dirichlet distribution using the stick breaking definition (safer).
+Generate from a Dirichlet distribution using the stick breaking definition (safer).
 }
