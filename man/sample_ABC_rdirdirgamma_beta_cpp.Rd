@@ -12,7 +12,7 @@ sample_ABC_rdirdirgamma_beta_cpp(
   nu_0,
   mtx_obs,
   reps,
-  p_norm = 2L
+  p_norm = 2
 )
 }
 \arguments{
@@ -30,7 +30,7 @@ sample_ABC_rdirdirgamma_beta_cpp(
 
 \item{reps}{repetitions to average distances (default: 1)}
 
-\item{p_norm}{exponent of the L^p norm}
+\item{p_norm}{exponent of the L^p norm (can be `Inf`) (default: 2)}
 }
 \value{
 a reps*2 matrix of distances between summary statistics

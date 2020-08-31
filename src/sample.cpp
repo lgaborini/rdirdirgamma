@@ -258,7 +258,7 @@ Rcpp::NumericMatrix rdirdirgamma_beta_cpp(
 //' @param reps repetitions to average distances (default: 1)
 //' @param n_sample number of samples per source
 //' @param m_sample number of sources
-//' @param p_norm exponent of the L^p norm
+//' @param p_norm exponent of the L^p norm (can be `Inf`) (default: 2)
 //' @return a reps*2 matrix of distances between summary statistics
 //' @export
 //' @inheritParams rdirdirgamma_cpp
@@ -269,7 +269,7 @@ RcppGSL::Matrix sample_ABC_rdirdirgamma_cpp(
       const Rcpp::NumericVector &nu_0,
       const Rcpp::NumericMatrix &mtx_obs,
       const unsigned int &reps,
-      const unsigned int &p_norm = 2,
+      const double &p_norm = 2,
       const unsigned int seed = 0
 ) {
    // too lazy
@@ -333,8 +333,8 @@ RcppGSL::Matrix sample_ABC_rdirdirgamma_cpp(
 
       Rcout << "Computed generated mean/sd differences" << std::endl;
 
-      mu_diff = mu_gen - mu_obs;
-      sd_diff = sd_gen - sd_obs;
+      mu_diff = abs(mu_gen - mu_obs);
+      sd_diff = abs(sd_gen - sd_obs);
 
       // return(mtx_gen);
 
@@ -345,8 +345,14 @@ RcppGSL::Matrix sample_ABC_rdirdirgamma_cpp(
       // mtx_norms(i, 1) = gsl_blas_dnrm2( (&vec_mu_diff.vector)->data );
       // mtx_norms(i, 2) = gsl_blas_dnrm2( (&vec_sd_diff.vector)->data );
 
-      mtx_norms(t, 0) = sum(pow(mu_diff, p_norm));
-      mtx_norms(t, 1) = sum(pow(sd_diff, p_norm));
+      if (Rcpp::traits::is_infinite<REALSXP>(p_norm)) {
+         mtx_norms(t, 0) = max(mu_diff);
+         mtx_norms(t, 1) = max(sd_diff);
+      } else {
+         mtx_norms(t, 0) = sum(pow(mu_diff, p_norm));
+         mtx_norms(t, 1) = sum(pow(sd_diff, p_norm));
+      }
+
 
 
    }
@@ -381,7 +387,7 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
       const Rcpp::NumericVector &nu_0,
       const Rcpp::NumericMatrix &mtx_obs,
       const unsigned int &reps,
-      const unsigned int &p_norm = 2
+      const double &p_norm = 2
 ) {
 
    const unsigned int n = n_sample;
@@ -436,14 +442,18 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
 
       // Rcout << "Computed generated mean/sd differences" << std::endl;
 
-      mu_diff = mu_gen - mu_obs;
-      sd_diff = sd_gen - sd_obs;
+      mu_diff = abs(mu_gen - mu_obs);
+      sd_diff = abs(sd_gen - sd_obs);
 
       // Compute distances between summary statistics
 
-      mtx_norms(t, 0) = sum(pow(mu_diff, p_norm));
-      mtx_norms(t, 1) = sum(pow(sd_diff, p_norm));
-
+      if (Rcpp::traits::is_infinite<REALSXP>(p_norm)) {
+         mtx_norms(t, 0) = max(mu_diff);
+         mtx_norms(t, 1) = max(sd_diff);
+      } else {
+         mtx_norms(t, 0) = sum(pow(mu_diff, p_norm));
+         mtx_norms(t, 1) = sum(pow(sd_diff, p_norm));
+      }
 
    }
 

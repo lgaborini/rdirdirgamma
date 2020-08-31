@@ -12,7 +12,7 @@ sample_ABC_rdirdirgamma_cpp(
   nu_0,
   mtx_obs,
   reps,
-  p_norm = 2L,
+  p_norm = 2,
   seed = 0L
 )
 }
@@ -31,7 +31,7 @@ sample_ABC_rdirdirgamma_cpp(
 
 \item{reps}{repetitions to average distances (default: 1)}
 
-\item{p_norm}{exponent of the L^p norm}
+\item{p_norm}{exponent of the L^p norm (can be `Inf`) (default: 2)}
 
 \item{seed}{the RNG seed: if 0 (default), generate a time-based seed}
 }

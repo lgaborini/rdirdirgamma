@@ -68,8 +68,10 @@ mtx_ABC <- sample_ABC_rdirdirgamma_beta_cpp(
    nu_0 = nu_0,
    mtx_obs = mtx_obs,
    reps = 1000,
-   p_norm = 2
+   p_norm = Inf
 )
+
+mtx_ABC
 
 # Crashing
 #
