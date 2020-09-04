@@ -61,6 +61,29 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// colsd
+Rcpp::NumericVector colsd(const Rcpp::NumericMatrix& mtx);
+RcppExport SEXP _rdirdirgamma_colsd(SEXP mtxSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type mtx(mtxSEXP);
+    rcpp_result_gen = Rcpp::wrap(colsd(mtx));
+    return rcpp_result_gen;
+END_RCPP
+}
+// norm_minkowski
+double norm_minkowski(const Rcpp::NumericVector& v, const double p);
+RcppExport SEXP _rdirdirgamma_norm_minkowski(SEXP vSEXP, SEXP pSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type v(vSEXP);
+    Rcpp::traits::input_parameter< const double >::type p(pSEXP);
+    rcpp_result_gen = Rcpp::wrap(norm_minkowski(v, p));
+    return rcpp_result_gen;
+END_RCPP
+}
 // sample_ABC_rdirdirgamma_cpp
 RcppGSL::Matrix sample_ABC_rdirdirgamma_cpp(const unsigned int& n_sample, const unsigned int& m_sample, const double& alpha_0, const double& beta_0, const Rcpp::NumericVector& nu_0, const Rcpp::NumericMatrix& mtx_obs, const unsigned int& reps, const double& p_norm, const unsigned int seed);
 RcppExport SEXP _rdirdirgamma_sample_ABC_rdirdirgamma_cpp(SEXP n_sampleSEXP, SEXP m_sampleSEXP, SEXP alpha_0SEXP, SEXP beta_0SEXP, SEXP nu_0SEXP, SEXP mtx_obsSEXP, SEXP repsSEXP, SEXP p_normSEXP, SEXP seedSEXP) {
@@ -104,6 +127,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdirdirgamma_rdirichlet_beta_cpp", (DL_FUNC) &_rdirdirgamma_rdirichlet_beta_cpp, 2},
     {"_rdirdirgamma_rdirdirgamma_cpp", (DL_FUNC) &_rdirdirgamma_rdirdirgamma_cpp, 6},
     {"_rdirdirgamma_rdirdirgamma_beta_cpp", (DL_FUNC) &_rdirdirgamma_rdirdirgamma_beta_cpp, 5},
+    {"_rdirdirgamma_colsd", (DL_FUNC) &_rdirdirgamma_colsd, 1},
+    {"_rdirdirgamma_norm_minkowski", (DL_FUNC) &_rdirdirgamma_norm_minkowski, 2},
     {"_rdirdirgamma_sample_ABC_rdirdirgamma_cpp", (DL_FUNC) &_rdirdirgamma_sample_ABC_rdirdirgamma_cpp, 9},
     {"_rdirdirgamma_sample_ABC_rdirdirgamma_beta_cpp", (DL_FUNC) &_rdirdirgamma_sample_ABC_rdirdirgamma_beta_cpp, 8},
     {NULL, NULL, 0}

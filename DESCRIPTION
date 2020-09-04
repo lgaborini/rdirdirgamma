@@ -1,7 +1,7 @@
 Type: Package
 Package: rdirdirgamma
-Title: What the Package Does (Title Case)
-Version: 0.1.0
+Title: Generate samples from Dirichlet-Dirichlet-Gamma model, and perform ABC.
+Version: 0.1.999
 Author: Who wrote it
 Maintainer: The package maintainer <yourself@somewhere.net>
 Description: More about what it does (maybe more than one line)

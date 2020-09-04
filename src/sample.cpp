@@ -245,6 +245,46 @@ Rcpp::NumericMatrix rdirdirgamma_beta_cpp(
 
 
 
+//' Compute column-wise sd
+//'
+//' @param mtx a nxp matrix
+//' @return a 1xp vector
+// [[Rcpp::export]]
+Rcpp::NumericVector colsd(const Rcpp::NumericMatrix &mtx) {
+   const unsigned int p = mtx.ncol();
+
+   Rcpp::NumericVector sd_vec(p);
+
+   for (unsigned int k = 0; k < p; ++k) {
+      sd_vec[k] = Rcpp::sd(mtx(_, k));
+   }
+   return(sd_vec);
+}
+
+
+
+//' Compute the Minkowski norm of a vector
+//'
+//' Compute the Minkowski norm of a vector.
+//' $p$ can range from 1 to infinity.
+//'
+//' @param v a vector
+//' @param p exponent of the Minkowski norm (from 1 to Inf)
+//' @return a double
+// [[Rcpp::export]]
+double norm_minkowski(const Rcpp::NumericVector &v, const double p = 2) {
+
+   double r;
+
+   if (Rcpp::traits::is_infinite<REALSXP>(p)) {
+      r = Rcpp::max(v);
+   } else {
+      r = Rcpp::sum(Rcpp::pow(v, p));
+   }
+   return(r);
+}
+
+
 //' Perform ABC sampling and distance calculation.
 //'
 //' Samples from Dirichlet using [rdirdirgamma_cpp()].

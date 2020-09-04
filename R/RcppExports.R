@@ -48,6 +48,26 @@ rdirdirgamma_beta_cpp <- function(n, m, alpha_0, beta_0, nu_0) {
     .Call('_rdirdirgamma_rdirdirgamma_beta_cpp', PACKAGE = 'rdirdirgamma', n, m, alpha_0, beta_0, nu_0)
 }
 
+#' Compute column-wise sd
+#'
+#' @param mtx a nxp matrix
+#' @return a 1xp vector
+colsd <- function(mtx) {
+    .Call('_rdirdirgamma_colsd', PACKAGE = 'rdirdirgamma', mtx)
+}
+
+#' Compute the Minkowski norm of a vector
+#'
+#' Compute the Minkowski norm of a vector.
+#' $p$ can range from 1 to infinity.
+#'
+#' @param v a vector
+#' @param p exponent of the Minkowski norm (from 1 to Inf)
+#' @return a double
+norm_minkowski <- function(v, p = 2) {
+    .Call('_rdirdirgamma_norm_minkowski', PACKAGE = 'rdirdirgamma', v, p)
+}
+
 #' Perform ABC sampling and distance calculation.
 #'
 #' Samples from Dirichlet using [rdirdirgamma_cpp()].
