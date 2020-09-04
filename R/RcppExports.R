@@ -107,3 +107,14 @@ sample_ABC_rdirdirgamma_beta_cpp <- function(n_sample, m_sample, alpha_0, beta_0
     .Call('_rdirdirgamma_sample_ABC_rdirdirgamma_beta_cpp', PACKAGE = 'rdirdirgamma', n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, reps, p_norm)
 }
 
+#' Compute distances between summary statistics.
+#'
+#' @param mtx_gen the generated data matrix
+#' @param mtx_obs the observed data matrix
+#' @param p_norm the power of the Minkowski distance
+#' @export
+#' @return a length-2 vector of distances between summary statistics
+compute_distances_gen_obs_cpp <- function(mtx_gen, mtx_obs, p_norm = 2) {
+    .Call('_rdirdirgamma_compute_distances_gen_obs_cpp', PACKAGE = 'rdirdirgamma', mtx_gen, mtx_obs, p_norm)
+}
+

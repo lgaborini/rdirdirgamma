@@ -469,3 +469,62 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
 
 }
 
+
+
+
+
+//' Compute distances between summary statistics.
+//'
+//' @param mtx_gen the generated data matrix
+//' @param mtx_obs the observed data matrix
+//' @param p_norm the power of the Minkowski distance
+//' @export
+//' @return a length-2 vector of distances between summary statistics
+// [[Rcpp::export]]
+Rcpp::NumericVector compute_distances_gen_obs_cpp(
+      const Rcpp::NumericMatrix &mtx_gen,
+      const Rcpp::NumericMatrix &mtx_obs,
+      const double &p_norm = 2
+) {
+
+   const unsigned int p = mtx_gen.ncol();
+
+   if (mtx_gen.ncol() != mtx_obs.ncol()) {
+      Rcpp::stop("Error: different number of columns");
+   }
+
+   // Allocate distances between summary statistics
+   Rcpp::NumericVector vec_norms(2);
+
+   // Rcout << "Computing summary statistics" << std::endl;
+
+   // Precompute observed summary statistics
+   Rcpp::NumericVector mu_obs(p);
+   Rcpp::NumericVector sd_obs(p);
+
+   mu_obs = Rcpp::colMeans(mtx_obs);
+   sd_obs  = colsd(mtx_obs);
+
+   // Rcout << "Computed observed sd" << std::endl;
+
+   // Generate observations
+   Rcpp::NumericVector mu_gen(p);
+   Rcpp::NumericVector sd_gen(p);
+
+   mu_gen = colMeans(mtx_gen);
+   sd_gen  = colsd(mtx_gen);
+
+   Rcpp::NumericVector mu_diff(p);
+   Rcpp::NumericVector sd_diff(p);
+
+   mu_diff = abs(mu_gen - mu_obs);
+   sd_diff = abs(sd_gen - sd_obs);
+
+   // Compute distances between summary statistics
+   vec_norms(0) = norm_minkowski(mu_diff, p_norm);
+   vec_norms(1) = norm_minkowski(sd_diff, p_norm);
+
+   return(vec_norms);
+
+}
+

@@ -121,6 +121,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// compute_distances_gen_obs_cpp
+Rcpp::NumericVector compute_distances_gen_obs_cpp(const Rcpp::NumericMatrix& mtx_gen, const Rcpp::NumericMatrix& mtx_obs, const double& p_norm);
+RcppExport SEXP _rdirdirgamma_compute_distances_gen_obs_cpp(SEXP mtx_genSEXP, SEXP mtx_obsSEXP, SEXP p_normSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type mtx_gen(mtx_genSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type mtx_obs(mtx_obsSEXP);
+    Rcpp::traits::input_parameter< const double& >::type p_norm(p_normSEXP);
+    rcpp_result_gen = Rcpp::wrap(compute_distances_gen_obs_cpp(mtx_gen, mtx_obs, p_norm));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_rdirdirgamma_rdirichlet_cpp", (DL_FUNC) &_rdirdirgamma_rdirichlet_cpp, 2},
@@ -131,6 +144,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdirdirgamma_norm_minkowski", (DL_FUNC) &_rdirdirgamma_norm_minkowski, 2},
     {"_rdirdirgamma_sample_ABC_rdirdirgamma_cpp", (DL_FUNC) &_rdirdirgamma_sample_ABC_rdirdirgamma_cpp, 9},
     {"_rdirdirgamma_sample_ABC_rdirdirgamma_beta_cpp", (DL_FUNC) &_rdirdirgamma_sample_ABC_rdirdirgamma_beta_cpp, 8},
+    {"_rdirdirgamma_compute_distances_gen_obs_cpp", (DL_FUNC) &_rdirdirgamma_compute_distances_gen_obs_cpp, 3},
     {NULL, NULL, 0}
 };
 

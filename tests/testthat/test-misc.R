@@ -24,3 +24,23 @@ test_that('norm_minkowski is correct', {
    expect_equal(norm_minkowski(v, 0), 3)
 
 })
+
+
+
+
+# ABC distances -----------------------------------------------------------
+
+test_that('compute_distances_gen_obs_cpp is correct', {
+
+   set.seed(123)
+   mtx_gen <- matrix(rnorm(12), nrow = 4, ncol = 3)
+   set.seed(124)
+   mtx_obs <- matrix(rnorm(12), nrow = 4, ncol = 3)
+
+   v <- expect_silent(compute_distances_gen_obs_cpp(mtx_gen, mtx_gen))
+   expect_true(all.equal(v, rep(0, 3)))
+
+   v <- expect_silent(compute_distances_gen_obs_cpp(mtx_gen, mtx_obs))
+   expect_length(v, 3)
+   expect_true(all(v > 0))
+})
