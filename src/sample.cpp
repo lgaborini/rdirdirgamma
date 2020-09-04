@@ -370,30 +370,13 @@ RcppGSL::Matrix sample_ABC_rdirdirgamma_cpp(
          sd_gen[k] = gsl_stats_sd((&col.vector)->data, 1, n_obs);
       }
 
-
       Rcout << "Computed generated mean/sd differences" << std::endl;
 
       mu_diff = abs(mu_gen - mu_obs);
       sd_diff = abs(sd_gen - sd_obs);
 
-      // return(mtx_gen);
-
-      // gsl_vector_const_view vec_mu_diff = gsl_vector_const_view_array(mu_diff, p);
-      // gsl_vector_const_view vec_sd_diff = gsl_vector_const_view_array(sd_diff, p);
-      //
-      // // Compute distances between summary statistics
-      // mtx_norms(i, 1) = gsl_blas_dnrm2( (&vec_mu_diff.vector)->data );
-      // mtx_norms(i, 2) = gsl_blas_dnrm2( (&vec_sd_diff.vector)->data );
-
-      if (Rcpp::traits::is_infinite<REALSXP>(p_norm)) {
-         mtx_norms(t, 0) = max(mu_diff);
-         mtx_norms(t, 1) = max(sd_diff);
-      } else {
-         mtx_norms(t, 0) = sum(pow(mu_diff, p_norm));
-         mtx_norms(t, 1) = sum(pow(sd_diff, p_norm));
-      }
-
-
+      mtx_norms(t, 0) = norm_minkowski(mu_diff, p_norm);
+      mtx_norms(t, 1) = norm_minkowski(sd_diff, p_norm);
 
    }
 
@@ -444,10 +427,7 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
    Rcpp::NumericVector sd_obs(p);
 
    mu_obs = Rcpp::colMeans(mtx_obs);
-
-   for (unsigned int k = 0; k < p; ++k) {
-      sd_obs[k] = Rcpp::sd(mtx_obs(_, k));
-   }
+   sd_obs  = colsd(mtx_obs);
 
    // Rcout << "Computed observed sd" << std::endl;
 
@@ -475,26 +455,14 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
       // Rcout << "Computing generated mean/sd" << std::endl;
 
       mu_gen = colMeans(mtx_gen);
+      sd_gen = colsd(mtx_gen);
 
-      for (unsigned int k = 0; k < p; ++k) {
-         sd_gen[k] = sd(mtx_gen(_, k));
-      }
-
-      // Rcout << "Computed generated mean/sd differences" << std::endl;
-
+      // Compute distances between summary statistics
       mu_diff = abs(mu_gen - mu_obs);
       sd_diff = abs(sd_gen - sd_obs);
 
-      // Compute distances between summary statistics
-
-      if (Rcpp::traits::is_infinite<REALSXP>(p_norm)) {
-         mtx_norms(t, 0) = max(mu_diff);
-         mtx_norms(t, 1) = max(sd_diff);
-      } else {
-         mtx_norms(t, 0) = sum(pow(mu_diff, p_norm));
-         mtx_norms(t, 1) = sum(pow(sd_diff, p_norm));
-      }
-
+      mtx_norms(t, 0) = norm_minkowski(mu_diff, p_norm);
+      mtx_norms(t, 1) = norm_minkowski(sd_diff, p_norm);
    }
 
    return(mtx_norms);
