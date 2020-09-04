@@ -285,6 +285,8 @@ double norm_minkowski(const Rcpp::NumericVector &v, const double p = 2) {
 }
 
 
+/*
+
 //' Perform ABC sampling and distance calculation.
 //'
 //' Samples from Dirichlet using [rdirdirgamma_cpp()].
@@ -388,6 +390,7 @@ RcppGSL::Matrix sample_ABC_rdirdirgamma_cpp(
 
 }
 
+*/
 
 //' Perform ABC sampling and distance calculation using the stick breaking procedure.
 //'

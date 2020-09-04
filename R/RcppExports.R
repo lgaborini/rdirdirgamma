@@ -68,27 +68,6 @@ norm_minkowski <- function(v, p = 2) {
     .Call('_rdirdirgamma_norm_minkowski', PACKAGE = 'rdirdirgamma', v, p)
 }
 
-#' Perform ABC sampling and distance calculation.
-#'
-#' Samples from Dirichlet using [rdirdirgamma_cpp()].
-#'
-#' Summary statistics between datasets:
-#'
-#' - mean
-#' - standard deviation
-#'
-#' @param mtx_obs the observed data matrix
-#' @param reps repetitions to average distances (default: 1)
-#' @param n_sample number of samples per source
-#' @param m_sample number of sources
-#' @param p_norm exponent of the L^p norm (can be `Inf`) (default: 2)
-#' @return a reps*2 matrix of distances between summary statistics
-#' @export
-#' @inheritParams rdirdirgamma_cpp
-sample_ABC_rdirdirgamma_cpp <- function(n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, reps, p_norm = 2, seed = 0L) {
-    .Call('_rdirdirgamma_sample_ABC_rdirdirgamma_cpp', PACKAGE = 'rdirdirgamma', n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, reps, p_norm, seed)
-}
-
 #' Perform ABC sampling and distance calculation using the stick breaking procedure.
 #'
 #' Samples from Dirichlet using [rdirdirgamma_beta_cpp()].

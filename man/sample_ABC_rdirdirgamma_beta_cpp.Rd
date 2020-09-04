@@ -19,18 +19,6 @@ sample_ABC_rdirdirgamma_beta_cpp(
 \item{n_sample}{passed to [rdirdirgamma_beta_cpp()]}
 
 \item{m_sample}{passed to [rdirdirgamma_beta_cpp()]}
-
-\item{alpha_0}{between-source Gamma hyperparameter, a scalar}
-
-\item{beta_0}{between-source Gamma hyperparameter, a scalar}
-
-\item{nu_0}{between-source Dirichlet hyperparameter, a numeric vector}
-
-\item{mtx_obs}{the observed data matrix}
-
-\item{reps}{repetitions to average distances (default: 1)}
-
-\item{p_norm}{exponent of the L^p norm (can be `Inf`) (default: 2)}
 }
 \value{
 a reps*2 matrix of distances between summary statistics

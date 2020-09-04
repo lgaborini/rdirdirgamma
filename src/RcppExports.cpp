@@ -84,25 +84,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// sample_ABC_rdirdirgamma_cpp
-RcppGSL::Matrix sample_ABC_rdirdirgamma_cpp(const unsigned int& n_sample, const unsigned int& m_sample, const double& alpha_0, const double& beta_0, const Rcpp::NumericVector& nu_0, const Rcpp::NumericMatrix& mtx_obs, const unsigned int& reps, const double& p_norm, const unsigned int seed);
-RcppExport SEXP _rdirdirgamma_sample_ABC_rdirdirgamma_cpp(SEXP n_sampleSEXP, SEXP m_sampleSEXP, SEXP alpha_0SEXP, SEXP beta_0SEXP, SEXP nu_0SEXP, SEXP mtx_obsSEXP, SEXP repsSEXP, SEXP p_normSEXP, SEXP seedSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const unsigned int& >::type n_sample(n_sampleSEXP);
-    Rcpp::traits::input_parameter< const unsigned int& >::type m_sample(m_sampleSEXP);
-    Rcpp::traits::input_parameter< const double& >::type alpha_0(alpha_0SEXP);
-    Rcpp::traits::input_parameter< const double& >::type beta_0(beta_0SEXP);
-    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type nu_0(nu_0SEXP);
-    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type mtx_obs(mtx_obsSEXP);
-    Rcpp::traits::input_parameter< const unsigned int& >::type reps(repsSEXP);
-    Rcpp::traits::input_parameter< const double& >::type p_norm(p_normSEXP);
-    Rcpp::traits::input_parameter< const unsigned int >::type seed(seedSEXP);
-    rcpp_result_gen = Rcpp::wrap(sample_ABC_rdirdirgamma_cpp(n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, reps, p_norm, seed));
-    return rcpp_result_gen;
-END_RCPP
-}
 // sample_ABC_rdirdirgamma_beta_cpp
 Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(const unsigned int& n_sample, const unsigned int& m_sample, const double& alpha_0, const double& beta_0, const Rcpp::NumericVector& nu_0, const Rcpp::NumericMatrix& mtx_obs, const unsigned int& reps, const double& p_norm);
 RcppExport SEXP _rdirdirgamma_sample_ABC_rdirdirgamma_beta_cpp(SEXP n_sampleSEXP, SEXP m_sampleSEXP, SEXP alpha_0SEXP, SEXP beta_0SEXP, SEXP nu_0SEXP, SEXP mtx_obsSEXP, SEXP repsSEXP, SEXP p_normSEXP) {
@@ -142,7 +123,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdirdirgamma_rdirdirgamma_beta_cpp", (DL_FUNC) &_rdirdirgamma_rdirdirgamma_beta_cpp, 5},
     {"_rdirdirgamma_colsd", (DL_FUNC) &_rdirdirgamma_colsd, 1},
     {"_rdirdirgamma_norm_minkowski", (DL_FUNC) &_rdirdirgamma_norm_minkowski, 2},
-    {"_rdirdirgamma_sample_ABC_rdirdirgamma_cpp", (DL_FUNC) &_rdirdirgamma_sample_ABC_rdirdirgamma_cpp, 9},
     {"_rdirdirgamma_sample_ABC_rdirdirgamma_beta_cpp", (DL_FUNC) &_rdirdirgamma_sample_ABC_rdirdirgamma_beta_cpp, 8},
     {"_rdirdirgamma_compute_distances_gen_obs_cpp", (DL_FUNC) &_rdirdirgamma_compute_distances_gen_obs_cpp, 3},
     {NULL, NULL, 0}

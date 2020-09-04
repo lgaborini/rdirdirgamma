@@ -4,7 +4,10 @@
 * Adding functions:
    - `colsd`
    - `norm_minkowski`
-* Add tests for ABC.
+   - `compute_distances_gen_obs_cpp`
+* Drafting tests for ABC, misc functions.
+
+* Removed `sample_ABC_rdirdirgamma_cpp`.
 
 
 # rdirdirgamma 0.1.0
