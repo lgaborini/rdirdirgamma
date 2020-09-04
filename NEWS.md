@@ -4,7 +4,7 @@
 * Adding functions:
    - `colsd`
    - `norm_minkowski`
-
+* Add tests for ABC.
 
 
 # rdirdirgamma 0.1.0
