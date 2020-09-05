@@ -276,10 +276,14 @@ double norm_minkowski(const Rcpp::NumericVector &v, const double p = 2) {
 
    double r;
 
+   if (p < 1) {
+      Rcpp::stop("norm_minkowski: p cannot be < 1");
+   }
+
    if (Rcpp::traits::is_infinite<REALSXP>(p)) {
-      r = Rcpp::max(v);
+      r = max(abs(v));
    } else {
-      r = Rcpp::sum(Rcpp::pow(v, p));
+      r = pow(sum(pow(abs(v), p)), 1/p);
    }
    return(r);
 }
