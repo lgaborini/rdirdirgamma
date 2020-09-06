@@ -16,9 +16,15 @@ sample_ABC_rdirdirgamma_beta_cpp(
 )
 }
 \arguments{
-\item{n_sample}{passed to [rdirdirgamma_beta_cpp()]}
+\item{n_sample}{number of samples per source}
 
-\item{m_sample}{passed to [rdirdirgamma_beta_cpp()]}
+\item{m_sample}{number of sources}
+
+\item{mtx_obs}{the observed data matrix}
+
+\item{reps}{number of ABC samples (default: 1)}
+
+\item{p_norm}{exponent of the L^p norm (can be `Inf`) (default: `2`)}
 }
 \value{
 a reps*2 matrix of distances between summary statistics

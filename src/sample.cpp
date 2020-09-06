@@ -405,11 +405,13 @@ RcppGSL::Matrix sample_ABC_rdirdirgamma_cpp(
 //' - mean
 //' - standard deviation
 //'
-//' @param n_sample passed to [rdirdirgamma_beta_cpp()]
-//' @param m_sample passed to [rdirdirgamma_beta_cpp()]
+//' @param mtx_obs the observed data matrix
+//' @param reps number of ABC samples (default: 1)
+//' @param n_sample number of samples per source
+//' @param m_sample number of sources
+//' @param p_norm exponent of the L^p norm (can be `Inf`) (default: `2`)
 //' @export
 //' @return a reps*2 matrix of distances between summary statistics
-//' @inheritParams sample_ABC_rdirdirgamma_cpp
 // [[Rcpp::export]]
 Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
       const unsigned int &n_sample, const unsigned int &m_sample,
@@ -436,20 +438,13 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
    mu_obs = Rcpp::colMeans(mtx_obs);
    sd_obs  = colsd(mtx_obs);
 
-   // Rcout << "Computed observed sd" << std::endl;
-
    // Generate observations
    Rcpp::NumericVector mu_gen(p);
    Rcpp::NumericVector sd_gen(p);
 
-   Rcpp::NumericVector mu_diff(p);
-   Rcpp::NumericVector sd_diff(p);
-
-   // Rcout << "Starting generating data" << std::endl;
-
    for (unsigned int t = 0; t < reps; ++t) {
 
-      if(t % 1000 == 0) Rcpp::checkUserInterrupt();
+      if (t % 1000 == 0) Rcpp::checkUserInterrupt();
 
       // Rcout << "Allocating gen data" << std::endl;
 
@@ -465,11 +460,8 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
       sd_gen = colsd(mtx_gen);
 
       // Compute distances between summary statistics
-      mu_diff = abs(mu_gen - mu_obs);
-      sd_diff = abs(sd_gen - sd_obs);
-
-      mtx_norms(t, 0) = norm_minkowski(mu_diff, p_norm);
-      mtx_norms(t, 1) = norm_minkowski(sd_diff, p_norm);
+      mtx_norms(t, 0) = norm_minkowski(mu_gen - mu_obs, p_norm);
+      mtx_norms(t, 1) = norm_minkowski(sd_gen - sd_obs, p_norm);
    }
 
    return(mtx_norms);
@@ -524,12 +516,9 @@ Rcpp::NumericVector compute_distances_gen_obs_cpp(
    Rcpp::NumericVector mu_diff(p);
    Rcpp::NumericVector sd_diff(p);
 
-   mu_diff = abs(mu_gen - mu_obs);
-   sd_diff = abs(sd_gen - sd_obs);
-
    // Compute distances between summary statistics
-   vec_norms(0) = norm_minkowski(mu_diff, p_norm);
-   vec_norms(1) = norm_minkowski(sd_diff, p_norm);
+   vec_norms(0) = norm_minkowski(mu_gen - mu_obs, p_norm);
+   vec_norms(1) = norm_minkowski(sd_gen - sd_obs, p_norm);
 
    return(vec_norms);
 
