@@ -433,13 +433,18 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
    const unsigned int n = n_sample;
    const unsigned int m = m_sample;
    const unsigned int p = nu_0.size();
+   const unsigned int p_obs = mtx_obs.ncol();
+
+   if (n*m < n_obs) {
+      Rcpp::stop("cannot generate enough observations (needed n_obs = %i, have n_gen = %i)", n_obs, n*m);
+   }
+
+   if (p != p_obs) {
+      Rcpp::stop("Error: different number of columns (nu_0: %i, observed: %i)", p, p_obs);
+   }
 
    // Allocate distances between summary statistics
    Rcpp::NumericMatrix mtx_norms(reps, 2);
-
-   if (n*m < n_obs) {
-      Rcpp::stop("cannot generate enough observations (n_obs = %i, n_gen = %i)", n_obs, n*m);
-   }
 
    // Precompute observed summary statistics
    Rcpp::NumericVector mu_obs(p);
@@ -491,9 +496,10 @@ Rcpp::NumericVector compute_distances_gen_obs_cpp(
 ) {
 
    const unsigned int p = mtx_gen.ncol();
+   const unsigned int p_obs = mtx_obs.ncol();
 
-   if (mtx_gen.ncol() != mtx_obs.ncol()) {
-      Rcpp::stop("Error: different number of columns");
+   if (p != p_obs) {
+      Rcpp::stop("Error: different number of columns (generated: %i, observed: %i)", p, p_obs);
    }
 
    // Allocate distances between summary statistics
