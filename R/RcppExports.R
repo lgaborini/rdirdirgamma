@@ -3,6 +3,10 @@
 
 #' Generate one sample from a Dirichlet distribution.
 #'
+#' ## RNG
+#'
+#' this function uses GSL's RNG seed, unaffected by R's RNG.
+#'
 #' @param alpha the Dirichlet hyperparameter
 #' @param seed the RNG seed: if 0 (default), generate a time-based seed
 #' @return a numeric vector
@@ -12,6 +16,10 @@ rdirichlet_cpp <- function(alpha, seed = 0L) {
 }
 
 #' Generate from a Dirichlet distribution using the stick breaking definition (safer).
+#'
+#' ## RNG
+#'
+#' this function uses R's RNG seed.
 #'
 #' @param n how many samples to generate
 #' @param alpha the Dirichlet hyperparameter, with p entries
@@ -25,6 +33,10 @@ rdirichlet_beta_cpp <- function(n, alpha) {
 #'
 #' Generate samples from m sources and p parameters, n sample per source.
 #' The between-source alpha hyperparameter used to generate the source parameters is mandatory.
+#'
+#' ## RNG
+#'
+#' this function uses GSL's RNG seed, unaffected by R's RNG.
 #'
 #' @param n number of samples per source
 #' @param m number of sources
@@ -42,6 +54,10 @@ rdirdirgamma_cpp <- function(n, m, alpha_0, beta_0, nu_0, seed = 0L) {
 #'
 #' Generate samples from m sources and p parameters, n sample per source.
 #' The between-source alpha hyperparameter used to generate the source parameters is mandatory.
+#'
+#' ## RNG
+#'
+#' this function uses R's RNG seed.
 #'
 #' @export
 #' @return a matrix with n*m rows
@@ -83,6 +99,10 @@ norm_minkowski <- function(v, p = 2) {
 #' 3. the generated dataset is invisibly is truncated to the same amount of rows as the observed dataset.
 #' 4. compute the Minkowski norms of the differences between summary statistics.
 #' 5. repeat `reps` times.
+#'
+#' ## RNG
+#'
+#' this function uses R's RNG seed.
 #'
 #' @param mtx_obs the observed data matrix
 #' @param reps number of ABC samples (default: 1)

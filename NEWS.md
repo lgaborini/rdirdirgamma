@@ -1,6 +1,6 @@
 # rdirdirgamma 0.1.999 (unreleased)
 
-* Started adding more C++ functions to compute distances between two datasets.
+* Adding more C++ functions to compute distances between two datasets.
 * Adding functions:
    - `colsd`
    - `norm_minkowski`
@@ -8,6 +8,7 @@
 * Drafting tests for ABC, misc functions.
 * Now ABC generates datasets with the same number of rows as the observed dataset.   
   Sampling and distance calculation functions are unchanged, however.
+* Documented RNG seed for R and GSL.
 
 * Removed `sample_ABC_rdirdirgamma_cpp`.
 

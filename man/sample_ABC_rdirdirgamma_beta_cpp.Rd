@@ -42,4 +42,8 @@ Procedure:
 3. the generated dataset is invisibly is truncated to the same amount of rows as the observed dataset.
 4. compute the Minkowski norms of the differences between summary statistics.
 5. repeat `reps` times.
+
+## RNG
+
+this function uses R's RNG seed.
 }

@@ -29,6 +29,10 @@ unsigned long int random_seed()
 
 //' Generate one sample from a Dirichlet distribution.
 //'
+//' ## RNG
+//'
+//' this function uses GSL's RNG seed, unaffected by R's RNG.
+//'
 //' @param alpha the Dirichlet hyperparameter
 //' @param seed the RNG seed: if 0 (default), generate a time-based seed
 //' @return a numeric vector
@@ -62,6 +66,10 @@ Rcpp::NumericVector rdirichlet_cpp(const Rcpp::NumericVector &alpha, const unsig
 
 //' Generate from a Dirichlet distribution using the stick breaking definition (safer).
 //'
+//' ## RNG
+//'
+//' this function uses R's RNG seed.
+//'
 //' @param n how many samples to generate
 //' @param alpha the Dirichlet hyperparameter, with p entries
 //' @return a numeric matrix, n*p
@@ -93,6 +101,10 @@ Rcpp::NumericMatrix rdirichlet_beta_cpp(const unsigned int n, Rcpp::NumericVecto
 //'
 //' Generate samples from m sources and p parameters, n sample per source.
 //' The between-source alpha hyperparameter used to generate the source parameters is mandatory.
+//'
+//' ## RNG
+//'
+//' this function uses GSL's RNG seed, unaffected by R's RNG.
 //'
 //' @param n number of samples per source
 //' @param m number of sources
@@ -175,6 +187,10 @@ RcppGSL::Matrix rdirdirgamma_cpp(
 //'
 //' Generate samples from m sources and p parameters, n sample per source.
 //' The between-source alpha hyperparameter used to generate the source parameters is mandatory.
+//'
+//' ## RNG
+//'
+//' this function uses R's RNG seed.
 //'
 //' @export
 //' @return a matrix with n*m rows
@@ -302,6 +318,10 @@ double norm_minkowski(const Rcpp::NumericVector &v, const double p = 2) {
 //' - mean
 //' - standard deviation
 //'
+//' ## RNG
+//'
+//' this function uses GSL's RNG seed, unaffected by R's RNG.
+//'
 //' @param mtx_obs the observed data matrix
 //' @param reps repetitions to average distances (default: 1)
 //' @param n_sample number of samples per source
@@ -411,6 +431,10 @@ RcppGSL::Matrix sample_ABC_rdirdirgamma_cpp(
 //' 3. the generated dataset is invisibly is truncated to the same amount of rows as the observed dataset.
 //' 4. compute the Minkowski norms of the differences between summary statistics.
 //' 5. repeat `reps` times.
+//'
+//' ## RNG
+//'
+//' this function uses R's RNG seed.
 //'
 //' @param mtx_obs the observed data matrix
 //' @param reps number of ABC samples (default: 1)

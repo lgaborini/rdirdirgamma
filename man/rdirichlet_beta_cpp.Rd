@@ -15,5 +15,8 @@ rdirichlet_beta_cpp(n, alpha)
 a numeric matrix, n*p
 }
 \description{
-Generate from a Dirichlet distribution using the stick breaking definition (safer).
+## RNG
+}
+\details{
+this function uses R's RNG seed.
 }
