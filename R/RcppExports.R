@@ -32,6 +32,7 @@ rdirichlet_beta_cpp <- function(n, alpha) {
 #' @param beta_0 between-source Gamma hyperparameter, a scalar
 #' @param nu_0 between-source Dirichlet hyperparameter, a numeric vector
 #' @export
+#' @return a matrix with n*m rows
 #' @inheritParams rdirichlet_cpp
 rdirdirgamma_cpp <- function(n, m, alpha_0, beta_0, nu_0, seed = 0L) {
     .Call('_rdirdirgamma_rdirdirgamma_cpp', PACKAGE = 'rdirdirgamma', n, m, alpha_0, beta_0, nu_0, seed)
@@ -43,6 +44,7 @@ rdirdirgamma_cpp <- function(n, m, alpha_0, beta_0, nu_0, seed = 0L) {
 #' The between-source alpha hyperparameter used to generate the source parameters is mandatory.
 #'
 #' @export
+#' @return a matrix with n*m rows
 #' @inheritParams rdirdirgamma_cpp
 rdirdirgamma_beta_cpp <- function(n, m, alpha_0, beta_0, nu_0) {
     .Call('_rdirdirgamma_rdirdirgamma_beta_cpp', PACKAGE = 'rdirdirgamma', n, m, alpha_0, beta_0, nu_0)
@@ -70,12 +72,17 @@ norm_minkowski <- function(v, p = 2) {
 
 #' Perform ABC sampling and distance calculation using the stick breaking procedure.
 #'
-#' Samples from Dirichlet using [rdirdirgamma_beta_cpp()].
+#' Procedure:
 #'
-#' Summary statistics between datasets:
+#' 1. samples from Dirichlet using [rdirdirgamma_beta_cpp()].
+#' 2. computes summary statistics on datasets:
 #'
-#' - mean
-#' - standard deviation
+#' - column-wise mean
+#' - column-wise standard deviation
+#'
+#' 3. the generated dataset is invisibly is truncated to the same amount of rows as the observed dataset.
+#' 4. compute the Minkowski norms of the differences between summary statistics.
+#' 5. repeat `reps` times.
 #'
 #' @param mtx_obs the observed data matrix
 #' @param reps number of ABC samples (default: 1)
@@ -90,9 +97,9 @@ sample_ABC_rdirdirgamma_beta_cpp <- function(n_sample, m_sample, alpha_0, beta_0
 
 #' Compute distances between summary statistics.
 #'
-#' @param mtx_gen the generated data matrix
-#' @param mtx_obs the observed data matrix
-#' @param p_norm the power of the Minkowski distance
+#' @param mtx_gen the generated data matrix; number of rows is free, it must have the same number of columns as `mtx_obs`
+#' @param mtx_obs the observed data matrix; number of rows is free, it must have the same number of columns as `mtx_gen`
+#' @param p_norm the power of the Minkowski distance (default: 2 = Euclidean)
 #' @export
 #' @return a length-2 vector of distances between summary statistics
 compute_distances_gen_obs_cpp <- function(mtx_gen, mtx_obs, p_norm = 2) {

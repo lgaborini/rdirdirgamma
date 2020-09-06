@@ -6,6 +6,8 @@
    - `norm_minkowski`
    - `compute_distances_gen_obs_cpp`
 * Drafting tests for ABC, misc functions.
+* Now ABC generates datasets with the same number of rows as the observed dataset.   
+  Sampling and distance calculation functions are unchanged, however.
 
 * Removed `sample_ABC_rdirdirgamma_cpp`.
 

@@ -30,11 +30,16 @@ sample_ABC_rdirdirgamma_beta_cpp(
 a reps*2 matrix of distances between summary statistics
 }
 \description{
-Samples from Dirichlet using [rdirdirgamma_beta_cpp()].
+Procedure:
 }
 \details{
-Summary statistics between datasets:
+1. samples from Dirichlet using [rdirdirgamma_beta_cpp()].
+2. computes summary statistics on datasets:
 
-- mean
-- standard deviation
+- column-wise mean
+- column-wise standard deviation
+
+3. the generated dataset is invisibly is truncated to the same amount of rows as the observed dataset.
+4. compute the Minkowski norms of the differences between summary statistics.
+5. repeat `reps` times.
 }

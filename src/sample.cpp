@@ -100,6 +100,7 @@ Rcpp::NumericMatrix rdirichlet_beta_cpp(const unsigned int n, Rcpp::NumericVecto
 //' @param beta_0 between-source Gamma hyperparameter, a scalar
 //' @param nu_0 between-source Dirichlet hyperparameter, a numeric vector
 //' @export
+//' @return a matrix with n*m rows
 //' @inheritParams rdirichlet_cpp
 // [[Rcpp::export]]
 RcppGSL::Matrix rdirdirgamma_cpp(
@@ -176,6 +177,7 @@ RcppGSL::Matrix rdirdirgamma_cpp(
 //' The between-source alpha hyperparameter used to generate the source parameters is mandatory.
 //'
 //' @export
+//' @return a matrix with n*m rows
 //' @inheritParams rdirdirgamma_cpp
 // [[Rcpp::export]]
 Rcpp::NumericMatrix rdirdirgamma_beta_cpp(
@@ -398,12 +400,17 @@ RcppGSL::Matrix sample_ABC_rdirdirgamma_cpp(
 
 //' Perform ABC sampling and distance calculation using the stick breaking procedure.
 //'
-//' Samples from Dirichlet using [rdirdirgamma_beta_cpp()].
+//' Procedure:
 //'
-//' Summary statistics between datasets:
+//' 1. samples from Dirichlet using [rdirdirgamma_beta_cpp()].
+//' 2. computes summary statistics on datasets:
 //'
-//' - mean
-//' - standard deviation
+//' - column-wise mean
+//' - column-wise standard deviation
+//'
+//' 3. the generated dataset is invisibly is truncated to the same amount of rows as the observed dataset.
+//' 4. compute the Minkowski norms of the differences between summary statistics.
+//' 5. repeat `reps` times.
 //'
 //' @param mtx_obs the observed data matrix
 //' @param reps number of ABC samples (default: 1)
@@ -422,6 +429,7 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
       const double &p_norm = 2
 ) {
 
+   const unsigned int n_obs = mtx_obs.nrow();
    const unsigned int n = n_sample;
    const unsigned int m = m_sample;
    const unsigned int p = nu_0.size();
@@ -429,7 +437,9 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
    // Allocate distances between summary statistics
    Rcpp::NumericMatrix mtx_norms(reps, 2);
 
-   // Rcout << "Computing summary statistics" << std::endl;
+   if (n*m < n_obs) {
+      Rcpp::stop("cannot generate enough observations (n_obs = %i, n_gen = %i)", n_obs, n*m);
+   }
 
    // Precompute observed summary statistics
    Rcpp::NumericVector mu_obs(p);
@@ -446,18 +456,12 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
 
       if (t % 1000 == 0) Rcpp::checkUserInterrupt();
 
-      // Rcout << "Allocating gen data" << std::endl;
-
-      Rcpp::NumericMatrix mtx_gen(n, p);
-
-      // Rcout << "Generating from Dirichlet..." << std::endl;
+      Rcpp::NumericMatrix mtx_gen(n*m, p);
 
       mtx_gen = rdirdirgamma_beta_cpp(n, m, alpha_0, beta_0, nu_0);
 
-      // Rcout << "Computing generated mean/sd" << std::endl;
-
-      mu_gen = colMeans(mtx_gen);
-      sd_gen = colsd(mtx_gen);
+      mu_gen = colMeans(mtx_gen(Rcpp::Range(0, n_obs - 1), _));
+      sd_gen = colsd(mtx_gen(Rcpp::Range(0, n_obs - 1), _));
 
       // Compute distances between summary statistics
       mtx_norms(t, 0) = norm_minkowski(mu_gen - mu_obs, p_norm);
@@ -474,9 +478,9 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
 
 //' Compute distances between summary statistics.
 //'
-//' @param mtx_gen the generated data matrix
-//' @param mtx_obs the observed data matrix
-//' @param p_norm the power of the Minkowski distance
+//' @param mtx_gen the generated data matrix; number of rows is free, it must have the same number of columns as `mtx_obs`
+//' @param mtx_obs the observed data matrix; number of rows is free, it must have the same number of columns as `mtx_gen`
+//' @param p_norm the power of the Minkowski distance (default: 2 = Euclidean)
 //' @export
 //' @return a length-2 vector of distances between summary statistics
 // [[Rcpp::export]]
@@ -495,8 +499,6 @@ Rcpp::NumericVector compute_distances_gen_obs_cpp(
    // Allocate distances between summary statistics
    Rcpp::NumericVector vec_norms(2);
 
-   // Rcout << "Computing summary statistics" << std::endl;
-
    // Precompute observed summary statistics
    Rcpp::NumericVector mu_obs(p);
    Rcpp::NumericVector sd_obs(p);
@@ -504,21 +506,16 @@ Rcpp::NumericVector compute_distances_gen_obs_cpp(
    mu_obs = Rcpp::colMeans(mtx_obs);
    sd_obs  = colsd(mtx_obs);
 
-   // Rcout << "Computed observed sd" << std::endl;
-
    // Generate observations
    Rcpp::NumericVector mu_gen(p);
    Rcpp::NumericVector sd_gen(p);
 
    mu_gen = colMeans(mtx_gen);
-   sd_gen  = colsd(mtx_gen);
-
-   Rcpp::NumericVector mu_diff(p);
-   Rcpp::NumericVector sd_diff(p);
+   sd_gen = colsd(mtx_gen);
 
    // Compute distances between summary statistics
-   vec_norms(0) = norm_minkowski(mu_gen - mu_obs, p_norm);
-   vec_norms(1) = norm_minkowski(sd_gen - sd_obs, p_norm);
+   vec_norms[0] = norm_minkowski(mu_gen - mu_obs, p_norm);
+   vec_norms[1] = norm_minkowski(sd_gen - sd_obs, p_norm);
 
    return(vec_norms);
 

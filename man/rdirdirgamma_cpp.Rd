@@ -19,6 +19,9 @@ rdirdirgamma_cpp(n, m, alpha_0, beta_0, nu_0, seed = 0L)
 
 \item{seed}{the RNG seed: if 0 (default), generate a time-based seed}
 }
+\value{
+a matrix with n*m rows
+}
 \description{
 Generate samples from m sources and p parameters, n sample per source.
 The between-source alpha hyperparameter used to generate the source parameters is mandatory.

@@ -17,6 +17,9 @@ rdirdirgamma_beta_cpp(n, m, alpha_0, beta_0, nu_0)
 
 \item{nu_0}{between-source Dirichlet hyperparameter, a numeric vector}
 }
+\value{
+a matrix with n*m rows
+}
 \description{
 Generate samples from m sources and p parameters, n sample per source.
 The between-source alpha hyperparameter used to generate the source parameters is mandatory.

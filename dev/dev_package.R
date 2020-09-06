@@ -85,3 +85,29 @@ mtx_ABC
 #    reps = 100,
 #    p_norm = 2
 # )
+
+
+
+# Norms -------------------------------------------------------------------
+
+
+mtx_obs <- rdirdirgamma_beta_cpp(
+   n = n,
+   m = m,
+   alpha_0 = alpha_0,
+   beta_0 = beta_0,
+   nu_0 = nu_0
+)
+
+
+mtx_gen <- rdirdirgamma_beta_cpp(
+   n = n,
+   m = m,
+   alpha_0 = alpha_0,
+   beta_0 = beta_0,
+   nu_0 = nu_0
+)
+
+
+compute_distances_gen_obs_cpp(mtx_gen, mtx_obs, p_norm = 2)
+

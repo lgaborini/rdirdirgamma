@@ -7,11 +7,11 @@
 compute_distances_gen_obs_cpp(mtx_gen, mtx_obs, p_norm = 2)
 }
 \arguments{
-\item{mtx_gen}{the generated data matrix}
+\item{mtx_gen}{the generated data matrix; number of rows is free, it must have the same number of columns as `mtx_obs`}
 
-\item{mtx_obs}{the observed data matrix}
+\item{mtx_obs}{the observed data matrix; number of rows is free, it must have the same number of columns as `mtx_gen`}
 
-\item{p_norm}{the power of the Minkowski distance}
+\item{p_norm}{the power of the Minkowski distance (default: 2 = Euclidean)}
 }
 \value{
 a length-2 vector of distances between summary statistics
