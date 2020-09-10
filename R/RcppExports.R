@@ -66,27 +66,6 @@ rdirdirgamma_beta_cpp <- function(n, m, alpha_0, beta_0, nu_0) {
     .Call('_rdirdirgamma_rdirdirgamma_beta_cpp', PACKAGE = 'rdirdirgamma', n, m, alpha_0, beta_0, nu_0)
 }
 
-#' Compute column-wise sd
-#'
-#' @param mtx a nxp matrix
-#' @return a 1xp vector
-colsd <- function(mtx) {
-    .Call('_rdirdirgamma_colsd', PACKAGE = 'rdirdirgamma', mtx)
-}
-
-#' Compute the Minkowski norm of a vector
-#'
-#' Compute the Minkowski norm of a vector.
-#' $p$ can range from 1 to infinity.
-#'
-#' @param v a vector
-#' @param p exponent of the Minkowski norm (from 1 to Inf)
-#' @return a double
-norm_minkowski <- function(v, p = 2) {
-    .Call('_rdirdirgamma_norm_minkowski', PACKAGE = 'rdirdirgamma', v, p)
-}
-
-#' Perform ABC sampling and distance calculation using the stick breaking procedure.
 #'
 #' Procedure:
 #'
@@ -124,5 +103,25 @@ sample_ABC_rdirdirgamma_beta_cpp <- function(n_sample, m_sample, alpha_0, beta_0
 #' @return a length-2 vector of distances between summary statistics
 compute_distances_gen_obs_cpp <- function(mtx_gen, mtx_obs, p_norm = 2) {
     .Call('_rdirdirgamma_compute_distances_gen_obs_cpp', PACKAGE = 'rdirdirgamma', mtx_gen, mtx_obs, p_norm)
+}
+
+#' Compute column-wise sd
+#'
+#' @param mtx a nxp matrix
+#' @return a 1xp vector
+colsd <- function(mtx) {
+    .Call('_rdirdirgamma_colsd', PACKAGE = 'rdirdirgamma', mtx)
+}
+
+#' Compute the Minkowski norm of a vector
+#'
+#' Compute the Minkowski norm of a vector.
+#' $p$ can range from 1 to infinity.
+#'
+#' @param v a vector
+#' @param p exponent of the Minkowski norm (from 1 to Inf)
+#' @return a double
+norm_minkowski <- function(v, p = 2) {
+    .Call('_rdirdirgamma_norm_minkowski', PACKAGE = 'rdirdirgamma', v, p)
 }
 

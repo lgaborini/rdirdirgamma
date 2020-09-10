@@ -11,6 +11,7 @@
 * Documented RNG seed for R and GSL.
 
 * Removed `sample_ABC_rdirdirgamma_cpp`.
+* Split code to cpp/headers.
 
 
 # rdirdirgamma 0.1.0

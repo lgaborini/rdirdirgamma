@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{sample_ABC_rdirdirgamma_beta_cpp}
 \alias{sample_ABC_rdirdirgamma_beta_cpp}
-\title{Perform ABC sampling and distance calculation using the stick breaking procedure.}
+\title{Procedure:}
 \usage{
 sample_ABC_rdirdirgamma_beta_cpp(
   n_sample,
@@ -30,12 +30,10 @@ sample_ABC_rdirdirgamma_beta_cpp(
 a reps*2 matrix of distances between summary statistics
 }
 \description{
-Procedure:
-}
-\details{
 1. samples from Dirichlet using [rdirdirgamma_beta_cpp()].
 2. computes summary statistics on datasets:
-
+}
+\details{
 - column-wise mean
 - column-wise standard deviation
 
