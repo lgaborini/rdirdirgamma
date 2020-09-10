@@ -10,7 +10,7 @@
 #include <sys/time.h>
 
 #include "rng.h"
-#include "sample.h"
+#include "abc.h"
 #include "utils.h"
 
 // [[Rcpp::depends(RcppGSL)]]

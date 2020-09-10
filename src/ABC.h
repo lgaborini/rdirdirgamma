@@ -1,5 +1,5 @@
-#ifndef __SAMPLE_H
-#define __SAMPLE_H
+#ifndef __ABC_H
+#define __ABC_H
 
 
 #include <Rcpp.h>
