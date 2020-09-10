@@ -4,7 +4,12 @@
 \alias{compute_distances_gen_obs_cpp}
 \title{Compute distances between summary statistics.}
 \usage{
-compute_distances_gen_obs_cpp(mtx_gen, mtx_obs, p_norm = 2)
+compute_distances_gen_obs_cpp(
+  mtx_gen,
+  mtx_obs,
+  p_norm = 2,
+  use_optimized_summary = FALSE
+)
 }
 \arguments{
 \item{mtx_gen}{the generated data matrix; number of rows is free, it must have the same number of columns as `mtx_obs`}

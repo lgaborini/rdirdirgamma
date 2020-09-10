@@ -109,5 +109,15 @@ mtx_gen <- rdirdirgamma_beta_cpp(
 )
 
 
-compute_distances_gen_obs_cpp(mtx_gen, mtx_obs, p_norm = 2)
+compute_distances_gen_obs_cpp(mtx_gen, mtx_obs, p_norm = 2, use_optimized_summary = FALSE)
 
+
+
+# Optimized summary statistics ------------------------------------------------------
+
+
+mtx_obs %>%
+   rdirdirgamma::get_summary_statistics_cpp()
+
+
+2ompute_distances_gen_obs_cpp(mtx_gen, mtx_obs, p_norm = 2, use_optimized_summary = TRUE)

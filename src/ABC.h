@@ -1,18 +1,13 @@
 #ifndef __ABC_H
 #define __ABC_H
 
+#include <RcppArmadillo.h>
+// #include <Rcpp.h>
 
-#include <Rcpp.h>
-
+// [[Rcpp::depends(RcppArmadillo)]]
 // [[Rcpp::depends(RcppGSL)]]
 
 using namespace Rcpp;
-
-// Global RNG
-
-// Allocate random number generator
-// gsl_rng *r_RNG = gsl_rng_alloc(gsl_rng_mt19937);
-
 
 /*
 
@@ -174,10 +169,27 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
 Rcpp::NumericVector compute_distances_gen_obs_cpp(
       const Rcpp::NumericMatrix &mtx_gen,
       const Rcpp::NumericMatrix &mtx_obs,
-      const double &p_norm = 2
+      const double &p_norm = 2,
+      const bool use_optimized_summary = false
 );
 
 
 
+//' Get the number of multivariate summary statistics.
+//'
+//' @param use_optimized_summary
+//' @export
+//' @return an integer
+// [[Rcpp::export]]
+unsigned int get_number_summary_statistics(bool use_optimized_summary);
+
+
+//' Compute optimized summary statistics.
+//'
+//' @param mtx a data matrix (nxp)
+//' @export
+//' @return a kxp matrix of column-wise quantiles
+// [[Rcpp::export]]
+Rcpp::NumericMatrix get_optimized_summary_statistics_cpp(const Rcpp::NumericMatrix &mtx);
 
 #endif

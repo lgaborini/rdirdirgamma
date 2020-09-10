@@ -3,7 +3,7 @@
 
 // #include <Rcpp.h>
 #include <RcppGSL.h>
-
+#include <gsl/gsl_rng.h>
 
 // [[Rcpp::depends(RcppGSL)]]
 

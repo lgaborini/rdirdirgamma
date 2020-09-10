@@ -36,8 +36,26 @@ sample_ABC_rdirdirgamma_beta_cpp <- function(n_sample, m_sample, alpha_0, beta_0
 #' @param p_norm the power of the Minkowski distance (default: 2 = Euclidean)
 #' @export
 #' @return a length-2 vector of distances between summary statistics
-compute_distances_gen_obs_cpp <- function(mtx_gen, mtx_obs, p_norm = 2) {
-    .Call('_rdirdirgamma_compute_distances_gen_obs_cpp', PACKAGE = 'rdirdirgamma', mtx_gen, mtx_obs, p_norm)
+compute_distances_gen_obs_cpp <- function(mtx_gen, mtx_obs, p_norm = 2, use_optimized_summary = FALSE) {
+    .Call('_rdirdirgamma_compute_distances_gen_obs_cpp', PACKAGE = 'rdirdirgamma', mtx_gen, mtx_obs, p_norm, use_optimized_summary)
+}
+
+#' Get the number of multivariate summary statistics.
+#'
+#' @param use_optimized_summary
+#' @export
+#' @return an integer
+get_number_summary_statistics <- function(use_optimized_summary) {
+    .Call('_rdirdirgamma_get_number_summary_statistics', PACKAGE = 'rdirdirgamma', use_optimized_summary)
+}
+
+#' Compute optimized summary statistics.
+#'
+#' @param mtx a data matrix (nxp)
+#' @export
+#' @return a kxp matrix of column-wise quantiles
+get_optimized_summary_statistics_cpp <- function(mtx) {
+    .Call('_rdirdirgamma_get_optimized_summary_statistics_cpp', PACKAGE = 'rdirdirgamma', mtx)
 }
 
 #' Generate one sample from a Dirichlet distribution.
