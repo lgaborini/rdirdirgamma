@@ -8,8 +8,8 @@
 using namespace Rcpp;
 
 // sample_ABC_rdirdirgamma_beta_cpp
-Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(const unsigned int& n_sample, const unsigned int& m_sample, const double& alpha_0, const double& beta_0, const Rcpp::NumericVector& nu_0, const Rcpp::NumericMatrix& mtx_obs, const unsigned int& reps, const double& p_norm);
-RcppExport SEXP _rdirdirgamma_sample_ABC_rdirdirgamma_beta_cpp(SEXP n_sampleSEXP, SEXP m_sampleSEXP, SEXP alpha_0SEXP, SEXP beta_0SEXP, SEXP nu_0SEXP, SEXP mtx_obsSEXP, SEXP repsSEXP, SEXP p_normSEXP) {
+Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(const unsigned int& n_sample, const unsigned int& m_sample, const double& alpha_0, const double& beta_0, const Rcpp::NumericVector& nu_0, const Rcpp::NumericMatrix& mtx_obs, const unsigned int& reps, const double& p_norm, const bool use_optimized_summary);
+RcppExport SEXP _rdirdirgamma_sample_ABC_rdirdirgamma_beta_cpp(SEXP n_sampleSEXP, SEXP m_sampleSEXP, SEXP alpha_0SEXP, SEXP beta_0SEXP, SEXP nu_0SEXP, SEXP mtx_obsSEXP, SEXP repsSEXP, SEXP p_normSEXP, SEXP use_optimized_summarySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -128,6 +128,28 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// colkurtosis
+arma::rowvec colkurtosis(const arma::mat& mtx);
+RcppExport SEXP _rdirdirgamma_colkurtosis(SEXP mtxSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type mtx(mtxSEXP);
+    rcpp_result_gen = Rcpp::wrap(colkurtosis(mtx));
+    return rcpp_result_gen;
+END_RCPP
+}
+// colskewness
+arma::rowvec colskewness(const arma::mat& mtx);
+RcppExport SEXP _rdirdirgamma_colskewness(SEXP mtxSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type mtx(mtxSEXP);
+    rcpp_result_gen = Rcpp::wrap(colskewness(mtx));
+    return rcpp_result_gen;
+END_RCPP
+}
 // norm_minkowski
 double norm_minkowski(const Rcpp::NumericVector& v, const double p);
 RcppExport SEXP _rdirdirgamma_norm_minkowski(SEXP vSEXP, SEXP pSEXP) {
@@ -151,6 +173,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rdirdirgamma_rdirdirgamma_cpp", (DL_FUNC) &_rdirdirgamma_rdirdirgamma_cpp, 6},
     {"_rdirdirgamma_rdirdirgamma_beta_cpp", (DL_FUNC) &_rdirdirgamma_rdirdirgamma_beta_cpp, 5},
     {"_rdirdirgamma_colsd", (DL_FUNC) &_rdirdirgamma_colsd, 1},
+    {"_rdirdirgamma_colkurtosis", (DL_FUNC) &_rdirdirgamma_colkurtosis, 1},
+    {"_rdirdirgamma_colskewness", (DL_FUNC) &_rdirdirgamma_colskewness, 1},
     {"_rdirdirgamma_norm_minkowski", (DL_FUNC) &_rdirdirgamma_norm_minkowski, 2},
     {NULL, NULL, 0}
 };

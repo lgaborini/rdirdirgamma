@@ -168,6 +168,7 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
 //' @param mtx_gen the generated data matrix; number of rows is free, it must have the same number of columns as `mtx_obs`
 //' @param mtx_obs the observed data matrix; number of rows is free, it must have the same number of columns as `mtx_gen`
 //' @param p_norm the power of the Minkowski distance (default: 2 = Euclidean)
+//' @param use_optimized_summary if TRUE, use quantile matrix, else compute mean and sd vectors
 //' @export
 //' @return a length-2 vector of distances between summary statistics
 // [[Rcpp::export]]

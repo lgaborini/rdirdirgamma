@@ -290,16 +290,28 @@ Rcpp::NumericMatrix get_optimized_summary_statistics_cpp(const Rcpp::NumericMatr
 
    arma::mat mtx_arma = Rcpp::as<arma::mat>(mtx);
 
-   arma::vec P = { 0.1, 0.25, 0.50, 0.75, 0.9 };
-   arma::mat S = arma::quantile(mtx_arma, P, 0);
-   return(Rcpp::wrap(S));
+   // Quantiles
+   // arma::vec P = { 0.1, 0.25, 0.50, 0.75, 0.9 };
+   // arma::mat S = arma::quantile(mtx_arma, P, 0);
+
+   // mean, sd, skewness, kurtosis
+
+   return(Rcpp::wrap(arma::join_vert(
+         arma::mean(mtx_arma, 0),
+         arma::stddev(mtx_arma, 0, 0),   // (n-1 denominator)
+         colkurtosis(mtx_arma),
+         colskewness(mtx_arma)
+   )));
+
+
+   // return(Rcpp::wrap(S));
 
 }
 
 
 unsigned int get_number_summary_statistics(bool use_optimized_summary) {
    if (use_optimized_summary) {
-      return(5);
+      return(4);
    } else {
       return(2);
    }

@@ -1,8 +1,11 @@
 # rdirdirgamma 0.1.999 (unreleased)
 
 * Adding more C++ functions to compute distances between two datasets.
+* Gains RcppArmadillo dependency.
 * Adding functions:
    - `colsd`
+   - `colskewness`
+   - `colkurtosis`
    - `norm_minkowski`
    - `compute_distances_gen_obs_cpp`
 * Drafting tests for ABC, misc functions.

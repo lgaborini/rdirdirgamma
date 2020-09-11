@@ -136,6 +136,22 @@ colsd <- function(mtx) {
     .Call('_rdirdirgamma_colsd', PACKAGE = 'rdirdirgamma', mtx)
 }
 
+#' Compute column-wise kurtosis
+#'
+#' @param mtx a nxp matrix
+#' @return a 1xp vector
+colkurtosis <- function(mtx) {
+    .Call('_rdirdirgamma_colkurtosis', PACKAGE = 'rdirdirgamma', mtx)
+}
+
+#' Compute column-wise skewness
+#'
+#' @param mtx a nxp matrix
+#' @return a 1xp vector
+colskewness <- function(mtx) {
+    .Call('_rdirdirgamma_colskewness', PACKAGE = 'rdirdirgamma', mtx)
+}
+
 #' Compute the Minkowski norm of a vector
 #'
 #' Compute the Minkowski norm of a vector.

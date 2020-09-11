@@ -14,6 +14,19 @@ using namespace Rcpp;
 // [[Rcpp::export]]
 Rcpp::NumericVector colsd(const Rcpp::NumericMatrix &mtx);
 
+//' Compute column-wise kurtosis
+//'
+//' @param mtx a nxp matrix
+//' @return a 1xp vector
+// [[Rcpp::export]]
+arma::rowvec colkurtosis(const arma::mat &mtx);
+
+//' Compute column-wise skewness
+//'
+//' @param mtx a nxp matrix
+//' @return a 1xp vector
+// [[Rcpp::export]]
+arma::rowvec colskewness(const arma::mat &mtx);
 
 //' Compute the Minkowski norm of a vector
 //'

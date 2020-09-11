@@ -1,4 +1,6 @@
 
+# Colwise functions -------------------------------------------------------
+
 
 test_that("column-wise sd", {
 
@@ -9,6 +11,26 @@ test_that("column-wise sd", {
    mtx_sd_target_cpp <- expect_silent(colsd(mtx))
 
    expect_equal(mtx_sd_target, mtx_sd_target_cpp)
+})
+
+test_that("column-wise kurtosis", {
+
+   mtx <- matrix(rnorm(12), nrow = 4, ncol = 3)
+
+   mtx_k_target <- matrix(moments::kurtosis(mtx), nrow = 1)
+   mtx_k_target_cpp <- expect_silent(colkurtosis(mtx))
+
+   expect_equal(mtx_k_target, mtx_k_target_cpp)
+})
+
+test_that("column-wise skewness", {
+
+   mtx <- matrix(rnorm(12), nrow = 4, ncol = 3)
+
+   mtx_s_target <- matrix(moments::skewness(mtx), nrow = 1)
+   mtx_s_target_cpp <- expect_silent(colskewness(mtx))
+
+   expect_equal(mtx_s_target, mtx_s_target_cpp)
 })
 
 
