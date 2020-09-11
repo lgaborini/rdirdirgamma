@@ -88,7 +88,7 @@ mtx_ABC
 
 
 
-# Norms -------------------------------------------------------------------
+# Summary statistics and norms -------------------------------------------------------------------
 
 
 mtx_obs <- rdirdirgamma_beta_cpp(
@@ -109,6 +109,11 @@ mtx_gen <- rdirdirgamma_beta_cpp(
 )
 
 
+
+mtx_obs %>%
+   rdirdirgamma::get_optimized_summary_statistics_cpp()
+
+
 compute_distances_gen_obs_cpp(mtx_gen, mtx_obs, p_norm = 2, use_optimized_summary = FALSE)
 
 
@@ -117,7 +122,8 @@ compute_distances_gen_obs_cpp(mtx_gen, mtx_obs, p_norm = 2, use_optimized_summar
 
 
 mtx_obs %>%
-   rdirdirgamma::get_summary_statistics_cpp()
+   rdirdirgamma::get_optimized_summary_statistics_cpp()
 
 
-2ompute_distances_gen_obs_cpp(mtx_gen, mtx_obs, p_norm = 2, use_optimized_summary = TRUE)
+compute_distances_gen_obs_cpp(mtx_gen, mtx_obs, p_norm = 1, use_optimized_summary = FALSE)
+compute_distances_gen_obs_cpp(mtx_gen, mtx_obs, p_norm = 1, use_optimized_summary = TRUE)

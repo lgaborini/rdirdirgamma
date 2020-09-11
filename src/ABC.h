@@ -120,6 +120,7 @@ using namespace Rcpp;
 
  */
 
+//' Perform ABC sampling and distance calculation using the stick breaking procedure.
 //'
 //' Procedure:
 //'
@@ -128,6 +129,8 @@ using namespace Rcpp;
 //'
 //' - column-wise mean
 //' - column-wise standard deviation
+//'
+//' or a set of column-wise quantiles
 //'
 //' 3. the generated dataset is invisibly is truncated to the same amount of rows as the observed dataset.
 //' 4. compute the Minkowski norms of the differences between summary statistics.
@@ -142,6 +145,7 @@ using namespace Rcpp;
 //' @param n_sample number of samples per source
 //' @param m_sample number of sources
 //' @param p_norm exponent of the L^p norm (can be `Inf`) (default: `2`)
+//' @param use_optimized_summary if TRUE, use quantile matrix, else compute mean and sd vectors  (default: FALSE)
 //' @export
 //' @return a reps*2 matrix of distances between summary statistics
 // [[Rcpp::export]]
@@ -151,7 +155,8 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
       const Rcpp::NumericVector &nu_0,
       const Rcpp::NumericMatrix &mtx_obs,
       const unsigned int &reps,
-      const double &p_norm = 2
+      const double &p_norm = 2,
+      const bool use_optimized_summary = false
 );
 
 

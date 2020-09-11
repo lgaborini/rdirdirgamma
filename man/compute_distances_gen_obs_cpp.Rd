@@ -17,6 +17,8 @@ compute_distances_gen_obs_cpp(
 \item{mtx_obs}{the observed data matrix; number of rows is free, it must have the same number of columns as `mtx_gen`}
 
 \item{p_norm}{the power of the Minkowski distance (default: 2 = Euclidean)}
+
+\item{use_optimized_summary}{if TRUE, use quantile matrix, else compute mean and sd vectors}
 }
 \value{
 a length-2 vector of distances between summary statistics

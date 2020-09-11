@@ -1,7 +1,8 @@
 #ifndef __UTILS_H
 #define __UTILS_H
 
-#include <Rcpp.h>
+// #include <Rcpp.h>
+#include <RcppArmadillo.h>
 
 using namespace Rcpp;
 

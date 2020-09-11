@@ -131,7 +131,8 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
       const Rcpp::NumericVector &nu_0,
       const Rcpp::NumericMatrix &mtx_obs,
       const unsigned int &reps,
-      const double &p_norm
+      const double &p_norm,
+      const bool use_optimized_summary
 ) {
 
    const unsigned int n_obs = mtx_obs.nrow();
@@ -149,34 +150,69 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
    }
 
    // Allocate distances between summary statistics
-   Rcpp::NumericMatrix mtx_norms(reps, 2);
+   const unsigned int n_summary = get_number_summary_statistics(use_optimized_summary);
+   Rcpp::NumericMatrix mtx_norms(reps, n_summary);
 
-   // Precompute observed summary statistics
-   Rcpp::NumericVector mu_obs(p);
-   Rcpp::NumericVector sd_obs(p);
+   if (use_optimized_summary) {
 
-   mu_obs = Rcpp::colMeans(mtx_obs);
-   sd_obs  = colsd(mtx_obs);
+      // Quantile matrix
+      Rcpp::NumericMatrix summary_obs(n_summary, p);
+      Rcpp::NumericMatrix summary_gen(n_summary, p);
 
-   // Generate observations
-   Rcpp::NumericVector mu_gen(p);
-   Rcpp::NumericVector sd_gen(p);
+      summary_obs = get_optimized_summary_statistics_cpp(mtx_obs);
 
-   for (unsigned int t = 0; t < reps; ++t) {
+      for (unsigned int t = 0; t < reps; ++t) {
 
-      if (t % 1000 == 0) Rcpp::checkUserInterrupt();
+         if (t % 1000 == 0) Rcpp::checkUserInterrupt();
 
-      Rcpp::NumericMatrix mtx_gen(n*m, p);
+         Rcpp::NumericMatrix mtx_gen(n*m, p);
 
-      mtx_gen = rdirdirgamma_beta_cpp(n, m, alpha_0, beta_0, nu_0);
+         mtx_gen = rdirdirgamma_beta_cpp(n, m, alpha_0, beta_0, nu_0);
 
-      mu_gen = colMeans(mtx_gen(Rcpp::Range(0, n_obs - 1), _));
-      sd_gen = colsd(mtx_gen(Rcpp::Range(0, n_obs - 1), _));
+         summary_gen = get_optimized_summary_statistics_cpp(mtx_gen(Rcpp::Range(0, n_obs - 1), _));
 
-      // Compute distances between summary statistics
-      mtx_norms(t, 0) = norm_minkowski(mu_gen - mu_obs, p_norm);
-      mtx_norms(t, 1) = norm_minkowski(sd_gen - sd_obs, p_norm);
+         // Compute distances between summary statistics
+         for (unsigned int i_summary = 0; i_summary < n_summary; i_summary++) {
+
+            // Compute distances between summary statistics
+            mtx_norms(t, i_summary) = norm_minkowski(summary_obs(i_summary,_) - summary_gen(i_summary,_), p_norm);
+         }
+      }
+
+
+   } else {
+
+      // Classic statistics: mean, sd
+
+      // Precompute observed summary statistics
+      Rcpp::NumericVector mu_obs(p);
+      Rcpp::NumericVector sd_obs(p);
+
+      mu_obs = Rcpp::colMeans(mtx_obs);
+      sd_obs = colsd(mtx_obs);
+
+      // Generate observations
+      Rcpp::NumericVector mu_gen(p);
+      Rcpp::NumericVector sd_gen(p);
+
+      for (unsigned int t = 0; t < reps; ++t) {
+
+         if (t % 1000 == 0) Rcpp::checkUserInterrupt();
+
+         Rcpp::NumericMatrix mtx_gen(n*m, p);
+
+         mtx_gen = rdirdirgamma_beta_cpp(n, m, alpha_0, beta_0, nu_0);
+
+         mu_gen = colMeans(mtx_gen(Rcpp::Range(0, n_obs - 1), _));
+         sd_gen = colsd(mtx_gen(Rcpp::Range(0, n_obs - 1), _));
+
+         // Compute distances between summary statistics
+         mtx_norms(t, 0) = norm_minkowski(mu_gen - mu_obs, p_norm);
+         mtx_norms(t, 1) = norm_minkowski(sd_gen - sd_obs, p_norm);
+      }
+
    }
+
 
    return(mtx_norms);
 

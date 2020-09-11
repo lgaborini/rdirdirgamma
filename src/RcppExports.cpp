@@ -21,7 +21,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type mtx_obs(mtx_obsSEXP);
     Rcpp::traits::input_parameter< const unsigned int& >::type reps(repsSEXP);
     Rcpp::traits::input_parameter< const double& >::type p_norm(p_normSEXP);
-    rcpp_result_gen = Rcpp::wrap(sample_ABC_rdirdirgamma_beta_cpp(n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, reps, p_norm));
+    Rcpp::traits::input_parameter< const bool >::type use_optimized_summary(use_optimized_summarySEXP);
+    rcpp_result_gen = Rcpp::wrap(sample_ABC_rdirdirgamma_beta_cpp(n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, reps, p_norm, use_optimized_summary));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -141,7 +142,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_rdirdirgamma_sample_ABC_rdirdirgamma_beta_cpp", (DL_FUNC) &_rdirdirgamma_sample_ABC_rdirdirgamma_beta_cpp, 8},
+    {"_rdirdirgamma_sample_ABC_rdirdirgamma_beta_cpp", (DL_FUNC) &_rdirdirgamma_sample_ABC_rdirdirgamma_beta_cpp, 9},
     {"_rdirdirgamma_compute_distances_gen_obs_cpp", (DL_FUNC) &_rdirdirgamma_compute_distances_gen_obs_cpp, 4},
     {"_rdirdirgamma_get_number_summary_statistics", (DL_FUNC) &_rdirdirgamma_get_number_summary_statistics, 1},
     {"_rdirdirgamma_get_optimized_summary_statistics_cpp", (DL_FUNC) &_rdirdirgamma_get_optimized_summary_statistics_cpp, 1},

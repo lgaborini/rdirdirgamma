@@ -1,9 +1,11 @@
-#include <Rcpp.h>
-
+#include "utils.h"
 using namespace Rcpp;
 
+// [[Rcpp::depends(RcppArmadillo)]]
 
-//' Compute column-wise sd
+
+
+// Compute column-wise sd
 Rcpp::NumericVector colsd(const Rcpp::NumericMatrix &mtx) {
    const unsigned int p = mtx.ncol();
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{sample_ABC_rdirdirgamma_beta_cpp}
 \alias{sample_ABC_rdirdirgamma_beta_cpp}
-\title{Procedure:}
+\title{Perform ABC sampling and distance calculation using the stick breaking procedure.}
 \usage{
 sample_ABC_rdirdirgamma_beta_cpp(
   n_sample,
@@ -12,7 +12,8 @@ sample_ABC_rdirdirgamma_beta_cpp(
   nu_0,
   mtx_obs,
   reps,
-  p_norm = 2
+  p_norm = 2,
+  use_optimized_summary = FALSE
 )
 }
 \arguments{
@@ -25,17 +26,23 @@ sample_ABC_rdirdirgamma_beta_cpp(
 \item{reps}{number of ABC samples (default: 1)}
 
 \item{p_norm}{exponent of the L^p norm (can be `Inf`) (default: `2`)}
+
+\item{use_optimized_summary}{if TRUE, use quantile matrix, else compute mean and sd vectors  (default: FALSE)}
 }
 \value{
 a reps*2 matrix of distances between summary statistics
 }
 \description{
-1. samples from Dirichlet using [rdirdirgamma_beta_cpp()].
-2. computes summary statistics on datasets:
+Procedure:
 }
 \details{
+1. samples from Dirichlet using [rdirdirgamma_beta_cpp()].
+2. computes summary statistics on datasets:
+
 - column-wise mean
 - column-wise standard deviation
+
+or a set of column-wise quantiles
 
 3. the generated dataset is invisibly is truncated to the same amount of rows as the observed dataset.
 4. compute the Minkowski norms of the differences between summary statistics.
