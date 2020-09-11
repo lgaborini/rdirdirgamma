@@ -49,22 +49,22 @@ arma::rowvec colkurtosis(const arma::mat &mtx) {
 }
 
 
-// Source: https://github.com/RfastOfficial/Rfast/tree/master/R
+// Source: https://github.com/gmgeorg/LambertW/blob/master/src/skewness.cpp
 arma::rowvec colskewness(const arma::mat &mtx) {
-   const unsigned int n = mtx.n_rows;
 
    arma::rowvec vec_means = arma::mean(mtx, 0);
    arma::mat M = mtx;
    M.each_row() -= vec_means;
 
-   arma::rowvec up = arma::sum(arma::pow(M, 3), 0);
-   arma::rowvec down = arma::pow(
-      arma::sum(arma::pow(M, 2), 0) / (n - 1),
-      1.5
-   );
+   arma::mat M_3 = M;
+   arma::mat M_2 = M;
+   M_3 = arma::pow(M, 3);
+   M_2 = arma::pow(M, 2);
 
-   arma::rowvec vec_s = n * up / ((n - 1) * (n - 2) * down);
+   arma::rowvec up = arma::mean(M_3, 0);
+   arma::rowvec down = arma::pow(arma::mean(M_2, 0), 1.5);
+
+   arma::rowvec vec_s = up / down;
    return(vec_s);
-
 }
 
