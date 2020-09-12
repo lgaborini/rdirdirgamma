@@ -308,30 +308,24 @@ Rcpp::NumericMatrix get_optimized_summary_statistics_cpp(const Rcpp::NumericMatr
 
 }
 
-Rcpp::NumericMatrix get_summary_statistics_cpp(const Rcpp::NumericMatrix &mtx, const bool use_optimized_summary) {
-   if (use_optimized_summary) {
-      return(get_optimized_summary_statistics_cpp(mtx));
-   } else {
-      return(get_standard_summary_statistics_cpp(mtx));
-   }
-}
-
 Rcpp::NumericMatrix get_standard_summary_statistics_cpp(const Rcpp::NumericMatrix &mtx) {
+
+   const unsigned int p = mtx.ncol();
 
    Rcpp::NumericMatrix mtx_summary(2, p);
 
-   // Precompute observed summary statistics
-   Rcpp::NumericVector mu_obs(p);
-   Rcpp::NumericVector sd_obs(p);
-
-   mu_obs = Rcpp::colMeans(mtx_obs);
-   sd_obs = colsd(mtx_obs);
-
-   mtx_summary(1, _) = mu_obs;
-   mtx_summary(2, _) = sd_obs;
+   mtx_summary(1, _) = Rcpp::colMeans(mtx);
+   mtx_summary(2, _) = colsd(mtx);
 
    return(mtx_summary);
 
+}
+
+Rcpp::NumericMatrix get_summary_statistics_cpp(const Rcpp::NumericMatrix &mtx, const bool use_optimized_summary) {
+   if (use_optimized_summary) {
+      return(get_optimized_summary_statistics_cpp(mtx));
+   }
+   return(get_standard_summary_statistics_cpp(mtx));
 }
 
 
@@ -342,4 +336,89 @@ unsigned int get_number_summary_statistics(bool use_optimized_summary) {
       return(2);
    }
 }
+
+
+
+
+// Perform ABC sampling using the stick breaking procedure, returning acceptable samples.
+arma::cube generate_acceptable_data_cpp(
+      const unsigned int &n_sample,
+      const unsigned int &m_sample,
+      const double &alpha_0,
+      const double &beta_0,
+      const Rcpp::NumericVector &nu_0,
+      const Rcpp::NumericMatrix &mtx_obs,
+      const Rcpp::NumericVector &summarize_eps,
+      const unsigned int n_gen,
+      const unsigned int max_iter,
+      const double &p_norm,
+      const bool use_optimized_summary
+) {
+
+   const unsigned int n_obs = mtx_obs.nrow();
+   const unsigned int n = n_sample;
+   const unsigned int m = m_sample;
+   const unsigned int p = nu_0.size();
+   const unsigned int p_obs = mtx_obs.ncol();
+
+   if (n*m < n_obs) {
+      Rcpp::stop("cannot generate enough observations (needed n_obs = %i, have n_gen = %i)", n_obs, n*m);
+   }
+
+   if (p != p_obs) {
+      Rcpp::stop("Error: different number of columns (nu_0: %i, observed: %i)", p, p_obs);
+   }
+
+   if (summarize_eps.size() != p_obs) {
+      Rcpp::stop("Error: summarize_eps must match number of columns (eps: %i, observed: %i)", summarize_eps.size(), p_obs);
+   }
+
+   // Allocate results
+   arma::cube mtx_samples(n_gen, n_obs, p);
+
+   // Allocate distances between summary statistics
+   const unsigned int n_summary = get_number_summary_statistics(use_optimized_summary);
+   Rcpp::NumericVector vec_distances(n_summary);
+
+   // Quantile matrix
+   Rcpp::NumericMatrix summary_obs(n_summary, p);
+   Rcpp::NumericMatrix summary_gen(n_summary, p);
+
+   summary_obs = get_summary_statistics_cpp(mtx_obs, use_optimized_summary);
+
+   for (unsigned int i_sample = 0; i_sample < n_gen; ++i_sample) {
+
+      bool success = false;
+
+      for (unsigned int t = 0; t < max_iter; ++t) {
+
+         if (t % 1000 == 0) Rcpp::checkUserInterrupt();
+
+         Rcpp::NumericMatrix mtx_gen(n*m, p);
+
+         mtx_gen = rdirdirgamma_beta_cpp(n, m, alpha_0, beta_0, nu_0);
+
+         summary_gen = get_summary_statistics_cpp(mtx_gen(Rcpp::Range(0, n_obs - 1), _), use_optimized_summary);
+
+         // Allocate distances between summary statistics
+         vec_distances = compute_distances_gen_obs_cpp(mtx_gen, mtx_obs, p_norm, use_optimized_summary);
+
+         if (is_true(all(vec_distances < summarize_eps))) {
+            success = true;
+            mtx_samples.slice(i_sample) = mtx_gen(Rcpp::Range(0, n_obs - 1), _);
+            break;
+         }
+      }
+
+      if (success) {
+         continue;
+      } else {
+         Rcpp::stop("Maximum number of iterations exceeded (%d).", max_iter);
+      }
+   }
+   return(mtx_samples);
+
+}
+
+
 

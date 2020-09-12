@@ -126,4 +126,4 @@ mtx_obs %>%
 
 
 compute_distances_gen_obs_cpp(mtx_gen, mtx_obs, p_norm = 1, use_optimized_summary = FALSE)
-compute_distances_gen_obs_cpp(mtx_gen, mtx_obs, p_norm = 1, use_optimized_summary = TRUE)
+compute_distances_gen_obs_cpp(mtx_gen, mtx_obs, p_norm = Inf, use_optimized_summary = TRUE)

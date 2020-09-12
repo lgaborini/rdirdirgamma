@@ -9,117 +9,6 @@
 
 using namespace Rcpp;
 
-/*
-
- //' Perform ABC sampling and distance calculation.
- //'
- //' Samples from Dirichlet using [rdirdirgamma_cpp()].
- //'
- //' Summary statistics between datasets:
- //'
- //' - mean
- //' - standard deviation
- //'
- //' ## RNG
- //'
- //' this function uses GSL's RNG seed, unaffected by R's RNG.
- //'
- //' @param mtx_obs the observed data matrix
- //' @param reps repetitions to average distances (default: 1)
- //' @param n_sample number of samples per source
- //' @param m_sample number of sources
- //' @param p_norm exponent of the L^p norm (can be `Inf`) (default: 2)
- //' @return a reps*2 matrix of distances between summary statistics
- //' @export
- //' @inheritParams rdirdirgamma_cpp
- // [[Rcpp::export]]
- RcppGSL::Matrix sample_ABC_rdirdirgamma_cpp(
- const unsigned int &n_sample, const unsigned int &m_sample,
- const double &alpha_0, const double &beta_0,
- const Rcpp::NumericVector &nu_0,
- const Rcpp::NumericMatrix &mtx_obs,
- const unsigned int &reps,
- const double &p_norm = 2,
- const unsigned int seed = 0
- ) {
- // too lazy
- const unsigned int n = n_sample;
- const unsigned int m = m_sample;
-
- const unsigned int p = nu_0.size();
- const unsigned int n_obs = mtx_obs.nrow();
-
- // Allocate distances between summary statistics
- Rcpp::NumericMatrix mtx_norms(reps, 2);
-
- // Precompute observed summary statistics
- Rcpp::NumericVector mu_obs(p);
- Rcpp::NumericVector sd_obs(p);
-
- mu_obs = Rcpp::colMeans(mtx_obs);
-
- for (unsigned int k = 0; k < p; ++k) {
- // gsl_vector_view col = gsl_matrix_const_column(mtx_obs, k);
- // sd_obs[k] = gsl_stats_mean((&col.vector)->data, 1, n_obs);
- sd_obs[k] = Rcpp::sd(mtx_obs(_, k));
- }
-
- Rcout << "Computed observed sd" << std::endl;
-
- // Generate observations
- Rcpp::NumericVector mu_gen(p);
- Rcpp::NumericVector sd_gen(p);
-
- Rcpp::NumericVector mu_diff(p);
- Rcpp::NumericVector sd_diff(p);
-
- Rcout << "Starting generating data" << std::endl;
-
- for (unsigned int t = 0; t < reps; ++t) {
-
- if(t % 1000 == 0) Rcpp::checkUserInterrupt();
-
- Rcout << "Allocating gen data" << std::endl;
-
- RcppGSL::Matrix mtx_gen(n, p);
- // Rcpp::NumericMatrix mtx_gen(n, p);
-
- Rcout << "Generating from Dirichlet..." << std::endl;
-
- mtx_gen = rdirdirgamma_cpp(n, m, alpha_0, beta_0, nu_0);
-
- return(mtx_gen);
-
- Rcout << "Computed generated mean/sd" << std::endl;
-
- for (unsigned int k = 0; k < p; ++k) {
- // mu_gen[k] = Rcpp::colMeans(mtx_gen);
-
- gsl_vector_const_view col = gsl_matrix_const_column(mtx_gen, k);
- mu_gen[k] = gsl_stats_mean((&col.vector)->data, 1, n_obs);
- sd_gen[k] = gsl_stats_sd((&col.vector)->data, 1, n_obs);
- }
-
- Rcout << "Computed generated mean/sd differences" << std::endl;
-
- mu_diff = abs(mu_gen - mu_obs);
- sd_diff = abs(sd_gen - sd_obs);
-
- mtx_norms(t, 0) = norm_minkowski(mu_diff, p_norm);
- mtx_norms(t, 1) = norm_minkowski(sd_diff, p_norm);
-
- }
-
- // return(mtx_norms);
-
- // avoid complaining
- RcppGSL::Matrix mtx_gen(n, p);
- return(mtx_gen);
-
- }
-
- */
-
 //' Perform ABC sampling and distance calculation using the stick breaking procedure.
 //'
 //' Procedure:
@@ -160,7 +49,37 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
 );
 
 
-
+//' Generate data that is accepted by ABC.
+//'
+//' Generate data that is accepted by ABC.
+//'
+//' @param mtx_obs observed data
+//' @param n_sample hyperparameters that are used to generate data
+//' @param m_sample hyperparameters that are used to generate data
+//' @param alpha_0 hyperparameters that are used to generate data
+//' @param beta_0 hyperparameters that are used to generate data
+//' @param nu_0 hyperparameters that are used to generate data
+//' @param summarize_eps ABC threshold(s)
+//' @param n_gen how many datasets are generated
+//' @param max_iter how many iterations are tried
+//' @param p_norm
+//' @return a (n x n_obs x p) cube of generated data
+//' @export
+//' @inheritParams get_number_summary_statistics
+// [[Rcpp::export]]
+arma::cube generate_acceptable_data_cpp(
+      const unsigned int &n_sample,
+      const unsigned int &m_sample,
+      const double &alpha_0,
+      const double &beta_0,
+      const Rcpp::NumericVector &nu_0,
+      const Rcpp::NumericMatrix &mtx_obs,
+      const Rcpp::NumericVector &summarize_eps,
+      const unsigned int n_gen,
+      const unsigned int max_iter,
+      const double &p_norm,
+      const bool use_optimized_summary
+);
 
 
 //' Compute distances between summary statistics.
@@ -206,7 +125,7 @@ Rcpp::NumericMatrix get_optimized_summary_statistics_cpp(const Rcpp::NumericMatr
 //' @inheritParams get_summary_statistics_cpp
 //' @inheritParams get_number_summary_statistics
 // [[Rcpp::export]]
-Rcpp::NumericMatrix get_optimized_summary_statistics_cpp(const Rcpp::NumericMatrix &mtx);
+Rcpp::NumericMatrix get_standard_summary_statistics_cpp(const Rcpp::NumericMatrix &mtx);
 
 //' Compute summary statistics.
 //'

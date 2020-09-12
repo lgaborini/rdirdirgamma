@@ -26,11 +26,32 @@
 #' @param n_sample number of samples per source
 #' @param m_sample number of sources
 #' @param p_norm exponent of the L^p norm (can be `Inf`) (default: `2`)
-#' @param use_optimized_summary if TRUE, use quantile matrix, else compute mean and sd vectors  (default: FALSE)
 #' @export
 #' @return a reps*2 matrix of distances between summary statistics
+#' @inheritParams get_number_summary_statistics
 sample_ABC_rdirdirgamma_beta_cpp <- function(n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, reps, p_norm = 2, use_optimized_summary = FALSE) {
     .Call('_rdirdirgamma_sample_ABC_rdirdirgamma_beta_cpp', PACKAGE = 'rdirdirgamma', n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, reps, p_norm, use_optimized_summary)
+}
+
+#' Generate data that is accepted by ABC.
+#'
+#' Generate data that is accepted by ABC.
+#'
+#' @param mtx_obs observed data
+#' @param n_sample hyperparameters that are used to generate data
+#' @param m_sample hyperparameters that are used to generate data
+#' @param alpha_0 hyperparameters that are used to generate data
+#' @param beta_0 hyperparameters that are used to generate data
+#' @param nu_0 hyperparameters that are used to generate data
+#' @param summarize_eps ABC threshold(s)
+#' @param n_gen how many datasets are generated
+#' @param max_iter how many iterations are tried
+#' @param p_norm
+#' @return a (n x n_obs x p) cube of generated data
+#' @export
+#' @inheritParams get_number_summary_statistics
+generate_acceptable_data_cpp <- function(n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, summarize_eps, n_gen, max_iter, p_norm, use_optimized_summary) {
+    .Call('_rdirdirgamma_generate_acceptable_data_cpp', PACKAGE = 'rdirdirgamma', n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, summarize_eps, n_gen, max_iter, p_norm, use_optimized_summary)
 }
 
 #' Compute distances between summary statistics.
@@ -47,7 +68,7 @@ compute_distances_gen_obs_cpp <- function(mtx_gen, mtx_obs, p_norm = 2, use_opti
 
 #' Get the number of multivariate summary statistics.
 #'
-#' @param use_optimized_summary
+#' @param use_optimized_summary if TRUE, return the optimized summary statistics, else standard (mean, sd)
 #' @export
 #' @return an integer
 get_number_summary_statistics <- function(use_optimized_summary) {
@@ -56,11 +77,32 @@ get_number_summary_statistics <- function(use_optimized_summary) {
 
 #' Compute optimized summary statistics.
 #'
-#' @param mtx a data matrix (nxp)
 #' @export
-#' @return a kxp matrix of column-wise quantiles
+#' @return a kxp matrix of summary statistics
+#' @inheritParams get_summary_statistics_cpp
+#' @inheritParams get_number_summary_statistics
 get_optimized_summary_statistics_cpp <- function(mtx) {
     .Call('_rdirdirgamma_get_optimized_summary_statistics_cpp', PACKAGE = 'rdirdirgamma', mtx)
+}
+
+#' Compute standard summary statistics.
+#'
+#' @export
+#' @return a kxp matrix of summary statistics
+#' @inheritParams get_summary_statistics_cpp
+#' @inheritParams get_number_summary_statistics
+get_standard_summary_statistics_cpp <- function(mtx) {
+    .Call('_rdirdirgamma_get_standard_summary_statistics_cpp', PACKAGE = 'rdirdirgamma', mtx)
+}
+
+#' Compute summary statistics.
+#'
+#' @param mtx a data matrix (nxp)
+#' @inheritParams get_number_summary_statistics
+#' @export
+#' @return a *xp matrix of summary statistics
+get_summary_statistics_cpp <- function(mtx, use_optimized_summary) {
+    .Call('_rdirdirgamma_get_summary_statistics_cpp', PACKAGE = 'rdirdirgamma', mtx, use_optimized_summary)
 }
 
 #' Generate one sample from a Dirichlet distribution.
