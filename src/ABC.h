@@ -87,8 +87,8 @@ arma::cube generate_acceptable_data_cpp(
 //' @param p_norm the power of the Minkowski distance (default: 2 = Euclidean)
 //' @param use_optimized_summary if TRUE, use quantile matrix, else compute mean and sd vectors
 //' @export
-//' @return a length-2 vector of distances between summary statistics
-// [[Rcpp::export]]
+//' @return a vector of distances between summary statistics: as many entries as summary statistics
+// [[Rcpp::export(rng = false)]]
 Rcpp::NumericVector compute_distances_gen_obs_cpp(
       const Rcpp::NumericMatrix &mtx_gen,
       const Rcpp::NumericMatrix &mtx_obs,
@@ -103,7 +103,7 @@ Rcpp::NumericVector compute_distances_gen_obs_cpp(
 //' @param use_optimized_summary if TRUE, return the optimized summary statistics, else standard (mean, sd)
 //' @export
 //' @return an integer
-// [[Rcpp::export]]
+// [[Rcpp::export(rng = false)]]
 unsigned int get_number_summary_statistics(bool use_optimized_summary);
 
 
@@ -113,7 +113,7 @@ unsigned int get_number_summary_statistics(bool use_optimized_summary);
 //' @return a kxp matrix of summary statistics
 //' @inheritParams get_summary_statistics_cpp
 //' @inheritParams get_number_summary_statistics
-// [[Rcpp::export]]
+// [[Rcpp::export(rng = false)]]
 Rcpp::NumericMatrix get_optimized_summary_statistics_cpp(const Rcpp::NumericMatrix &mtx);
 
 //' Compute standard summary statistics.
@@ -122,7 +122,7 @@ Rcpp::NumericMatrix get_optimized_summary_statistics_cpp(const Rcpp::NumericMatr
 //' @return a kxp matrix of summary statistics
 //' @inheritParams get_summary_statistics_cpp
 //' @inheritParams get_number_summary_statistics
-// [[Rcpp::export]]
+// [[Rcpp::export(rng = false)]]
 Rcpp::NumericMatrix get_standard_summary_statistics_cpp(const Rcpp::NumericMatrix &mtx);
 
 //' Compute summary statistics.
@@ -131,7 +131,7 @@ Rcpp::NumericMatrix get_standard_summary_statistics_cpp(const Rcpp::NumericMatri
 //' @inheritParams get_number_summary_statistics
 //' @export
 //' @return a *xp matrix of summary statistics
-// [[Rcpp::export]]
+// [[Rcpp::export(rng = false)]]
 Rcpp::NumericMatrix get_summary_statistics_cpp(const Rcpp::NumericMatrix &mtx, const bool use_optimized_summary);
 
 #endif

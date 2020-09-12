@@ -153,13 +153,14 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
    const unsigned int n_summary = get_number_summary_statistics(use_optimized_summary);
    Rcpp::NumericMatrix mtx_norms(reps, n_summary);
 
+   // Allocate summary statistics
+   Rcpp::NumericMatrix summary_gen(n_summary, p);
+   Rcpp::NumericMatrix summary_obs(n_summary, p);
+
+   // Precompute observed summary statistics
+   summary_obs = get_summary_statistics_cpp(mtx_obs, use_optimized_summary);
+
    if (use_optimized_summary) {
-
-      // Quantile matrix
-      Rcpp::NumericMatrix summary_obs(n_summary, p);
-      Rcpp::NumericMatrix summary_gen(n_summary, p);
-
-      summary_obs = get_optimized_summary_statistics_cpp(mtx_obs);
 
       for (unsigned int t = 0; t < reps; ++t) {
 
@@ -169,50 +170,23 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
 
          mtx_gen = rdirdirgamma_beta_cpp(n, m, alpha_0, beta_0, nu_0);
 
-         summary_gen = get_optimized_summary_statistics_cpp(mtx_gen(Rcpp::Range(0, n_obs - 1), _));
+         summary_gen = get_summary_statistics_cpp(
+            mtx_gen(Rcpp::Range(0, n_obs - 1), _),
+            use_optimized_summary
+         );
 
          // Compute distances between summary statistics
          for (unsigned int i_summary = 0; i_summary < n_summary; i_summary++) {
 
             // Compute distances between summary statistics
-            mtx_norms(t, i_summary) = norm_minkowski(summary_obs(i_summary,_) - summary_gen(i_summary,_), p_norm);
+            mtx_norms(t, i_summary) = norm_minkowski(
+               summary_obs(i_summary,_) - summary_gen(i_summary,_),
+               p_norm
+            );
          }
       }
 
-
-   } else {
-
-      // Classic statistics: mean, sd
-
-      // Precompute observed summary statistics
-      Rcpp::NumericVector mu_obs(p);
-      Rcpp::NumericVector sd_obs(p);
-
-      mu_obs = Rcpp::colMeans(mtx_obs);
-      sd_obs = colsd(mtx_obs);
-
-      // Generate observations
-      Rcpp::NumericVector mu_gen(p);
-      Rcpp::NumericVector sd_gen(p);
-
-      for (unsigned int t = 0; t < reps; ++t) {
-
-         if (t % 1000 == 0) Rcpp::checkUserInterrupt();
-
-         Rcpp::NumericMatrix mtx_gen(n*m, p);
-
-         mtx_gen = rdirdirgamma_beta_cpp(n, m, alpha_0, beta_0, nu_0);
-
-         mu_gen = colMeans(mtx_gen(Rcpp::Range(0, n_obs - 1), _));
-         sd_gen = colsd(mtx_gen(Rcpp::Range(0, n_obs - 1), _));
-
-         // Compute distances between summary statistics
-         mtx_norms(t, 0) = norm_minkowski(mu_gen - mu_obs, p_norm);
-         mtx_norms(t, 1) = norm_minkowski(sd_gen - sd_obs, p_norm);
-      }
-
    }
-
 
    return(mtx_norms);
 
@@ -242,43 +216,17 @@ Rcpp::NumericVector compute_distances_gen_obs_cpp(
    // Allocate distances between summary statistics
    Rcpp::NumericVector vec_norms(n_summary);
 
-   if (use_optimized_summary) {
+   // Compute observed summary statistics
+   Rcpp::NumericMatrix summary_obs(n_summary, p);
+   Rcpp::NumericMatrix summary_gen(n_summary, p);
 
-      // Precompute observed summary statistics
-      Rcpp::NumericMatrix summary_obs(n_summary, p);
-      Rcpp::NumericMatrix summary_gen(n_summary, p);
+   summary_obs = get_summary_statistics_cpp(mtx_obs, use_optimized_summary);
+   summary_gen = get_summary_statistics_cpp(mtx_gen, use_optimized_summary);
 
-      summary_obs = get_optimized_summary_statistics_cpp(mtx_obs);
-      summary_gen = get_optimized_summary_statistics_cpp(mtx_gen);
-
-      for (unsigned int i = 0; i < n_summary; i++) {
-
-         // Compute distances between summary statistics
-         vec_norms[i] = norm_minkowski(summary_obs(i,_) - summary_gen(i,_), p_norm);
-      }
-
-   } else {
-
-
-      // Precompute observed summary statistics
-      Rcpp::NumericVector mu_obs(p);
-      Rcpp::NumericVector sd_obs(p);
-
-      mu_obs = Rcpp::colMeans(mtx_obs);
-      sd_obs = colsd(mtx_obs);
-
-      // Generate observations
-      Rcpp::NumericVector mu_gen(p);
-      Rcpp::NumericVector sd_gen(p);
-
-      mu_gen = colMeans(mtx_gen);
-      sd_gen = colsd(mtx_gen);
+   for (unsigned int i = 0; i < n_summary; i++) {
 
       // Compute distances between summary statistics
-      vec_norms[0] = norm_minkowski(mu_gen - mu_obs, p_norm);
-      vec_norms[1] = norm_minkowski(sd_gen - sd_obs, p_norm);
-
-
+      vec_norms[i] = norm_minkowski(summary_obs(i,_) - summary_gen(i,_), p_norm);
    }
 
    return(vec_norms);

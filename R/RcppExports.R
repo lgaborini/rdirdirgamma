@@ -59,7 +59,7 @@ generate_acceptable_data_cpp <- function(n_sample, m_sample, alpha_0, beta_0, nu
 #' @param p_norm the power of the Minkowski distance (default: 2 = Euclidean)
 #' @param use_optimized_summary if TRUE, use quantile matrix, else compute mean and sd vectors
 #' @export
-#' @return a length-2 vector of distances between summary statistics
+#' @return a vector of distances between summary statistics: as many entries as summary statistics
 compute_distances_gen_obs_cpp <- function(mtx_gen, mtx_obs, p_norm = 2, use_optimized_summary = FALSE) {
     .Call('_rdirdirgamma_compute_distances_gen_obs_cpp', PACKAGE = 'rdirdirgamma', mtx_gen, mtx_obs, p_norm, use_optimized_summary)
 }

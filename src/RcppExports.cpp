@@ -52,7 +52,6 @@ Rcpp::NumericVector compute_distances_gen_obs_cpp(const Rcpp::NumericMatrix& mtx
 RcppExport SEXP _rdirdirgamma_compute_distances_gen_obs_cpp(SEXP mtx_genSEXP, SEXP mtx_obsSEXP, SEXP p_normSEXP, SEXP use_optimized_summarySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type mtx_gen(mtx_genSEXP);
     Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type mtx_obs(mtx_obsSEXP);
     Rcpp::traits::input_parameter< const double& >::type p_norm(p_normSEXP);
@@ -66,7 +65,6 @@ unsigned int get_number_summary_statistics(bool use_optimized_summary);
 RcppExport SEXP _rdirdirgamma_get_number_summary_statistics(SEXP use_optimized_summarySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< bool >::type use_optimized_summary(use_optimized_summarySEXP);
     rcpp_result_gen = Rcpp::wrap(get_number_summary_statistics(use_optimized_summary));
     return rcpp_result_gen;
@@ -77,7 +75,6 @@ Rcpp::NumericMatrix get_optimized_summary_statistics_cpp(const Rcpp::NumericMatr
 RcppExport SEXP _rdirdirgamma_get_optimized_summary_statistics_cpp(SEXP mtxSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type mtx(mtxSEXP);
     rcpp_result_gen = Rcpp::wrap(get_optimized_summary_statistics_cpp(mtx));
     return rcpp_result_gen;
@@ -88,7 +85,6 @@ Rcpp::NumericMatrix get_standard_summary_statistics_cpp(const Rcpp::NumericMatri
 RcppExport SEXP _rdirdirgamma_get_standard_summary_statistics_cpp(SEXP mtxSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type mtx(mtxSEXP);
     rcpp_result_gen = Rcpp::wrap(get_standard_summary_statistics_cpp(mtx));
     return rcpp_result_gen;
@@ -99,7 +95,6 @@ Rcpp::NumericMatrix get_summary_statistics_cpp(const Rcpp::NumericMatrix& mtx, c
 RcppExport SEXP _rdirdirgamma_get_summary_statistics_cpp(SEXP mtxSEXP, SEXP use_optimized_summarySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type mtx(mtxSEXP);
     Rcpp::traits::input_parameter< const bool >::type use_optimized_summary(use_optimized_summarySEXP);
     rcpp_result_gen = Rcpp::wrap(get_summary_statistics_cpp(mtx, use_optimized_summary));
@@ -166,7 +161,6 @@ Rcpp::NumericVector colsd(const Rcpp::NumericMatrix& mtx);
 RcppExport SEXP _rdirdirgamma_colsd(SEXP mtxSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type mtx(mtxSEXP);
     rcpp_result_gen = Rcpp::wrap(colsd(mtx));
     return rcpp_result_gen;
@@ -177,7 +171,6 @@ arma::rowvec colkurtosis(const arma::mat& mtx);
 RcppExport SEXP _rdirdirgamma_colkurtosis(SEXP mtxSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::mat& >::type mtx(mtxSEXP);
     rcpp_result_gen = Rcpp::wrap(colkurtosis(mtx));
     return rcpp_result_gen;
@@ -188,7 +181,6 @@ arma::rowvec colskewness(const arma::mat& mtx);
 RcppExport SEXP _rdirdirgamma_colskewness(SEXP mtxSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::mat& >::type mtx(mtxSEXP);
     rcpp_result_gen = Rcpp::wrap(colskewness(mtx));
     return rcpp_result_gen;
@@ -199,7 +191,6 @@ double norm_minkowski(const Rcpp::NumericVector& v, const double p);
 RcppExport SEXP _rdirdirgamma_norm_minkowski(SEXP vSEXP, SEXP pSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type v(vSEXP);
     Rcpp::traits::input_parameter< const double >::type p(pSEXP);
     rcpp_result_gen = Rcpp::wrap(norm_minkowski(v, p));

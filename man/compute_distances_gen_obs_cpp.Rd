@@ -21,7 +21,7 @@ compute_distances_gen_obs_cpp(
 \item{use_optimized_summary}{if TRUE, use quantile matrix, else compute mean and sd vectors}
 }
 \value{
-a length-2 vector of distances between summary statistics
+a vector of distances between summary statistics: as many entries as summary statistics
 }
 \description{
 Compute distances between summary statistics.
