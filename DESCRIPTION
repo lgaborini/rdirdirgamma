@@ -5,8 +5,8 @@ Title: Generate samples from Dirichlet-Dirichlet-Gamma
 Version: 0.2
 Author: Lorenzo Gaborini
 Maintainer: Lorenzo Gaborini <lorenzo.gaborini@gmail.com>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: Generate samples from Dirichlet-Dirichlet-Gamma
+    model, and perform ABC.
 License: MIT + file LICENSE
 Suggests: 
     moments,

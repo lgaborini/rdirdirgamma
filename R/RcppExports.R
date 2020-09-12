@@ -52,6 +52,16 @@ generate_acceptable_data_cpp <- function(n_sample, m_sample, alpha_0, beta_0, nu
     .Call('_rdirdirgamma_generate_acceptable_data_cpp', PACKAGE = 'rdirdirgamma', n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, summarize_eps, n_gen, max_iter, p_norm, use_optimized_summary)
 }
 
+#' Perform ABC sampling using the stick breaking procedure, returning the acceptance ratio.
+#'
+#' @return the acceptance ratio, where 1 means that all max_iter samples were accepted.
+#' @export
+#' @inheritParams get_number_summary_statistics
+#' @inheritParams generate_acceptable_data_cpp
+compute_ABC_cpp <- function(n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, summarize_eps, max_iter, p_norm, use_optimized_summary) {
+    .Call('_rdirdirgamma_compute_ABC_cpp', PACKAGE = 'rdirdirgamma', n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, summarize_eps, max_iter, p_norm, use_optimized_summary)
+}
+
 #' Compute distances between summary statistics.
 #'
 #' @param mtx_gen the generated data matrix; number of rows is free, it must have the same number of columns as `mtx_obs`

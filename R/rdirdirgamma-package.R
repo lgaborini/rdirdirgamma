@@ -5,4 +5,5 @@
 #' @docType package
 #' @name rdirdirgamma
 #' @useDynLib rdirdirgamma
+#' @import Rcpp
 NULL

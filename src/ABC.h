@@ -79,6 +79,25 @@ arma::cube generate_acceptable_data_cpp(
       const bool use_optimized_summary
 );
 
+//' Perform ABC sampling using the stick breaking procedure, returning the acceptance ratio.
+//'
+//' @return the acceptance ratio, where 1 means that all max_iter samples were accepted.
+//' @export
+//' @inheritParams get_number_summary_statistics
+//' @inheritParams generate_acceptable_data_cpp
+// [[Rcpp::export]]
+double compute_ABC_cpp(
+      const unsigned int &n_sample,
+      const unsigned int &m_sample,
+      const double &alpha_0,
+      const double &beta_0,
+      const Rcpp::NumericVector &nu_0,
+      const Rcpp::NumericMatrix &mtx_obs,
+      const Rcpp::NumericVector &summarize_eps,
+      const unsigned int max_iter,
+      const double &p_norm,
+      const bool use_optimized_summary
+);
 
 //' Compute distances between summary statistics.
 //'

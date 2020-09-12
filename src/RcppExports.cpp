@@ -47,6 +47,26 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// compute_ABC_cpp
+double compute_ABC_cpp(const unsigned int& n_sample, const unsigned int& m_sample, const double& alpha_0, const double& beta_0, const Rcpp::NumericVector& nu_0, const Rcpp::NumericMatrix& mtx_obs, const Rcpp::NumericVector& summarize_eps, const unsigned int max_iter, const double& p_norm, const bool use_optimized_summary);
+RcppExport SEXP _rdirdirgamma_compute_ABC_cpp(SEXP n_sampleSEXP, SEXP m_sampleSEXP, SEXP alpha_0SEXP, SEXP beta_0SEXP, SEXP nu_0SEXP, SEXP mtx_obsSEXP, SEXP summarize_epsSEXP, SEXP max_iterSEXP, SEXP p_normSEXP, SEXP use_optimized_summarySEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const unsigned int& >::type n_sample(n_sampleSEXP);
+    Rcpp::traits::input_parameter< const unsigned int& >::type m_sample(m_sampleSEXP);
+    Rcpp::traits::input_parameter< const double& >::type alpha_0(alpha_0SEXP);
+    Rcpp::traits::input_parameter< const double& >::type beta_0(beta_0SEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type nu_0(nu_0SEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type mtx_obs(mtx_obsSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type summarize_eps(summarize_epsSEXP);
+    Rcpp::traits::input_parameter< const unsigned int >::type max_iter(max_iterSEXP);
+    Rcpp::traits::input_parameter< const double& >::type p_norm(p_normSEXP);
+    Rcpp::traits::input_parameter< const bool >::type use_optimized_summary(use_optimized_summarySEXP);
+    rcpp_result_gen = Rcpp::wrap(compute_ABC_cpp(n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, summarize_eps, max_iter, p_norm, use_optimized_summary));
+    return rcpp_result_gen;
+END_RCPP
+}
 // compute_distances_gen_obs_cpp
 Rcpp::NumericVector compute_distances_gen_obs_cpp(const Rcpp::NumericMatrix& mtx_gen, const Rcpp::NumericMatrix& mtx_obs, const double& p_norm, const bool use_optimized_summary);
 RcppExport SEXP _rdirdirgamma_compute_distances_gen_obs_cpp(SEXP mtx_genSEXP, SEXP mtx_obsSEXP, SEXP p_normSEXP, SEXP use_optimized_summarySEXP) {
@@ -201,6 +221,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_rdirdirgamma_sample_ABC_rdirdirgamma_beta_cpp", (DL_FUNC) &_rdirdirgamma_sample_ABC_rdirdirgamma_beta_cpp, 9},
     {"_rdirdirgamma_generate_acceptable_data_cpp", (DL_FUNC) &_rdirdirgamma_generate_acceptable_data_cpp, 11},
+    {"_rdirdirgamma_compute_ABC_cpp", (DL_FUNC) &_rdirdirgamma_compute_ABC_cpp, 10},
     {"_rdirdirgamma_compute_distances_gen_obs_cpp", (DL_FUNC) &_rdirdirgamma_compute_distances_gen_obs_cpp, 4},
     {"_rdirdirgamma_get_number_summary_statistics", (DL_FUNC) &_rdirdirgamma_get_number_summary_statistics, 1},
     {"_rdirdirgamma_get_optimized_summary_statistics_cpp", (DL_FUNC) &_rdirdirgamma_get_optimized_summary_statistics_cpp, 1},

@@ -1,3 +1,7 @@
+# rdirdirgamma 0.2.1
+
+* Add `compute_ABC_cpp` to directly compute the acceptance ratio.
+
 # rdirdirgamma 0.2
 
 * Adding more C++ functions to compute distances between two datasets.
