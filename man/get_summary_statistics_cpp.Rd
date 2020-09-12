@@ -12,7 +12,7 @@ get_summary_statistics_cpp(mtx, use_optimized_summary)
 \item{use_optimized_summary}{if TRUE, return the optimized summary statistics, else standard (mean, sd)}
 }
 \value{
-a *xp matrix of summary statistics
+a kxp matrix of summary statistics
 }
 \description{
 Compute summary statistics.
