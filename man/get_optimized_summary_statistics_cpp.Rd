@@ -10,7 +10,7 @@ get_optimized_summary_statistics_cpp(mtx)
 \item{mtx}{a data matrix (nxp)}
 }
 \value{
-a kxp matrix of column-wise quantiles
+a kxp matrix of summary statistics
 }
 \description{
 Compute optimized summary statistics.

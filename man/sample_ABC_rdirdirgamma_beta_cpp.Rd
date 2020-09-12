@@ -27,7 +27,7 @@ sample_ABC_rdirdirgamma_beta_cpp(
 
 \item{p_norm}{exponent of the L^p norm (can be `Inf`) (default: `2`)}
 
-\item{use_optimized_summary}{if TRUE, use quantile matrix, else compute mean and sd vectors  (default: FALSE)}
+\item{use_optimized_summary}{if TRUE, return the optimized summary statistics, else standard (mean, sd)}
 }
 \value{
 a reps*2 matrix of distances between summary statistics
