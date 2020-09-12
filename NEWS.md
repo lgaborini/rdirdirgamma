@@ -1,4 +1,4 @@
-# rdirdirgamma 0.1.999 (unreleased)
+# rdirdirgamma 0.2
 
 * Adding more C++ functions to compute distances between two datasets.
 * Gains RcppArmadillo dependency.
