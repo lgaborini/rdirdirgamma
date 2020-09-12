@@ -31,16 +31,18 @@ generate_acceptable_data_cpp(
 
 \item{mtx_obs}{observed data}
 
-\item{summarize_eps}{ABC threshold(s)}
+\item{summarize_eps}{ABC thresholds: as many as summary statistics}
 
-\item{n_gen}{how many datasets are generated}
+\item{n_gen}{how many datasets are returned}
 
 \item{max_iter}{how many iterations are tried}
+
+\item{p_norm}{exponent of the L^p norm (can be `Inf`)}
 
 \item{use_optimized_summary}{if TRUE, return the optimized summary statistics, else standard (mean, sd)}
 }
 \value{
-a (n x n_obs x p) cube of generated data
+a (n x n_obs x p) array of generated data
 }
 \description{
 Generate data that is accepted by ABC.

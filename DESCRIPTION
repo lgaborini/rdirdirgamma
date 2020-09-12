@@ -2,11 +2,11 @@ Type: Package
 Package: rdirdirgamma
 Title: Generate samples from Dirichlet-Dirichlet-Gamma model, and perform ABC.
 Version: 0.1.999
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
+Author: Lorenzo Gaborini
+Maintainer: Lorenzo Gaborini <lorenzo.gaborini@gmail.com>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+License: MIT + file LICENSE
 Imports: 
     Rcpp (>= 1.0.5)
 LinkingTo: 

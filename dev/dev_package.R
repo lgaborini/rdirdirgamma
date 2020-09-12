@@ -127,3 +127,25 @@ mtx_obs %>%
 
 compute_distances_gen_obs_cpp(mtx_gen, mtx_obs, p_norm = 1, use_optimized_summary = FALSE)
 compute_distances_gen_obs_cpp(mtx_gen, mtx_obs, p_norm = Inf, use_optimized_summary = TRUE)
+
+
+
+
+# Acceptable data ---------------------------------------------------------
+
+tmp <- rdirdirgamma::generate_acceptable_data_cpp(
+   n_sample = n,
+   m_sample = m,
+   alpha_0 = alpha_0,
+   beta_0 = beta_0,
+   nu_0 = nu_0,
+   mtx_obs = mtx_obs,
+   n = 1,
+   max_iter = 1e5,
+   p_norm = 1,
+   summarize_eps = c(0.1, 0.1, 5, 3),
+   use_optimized_summary = TRUE
+)
+
+
+tmp[1,,]

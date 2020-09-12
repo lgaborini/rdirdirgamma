@@ -362,23 +362,25 @@ arma::cube generate_acceptable_data_cpp(
    const unsigned int p_obs = mtx_obs.ncol();
 
    if (n*m < n_obs) {
-      Rcpp::stop("cannot generate enough observations (needed n_obs = %i, have n_gen = %i)", n_obs, n*m);
+      Rcpp::stop("cannot generate enough observations (supplied n_gen: %i, needed n_obs: %i)", n*m, n_obs);
    }
 
    if (p != p_obs) {
-      Rcpp::stop("Error: different number of columns (nu_0: %i, observed: %i)", p, p_obs);
-   }
-
-   if (summarize_eps.size() != p_obs) {
-      Rcpp::stop("Error: summarize_eps must match number of columns (eps: %i, observed: %i)", summarize_eps.size(), p_obs);
+      Rcpp::stop("Error: different number of columns (supplied nu_0: %i, needed: %i)", p, p_obs);
    }
 
    // Allocate results
-   arma::cube mtx_samples(n_gen, n_obs, p);
+   // (row, column, slice)
+   arma::cube cube_samples(n_gen, n_obs, p);
 
    // Allocate distances between summary statistics
    const unsigned int n_summary = get_number_summary_statistics(use_optimized_summary);
    Rcpp::NumericVector vec_distances(n_summary);
+
+   if (summarize_eps.size() != n_summary) {
+      Rcpp::stop("Error: summarize_eps must match the number of summary statistics (supplied: %i, needed: %i)", summarize_eps.size(), n_summary);
+   }
+
 
    // Quantile matrix
    Rcpp::NumericMatrix summary_obs(n_summary, p);
@@ -404,8 +406,12 @@ arma::cube generate_acceptable_data_cpp(
          vec_distances = compute_distances_gen_obs_cpp(mtx_gen, mtx_obs, p_norm, use_optimized_summary);
 
          if (is_true(all(vec_distances < summarize_eps))) {
+
             success = true;
-            mtx_samples.slice(i_sample) = mtx_gen(Rcpp::Range(0, n_obs - 1), _);
+            arma::mat mtx_gen_arma(n_obs, p);
+            mtx_gen_arma =  mtx_gen(Rcpp::Range(0, n_obs - 1), _);
+
+            cube_samples.row(i_sample) = mtx_gen_arma;
             break;
          }
       }
@@ -416,7 +422,7 @@ arma::cube generate_acceptable_data_cpp(
          Rcpp::stop("Maximum number of iterations exceeded (%d).", max_iter);
       }
    }
-   return(mtx_samples);
+   return(cube_samples);
 
 }
 

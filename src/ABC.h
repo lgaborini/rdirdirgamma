@@ -51,19 +51,17 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
 
 //' Generate data that is accepted by ABC.
 //'
-//' Generate data that is accepted by ABC.
-//'
 //' @param mtx_obs observed data
 //' @param n_sample hyperparameters that are used to generate data
 //' @param m_sample hyperparameters that are used to generate data
 //' @param alpha_0 hyperparameters that are used to generate data
 //' @param beta_0 hyperparameters that are used to generate data
 //' @param nu_0 hyperparameters that are used to generate data
-//' @param summarize_eps ABC threshold(s)
-//' @param n_gen how many datasets are generated
+//' @param summarize_eps ABC thresholds: as many as summary statistics
+//' @param n_gen how many datasets are returned
 //' @param max_iter how many iterations are tried
-//' @param p_norm
-//' @return a (n x n_obs x p) cube of generated data
+//' @param p_norm exponent of the L^p norm (can be `Inf`)
+//' @return a (n x n_obs x p) array of generated data
 //' @export
 //' @inheritParams get_number_summary_statistics
 // [[Rcpp::export]]
