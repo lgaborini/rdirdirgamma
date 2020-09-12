@@ -308,6 +308,32 @@ Rcpp::NumericMatrix get_optimized_summary_statistics_cpp(const Rcpp::NumericMatr
 
 }
 
+Rcpp::NumericMatrix get_summary_statistics_cpp(const Rcpp::NumericMatrix &mtx, const bool use_optimized_summary) {
+   if (use_optimized_summary) {
+      return(get_optimized_summary_statistics_cpp(mtx));
+   } else {
+      return(get_standard_summary_statistics_cpp(mtx));
+   }
+}
+
+Rcpp::NumericMatrix get_standard_summary_statistics_cpp(const Rcpp::NumericMatrix &mtx) {
+
+   Rcpp::NumericMatrix mtx_summary(2, p);
+
+   // Precompute observed summary statistics
+   Rcpp::NumericVector mu_obs(p);
+   Rcpp::NumericVector sd_obs(p);
+
+   mu_obs = Rcpp::colMeans(mtx_obs);
+   sd_obs = colsd(mtx_obs);
+
+   mtx_summary(1, _) = mu_obs;
+   mtx_summary(2, _) = sd_obs;
+
+   return(mtx_summary);
+
+}
+
 
 unsigned int get_number_summary_statistics(bool use_optimized_summary) {
    if (use_optimized_summary) {

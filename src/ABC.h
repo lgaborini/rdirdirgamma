@@ -145,9 +145,9 @@ using namespace Rcpp;
 //' @param n_sample number of samples per source
 //' @param m_sample number of sources
 //' @param p_norm exponent of the L^p norm (can be `Inf`) (default: `2`)
-//' @param use_optimized_summary if TRUE, use quantile matrix, else compute mean and sd vectors  (default: FALSE)
 //' @export
 //' @return a reps*2 matrix of distances between summary statistics
+//' @inheritParams get_number_summary_statistics
 // [[Rcpp::export]]
 Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
       const unsigned int &n_sample, const unsigned int &m_sample,
@@ -183,7 +183,7 @@ Rcpp::NumericVector compute_distances_gen_obs_cpp(
 
 //' Get the number of multivariate summary statistics.
 //'
-//' @param use_optimized_summary
+//' @param use_optimized_summary if TRUE, return the optimized summary statistics, else standard (mean, sd)
 //' @export
 //' @return an integer
 // [[Rcpp::export]]
@@ -192,10 +192,29 @@ unsigned int get_number_summary_statistics(bool use_optimized_summary);
 
 //' Compute optimized summary statistics.
 //'
-//' @param mtx a data matrix (nxp)
 //' @export
-//' @return a kxp matrix of column-wise quantiles
+//' @return a kxp matrix of summary statistics
+//' @inheritParams get_summary_statistics_cpp
+//' @inheritParams get_number_summary_statistics
 // [[Rcpp::export]]
 Rcpp::NumericMatrix get_optimized_summary_statistics_cpp(const Rcpp::NumericMatrix &mtx);
+
+//' Compute standard summary statistics.
+//'
+//' @export
+//' @return a kxp matrix of summary statistics
+//' @inheritParams get_summary_statistics_cpp
+//' @inheritParams get_number_summary_statistics
+// [[Rcpp::export]]
+Rcpp::NumericMatrix get_optimized_summary_statistics_cpp(const Rcpp::NumericMatrix &mtx);
+
+//' Compute summary statistics.
+//'
+//' @param mtx a data matrix (nxp)
+//' @inheritParams get_number_summary_statistics
+//' @export
+//' @return a *xp matrix of summary statistics
+// [[Rcpp::export]]
+Rcpp::NumericMatrix get_summary_statistics_cpp(const Rcpp::NumericMatrix &mtx, const bool use_optimized_summary);
 
 #endif
