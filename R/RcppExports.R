@@ -98,7 +98,7 @@ get_standard_summary_statistics_cpp <- function(mtx) {
 #' @param mtx a data matrix (nxp)
 #' @inheritParams get_number_summary_statistics
 #' @export
-#' @return a *xp matrix of summary statistics
+#' @return a kxp matrix of summary statistics
 get_summary_statistics_cpp <- function(mtx, use_optimized_summary) {
     .Call('_rdirdirgamma_get_summary_statistics_cpp', PACKAGE = 'rdirdirgamma', mtx, use_optimized_summary)
 }

@@ -130,7 +130,7 @@ Rcpp::NumericMatrix get_standard_summary_statistics_cpp(const Rcpp::NumericMatri
 //' @param mtx a data matrix (nxp)
 //' @inheritParams get_number_summary_statistics
 //' @export
-//' @return a *xp matrix of summary statistics
+//' @return a kxp matrix of summary statistics
 // [[Rcpp::export(rng = false)]]
 Rcpp::NumericMatrix get_summary_statistics_cpp(const Rcpp::NumericMatrix &mtx, const bool use_optimized_summary);
 
