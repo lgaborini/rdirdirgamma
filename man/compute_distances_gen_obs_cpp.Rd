@@ -16,7 +16,7 @@ compute_distances_gen_obs_cpp(
 
 \item{mtx_obs}{the observed data matrix; number of rows is free, it must have the same number of columns as \code{mtx_gen}}
 
-\item{p_norm}{the power of the Minkowski distance (default: 2 = Euclidean)}
+\item{p_norm}{exponent of the L^p norm (can be \code{Inf}) (default: 2)}
 
 \item{use_optimized_summary}{if TRUE, use quantile matrix, else compute mean and sd vectors}
 }

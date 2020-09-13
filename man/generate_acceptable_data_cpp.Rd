@@ -12,16 +12,16 @@ generate_acceptable_data_cpp(
   nu_0,
   mtx_obs,
   summarize_eps,
-  n_gen,
+  reps,
   max_iter,
   p_norm,
   use_optimized_summary
 )
 }
 \arguments{
-\item{n_sample}{hyperparameters that are used to generate data}
+\item{n_sample}{hyperparameters that are used to generate data: number of samples per source}
 
-\item{m_sample}{hyperparameters that are used to generate data}
+\item{m_sample}{hyperparameters that are used to generate data: number of sources}
 
 \item{alpha_0}{hyperparameters that are used to generate data}
 
@@ -29,17 +29,17 @@ generate_acceptable_data_cpp(
 
 \item{nu_0}{hyperparameters that are used to generate data}
 
-\item{mtx_obs}{observed data}
+\item{mtx_obs}{the observed data matrix}
 
 \item{summarize_eps}{ABC thresholds: as many as summary statistics}
 
-\item{n_gen}{how many datasets are returned}
+\item{reps}{how many datasets are returned}
 
 \item{max_iter}{how many iterations are tried}
 
-\item{p_norm}{exponent of the L^p norm (can be \code{Inf})}
+\item{p_norm}{exponent of the L^p norm (can be \code{Inf}) (default: 2)}
 
-\item{use_optimized_summary}{if TRUE, return the optimized summary statistics, else standard (mean, sd)}
+\item{use_optimized_summary}{if TRUE, return the optimized summary statistics (mean, sd, skewness, kurtosis), else standard (mean, sd)}
 }
 \value{
 a (n x n_obs x p) array of generated data

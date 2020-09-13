@@ -7,7 +7,7 @@
 get_number_summary_statistics(use_optimized_summary)
 }
 \arguments{
-\item{use_optimized_summary}{if TRUE, return the optimized summary statistics, else standard (mean, sd)}
+\item{use_optimized_summary}{if TRUE, return the optimized summary statistics (mean, sd, skewness, kurtosis), else standard (mean, sd)}
 }
 \value{
 an integer

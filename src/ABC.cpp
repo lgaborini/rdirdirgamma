@@ -141,8 +141,11 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
    const unsigned int p = nu_0.size();
    const unsigned int p_obs = mtx_obs.ncol();
 
+   if (reps < 1) {
+      Rcpp::stop("reps must be positive");
+   }
    if (n*m < n_obs) {
-      Rcpp::stop("cannot generate enough observations (needed n_obs = %i, have n_gen = %i)", n_obs, n*m);
+      Rcpp::stop("cannot generate enough observations (needed n_obs = %i, have n_generated = m*n = %i)", n_obs, n*m);
    }
 
    if (p != p_obs) {
@@ -220,10 +223,10 @@ Rcpp::NumericVector compute_distances_gen_obs_cpp(
    summary_obs = get_summary_statistics_cpp(mtx_obs, use_optimized_summary);
    summary_gen = get_summary_statistics_cpp(mtx_gen, use_optimized_summary);
 
-   for (unsigned int i = 0; i < n_summary; i++) {
+   for (unsigned int i_summary = 0; i_summary < n_summary; i_summary++) {
 
       // Compute distances between summary statistics
-      vec_norms[i] = norm_minkowski(summary_obs(i,_) - summary_gen(i,_), p_norm);
+      vec_norms[i_summary] = norm_minkowski(summary_obs(i_summary,_) - summary_gen(i_summary,_), p_norm);
    }
 
    return(vec_norms);
@@ -294,7 +297,7 @@ arma::cube generate_acceptable_data_cpp(
       const Rcpp::NumericVector &nu_0,
       const Rcpp::NumericMatrix &mtx_obs,
       const Rcpp::NumericVector &summarize_eps,
-      const unsigned int n_gen,
+      const unsigned int reps,
       const unsigned int max_iter,
       const double &p_norm,
       const bool use_optimized_summary
@@ -316,7 +319,7 @@ arma::cube generate_acceptable_data_cpp(
 
    // Allocate results
    // (row, column, slice)
-   arma::cube cube_samples(n_gen, n_obs, p);
+   arma::cube cube_samples(reps, n_obs, p);
 
    // Allocate distances between summary statistics
    const unsigned int n_summary = get_number_summary_statistics(use_optimized_summary);
@@ -335,7 +338,7 @@ arma::cube generate_acceptable_data_cpp(
 
    summary_obs = get_summary_statistics_cpp(mtx_obs, use_optimized_summary);
 
-   for (unsigned int i_sample = 0; i_sample < n_gen; ++i_sample) {
+   for (unsigned int i_rep = 0; i_rep < reps; ++i_rep) {
 
       bool success = false;
 
@@ -350,10 +353,13 @@ arma::cube generate_acceptable_data_cpp(
          // Allocate distances between summary statistics
          // vec_distances = compute_distances_gen_obs_cpp(mtx_gen, mtx_obs, p_norm, use_optimized_summary);
 
-         for (unsigned int i = 0; i < n_summary; i++) {
+         for (unsigned int i_summary = 0; i_summary < n_summary; i_summary++) {
 
             // Compute distances between summary statistics
-            vec_distances[i] = norm_minkowski(summary_obs(i,_) - summary_gen(i,_), p_norm);
+            vec_distances[i_summary] = norm_minkowski(
+               summary_obs(i_summary,_) - summary_gen(i_summary,_),
+               p_norm
+            );
          }
 
 
@@ -363,7 +369,7 @@ arma::cube generate_acceptable_data_cpp(
             arma::mat mtx_gen_arma(n_obs, p);
             mtx_gen_arma =  mtx_gen(Rcpp::Range(0, n_obs - 1), _);
 
-            cube_samples.row(i_sample) = mtx_gen_arma;
+            cube_samples.row(i_rep) = mtx_gen_arma;
             break;
          }
       }
@@ -388,7 +394,7 @@ Rcpp::List compute_ABC_cpp(
       const Rcpp::NumericVector &nu_0,
       const Rcpp::NumericMatrix &mtx_obs,
       const Rcpp::NumericVector &summarize_eps,
-      const unsigned int max_iter,
+      const unsigned int reps,
       const double &p_norm,
       const bool use_optimized_summary,
       const bool return_distances
@@ -400,6 +406,9 @@ Rcpp::List compute_ABC_cpp(
    const unsigned int p = nu_0.size();
    const unsigned int p_obs = mtx_obs.ncol();
 
+   if (reps < 1) {
+      Rcpp::stop("reps must be positive");
+   }
    if (n*m < n_obs) {
       Rcpp::stop("cannot generate enough observations (supplied n*m: %i, needed n_obs: %i)", n*m, n_obs);
    }
@@ -419,7 +428,7 @@ Rcpp::List compute_ABC_cpp(
    unsigned int n_accepted = 0;
 
    // Allocate distances between summary statistics
-   Rcpp::NumericMatrix mtx_distances(max_iter, n_summary);
+   Rcpp::NumericMatrix mtx_distances(reps, n_summary);
 
    // Generated data
    Rcpp::NumericMatrix mtx_gen(n*m, p);
@@ -430,7 +439,7 @@ Rcpp::List compute_ABC_cpp(
 
    summary_obs = get_summary_statistics_cpp(mtx_obs, use_optimized_summary);
 
-   for (unsigned int t = 0; t < max_iter; ++t) {
+   for (unsigned int t = 0; t < reps; ++t) {
 
       if (t % 1000 == 0) Rcpp::checkUserInterrupt();
 
@@ -442,14 +451,14 @@ Rcpp::List compute_ABC_cpp(
       // vec_distances = compute_distances_gen_obs_cpp(mtx_gen, mtx_obs, p_norm, use_optimized_summary);
       mtx_distances(t,_) = compute_distances_gen_obs_cpp(mtx_gen, mtx_obs, p_norm, use_optimized_summary);
 
-      for (unsigned int i = 0; i < n_summary; i++) {
+      for (unsigned int i_summary = 0; i_summary < n_summary; i_summary++) {
 
          // Compute distances between summary statistics
-         mtx_distances(t,i) = norm_minkowski(summary_obs(i,_) - summary_gen(i,_), p_norm);
+         mtx_distances(t, i_summary) = norm_minkowski(summary_obs(i_summary, _) - summary_gen(i_summary, _), p_norm);
       }
 
 
-      if (is_true(all(mtx_distances(t,_) < summarize_eps))) {
+      if (is_true(all(mtx_distances(t, _) < summarize_eps))) {
          n_accepted++;
       }
    }
@@ -458,7 +467,7 @@ Rcpp::List compute_ABC_cpp(
 
    Rcpp::List l;
    l["n_accepted"] = n_accepted;
-   l["accept_ratio"] = (double) n_accepted / max_iter;
+   l["accept_ratio"] = (double) n_accepted / reps;
 
    if (return_distances) {
       l["d_ABC"] = mtx_distances;

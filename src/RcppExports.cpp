@@ -27,8 +27,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // generate_acceptable_data_cpp
-arma::cube generate_acceptable_data_cpp(const unsigned int& n_sample, const unsigned int& m_sample, const double& alpha_0, const double& beta_0, const Rcpp::NumericVector& nu_0, const Rcpp::NumericMatrix& mtx_obs, const Rcpp::NumericVector& summarize_eps, const unsigned int n_gen, const unsigned int max_iter, const double& p_norm, const bool use_optimized_summary);
-RcppExport SEXP _rdirdirgamma_generate_acceptable_data_cpp(SEXP n_sampleSEXP, SEXP m_sampleSEXP, SEXP alpha_0SEXP, SEXP beta_0SEXP, SEXP nu_0SEXP, SEXP mtx_obsSEXP, SEXP summarize_epsSEXP, SEXP n_genSEXP, SEXP max_iterSEXP, SEXP p_normSEXP, SEXP use_optimized_summarySEXP) {
+arma::cube generate_acceptable_data_cpp(const unsigned int& n_sample, const unsigned int& m_sample, const double& alpha_0, const double& beta_0, const Rcpp::NumericVector& nu_0, const Rcpp::NumericMatrix& mtx_obs, const Rcpp::NumericVector& summarize_eps, const unsigned int reps, const unsigned int max_iter, const double& p_norm, const bool use_optimized_summary);
+RcppExport SEXP _rdirdirgamma_generate_acceptable_data_cpp(SEXP n_sampleSEXP, SEXP m_sampleSEXP, SEXP alpha_0SEXP, SEXP beta_0SEXP, SEXP nu_0SEXP, SEXP mtx_obsSEXP, SEXP summarize_epsSEXP, SEXP repsSEXP, SEXP max_iterSEXP, SEXP p_normSEXP, SEXP use_optimized_summarySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -39,17 +39,17 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type nu_0(nu_0SEXP);
     Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type mtx_obs(mtx_obsSEXP);
     Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type summarize_eps(summarize_epsSEXP);
-    Rcpp::traits::input_parameter< const unsigned int >::type n_gen(n_genSEXP);
+    Rcpp::traits::input_parameter< const unsigned int >::type reps(repsSEXP);
     Rcpp::traits::input_parameter< const unsigned int >::type max_iter(max_iterSEXP);
     Rcpp::traits::input_parameter< const double& >::type p_norm(p_normSEXP);
     Rcpp::traits::input_parameter< const bool >::type use_optimized_summary(use_optimized_summarySEXP);
-    rcpp_result_gen = Rcpp::wrap(generate_acceptable_data_cpp(n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, summarize_eps, n_gen, max_iter, p_norm, use_optimized_summary));
+    rcpp_result_gen = Rcpp::wrap(generate_acceptable_data_cpp(n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, summarize_eps, reps, max_iter, p_norm, use_optimized_summary));
     return rcpp_result_gen;
 END_RCPP
 }
 // compute_ABC_cpp
-Rcpp::List compute_ABC_cpp(const unsigned int& n_sample, const unsigned int& m_sample, const double& alpha_0, const double& beta_0, const Rcpp::NumericVector& nu_0, const Rcpp::NumericMatrix& mtx_obs, const Rcpp::NumericVector& summarize_eps, const unsigned int max_iter, const double& p_norm, const bool use_optimized_summary, const bool return_distances);
-RcppExport SEXP _rdirdirgamma_compute_ABC_cpp(SEXP n_sampleSEXP, SEXP m_sampleSEXP, SEXP alpha_0SEXP, SEXP beta_0SEXP, SEXP nu_0SEXP, SEXP mtx_obsSEXP, SEXP summarize_epsSEXP, SEXP max_iterSEXP, SEXP p_normSEXP, SEXP use_optimized_summarySEXP, SEXP return_distancesSEXP) {
+Rcpp::List compute_ABC_cpp(const unsigned int& n_sample, const unsigned int& m_sample, const double& alpha_0, const double& beta_0, const Rcpp::NumericVector& nu_0, const Rcpp::NumericMatrix& mtx_obs, const Rcpp::NumericVector& summarize_eps, const unsigned int reps, const double& p_norm, const bool use_optimized_summary, const bool return_distances);
+RcppExport SEXP _rdirdirgamma_compute_ABC_cpp(SEXP n_sampleSEXP, SEXP m_sampleSEXP, SEXP alpha_0SEXP, SEXP beta_0SEXP, SEXP nu_0SEXP, SEXP mtx_obsSEXP, SEXP summarize_epsSEXP, SEXP repsSEXP, SEXP p_normSEXP, SEXP use_optimized_summarySEXP, SEXP return_distancesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -60,11 +60,11 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type nu_0(nu_0SEXP);
     Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type mtx_obs(mtx_obsSEXP);
     Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type summarize_eps(summarize_epsSEXP);
-    Rcpp::traits::input_parameter< const unsigned int >::type max_iter(max_iterSEXP);
+    Rcpp::traits::input_parameter< const unsigned int >::type reps(repsSEXP);
     Rcpp::traits::input_parameter< const double& >::type p_norm(p_normSEXP);
     Rcpp::traits::input_parameter< const bool >::type use_optimized_summary(use_optimized_summarySEXP);
     Rcpp::traits::input_parameter< const bool >::type return_distances(return_distancesSEXP);
-    rcpp_result_gen = Rcpp::wrap(compute_ABC_cpp(n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, summarize_eps, max_iter, p_norm, use_optimized_summary, return_distances));
+    rcpp_result_gen = Rcpp::wrap(compute_ABC_cpp(n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, summarize_eps, reps, p_norm, use_optimized_summary, return_distances));
     return rcpp_result_gen;
 END_RCPP
 }
