@@ -151,6 +151,9 @@ Rcpp::NumericMatrix get_standard_summary_statistics_cpp(const Rcpp::NumericMatri
 //' @export
 //' @return a kxp matrix of summary statistics
 // [[Rcpp::export(rng = false)]]
-Rcpp::NumericMatrix get_summary_statistics_cpp(const Rcpp::NumericMatrix &mtx, const bool use_optimized_summary);
+Rcpp::NumericMatrix get_summary_statistics_cpp(
+      const Rcpp::NumericMatrix &mtx,
+      const bool use_optimized_summary
+);
 
 #endif

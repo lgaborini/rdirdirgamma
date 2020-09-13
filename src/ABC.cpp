@@ -54,7 +54,7 @@ RcppGSL::Matrix sample_ABC_rdirdirgamma_cpp(
    const unsigned int n_obs = mtx_obs.nrow();
 
    // Allocate distances between summary statistics
-   Rcpp::NumericMatrix mtx_norms(reps, 2);
+   Rcpp::NumericMatrix mtx_distances(reps, 2);
 
    // Precompute observed summary statistics
    Rcpp::NumericVector mu_obs(p);
@@ -109,12 +109,12 @@ RcppGSL::Matrix sample_ABC_rdirdirgamma_cpp(
       mu_diff = abs(mu_gen - mu_obs);
       sd_diff = abs(sd_gen - sd_obs);
 
-      mtx_norms(t, 0) = norm_minkowski(mu_diff, p_norm);
-      mtx_norms(t, 1) = norm_minkowski(sd_diff, p_norm);
+      mtx_distances(t, 0) = norm_minkowski(mu_diff, p_norm);
+      mtx_distances(t, 1) = norm_minkowski(sd_diff, p_norm);
 
    }
 
-   // return(mtx_norms);
+   // return(mtx_distances);
 
    // avoid complaining
    RcppGSL::Matrix mtx_gen(n, p);
@@ -146,12 +146,12 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
    }
 
    if (p != p_obs) {
-      Rcpp::stop("Error: different number of columns (nu_0: %i, observed: %i)", p, p_obs);
+      Rcpp::stop("different number of columns (nu_0: %i, observed: %i)", p, p_obs);
    }
 
    // Allocate distances between summary statistics
    const unsigned int n_summary = get_number_summary_statistics(use_optimized_summary);
-   Rcpp::NumericMatrix mtx_norms(reps, n_summary);
+   Rcpp::NumericMatrix mtx_distances(reps, n_summary);
 
    // Allocate summary statistics
    Rcpp::NumericMatrix summary_gen(n_summary, p);
@@ -177,7 +177,7 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
       for (unsigned int i_summary = 0; i_summary < n_summary; i_summary++) {
 
          // Compute distances between summary statistics
-         mtx_norms(i_rep, i_summary) = norm_minkowski(
+         mtx_distances(i_rep, i_summary) = norm_minkowski(
             summary_obs(i_summary, _) - summary_gen(i_summary, _),
             p_norm
          );
@@ -185,7 +185,7 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
 
    }
 
-   return(mtx_norms);
+   return(mtx_distances);
 
 }
 
@@ -205,7 +205,7 @@ Rcpp::NumericVector compute_distances_gen_obs_cpp(
    const unsigned int p_obs = mtx_obs.ncol();
 
    if (p != p_obs) {
-      Rcpp::stop("Error: different number of columns (generated: %i, observed: %i)", p, p_obs);
+      Rcpp::stop("different number of columns (generated: %i, observed: %i)", p, p_obs);
    }
 
    const unsigned int n_summary = get_number_summary_statistics(use_optimized_summary);
@@ -311,7 +311,7 @@ arma::cube generate_acceptable_data_cpp(
    }
 
    if (p != p_obs) {
-      Rcpp::stop("Error: different number of columns (supplied nu_0: %i, needed: %i)", p, p_obs);
+      Rcpp::stop("different number of columns (supplied nu_0: %i, needed: %i)", p, p_obs);
    }
 
    // Allocate results
@@ -323,11 +323,13 @@ arma::cube generate_acceptable_data_cpp(
    Rcpp::NumericVector vec_distances(n_summary);
 
    if (summarize_eps.size() != n_summary) {
-      Rcpp::stop("Error: summarize_eps must match the number of summary statistics (supplied: %i, needed: %i)", summarize_eps.size(), n_summary);
+      Rcpp::stop("summarize_eps must match the number of summary statistics (supplied: %i, needed: %i)", summarize_eps.size(), n_summary);
    }
 
+   // Generated data
+   Rcpp::NumericMatrix mtx_gen(n*m, p);
 
-   // Quantile matrix
+   // Summary statistics
    Rcpp::NumericMatrix summary_obs(n_summary, p);
    Rcpp::NumericMatrix summary_gen(n_summary, p);
 
@@ -340,8 +342,6 @@ arma::cube generate_acceptable_data_cpp(
       for (unsigned int t = 0; t < max_iter; ++t) {
 
          if (t % 1000 == 0) Rcpp::checkUserInterrupt();
-
-         Rcpp::NumericMatrix mtx_gen(n*m, p);
 
          mtx_gen = rdirdirgamma_beta_cpp(n, m, alpha_0, beta_0, nu_0);
 
