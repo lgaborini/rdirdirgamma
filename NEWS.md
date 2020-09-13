@@ -1,3 +1,8 @@
+# rdirdirgamma 0.2.2
+
+* Interface change: number of ABC samples is always `reps`.
+* Add pkgdown, better documentation.
+
 # rdirdirgamma 0.2.1
 
 * Add `compute_ABC_cpp` to directly compute the acceptance ratio and return the sampled distances.
