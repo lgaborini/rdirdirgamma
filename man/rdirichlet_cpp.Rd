@@ -15,7 +15,8 @@ rdirichlet_cpp(alpha, seed = 0L)
 a numeric vector
 }
 \description{
-## RNG
+\subsection{RNG}{
+}
 }
 \details{
 this function uses GSL's RNG seed, unaffected by R's RNG.

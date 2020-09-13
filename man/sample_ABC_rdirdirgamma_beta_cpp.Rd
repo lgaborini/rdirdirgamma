@@ -25,7 +25,7 @@ sample_ABC_rdirdirgamma_beta_cpp(
 
 \item{reps}{number of ABC samples (default: 1)}
 
-\item{p_norm}{exponent of the L^p norm (can be `Inf`) (default: `2`)}
+\item{p_norm}{exponent of the L^p norm (can be \code{Inf}) (default: \code{2})}
 
 \item{use_optimized_summary}{if TRUE, return the optimized summary statistics, else standard (mean, sd)}
 }
@@ -36,19 +36,23 @@ a reps*2 matrix of distances between summary statistics
 Procedure:
 }
 \details{
-1. samples from Dirichlet using [rdirdirgamma_beta_cpp()].
-2. computes summary statistics on datasets:
-
-- column-wise mean
-- column-wise standard deviation
+\enumerate{
+\item samples from Dirichlet using \code{\link[=rdirdirgamma_beta_cpp]{rdirdirgamma_beta_cpp()}}.
+\item computes summary statistics on datasets:
+}
+\itemize{
+\item column-wise mean
+\item column-wise standard deviation
+}
 
 or a set of column-wise quantiles
-
-3. the generated dataset is invisibly is truncated to the same amount of rows as the observed dataset.
-4. compute the Minkowski norms of the differences between summary statistics.
-5. repeat `reps` times.
-
-## RNG
+\enumerate{
+\item the generated dataset is invisibly is truncated to the same amount of rows as the observed dataset.
+\item compute the Minkowski norms of the differences between summary statistics.
+\item repeat \code{reps} times.
+}
+\subsection{RNG}{
 
 this function uses R's RNG seed.
+}
 }

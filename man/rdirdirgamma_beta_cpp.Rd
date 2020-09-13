@@ -25,7 +25,8 @@ Generate samples from m sources and p parameters, n sample per source.
 The between-source alpha hyperparameter used to generate the source parameters is mandatory.
 }
 \details{
-## RNG
+\subsection{RNG}{
 
 this function uses R's RNG seed.
+}
 }

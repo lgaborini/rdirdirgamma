@@ -37,7 +37,7 @@ generate_acceptable_data_cpp(
 
 \item{max_iter}{how many iterations are tried}
 
-\item{p_norm}{exponent of the L^p norm (can be `Inf`)}
+\item{p_norm}{exponent of the L^p norm (can be \code{Inf})}
 
 \item{use_optimized_summary}{if TRUE, return the optimized summary statistics, else standard (mean, sd)}
 }

@@ -15,7 +15,8 @@ rdirichlet_beta_cpp(n, alpha)
 a numeric matrix, n*p
 }
 \description{
-## RNG
+\subsection{RNG}{
+}
 }
 \details{
 this function uses R's RNG seed.

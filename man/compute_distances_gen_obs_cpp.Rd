@@ -12,9 +12,9 @@ compute_distances_gen_obs_cpp(
 )
 }
 \arguments{
-\item{mtx_gen}{the generated data matrix; number of rows is free, it must have the same number of columns as `mtx_obs`}
+\item{mtx_gen}{the generated data matrix; number of rows is free, it must have the same number of columns as \code{mtx_obs}}
 
-\item{mtx_obs}{the observed data matrix; number of rows is free, it must have the same number of columns as `mtx_gen`}
+\item{mtx_obs}{the observed data matrix; number of rows is free, it must have the same number of columns as \code{mtx_gen}}
 
 \item{p_norm}{the power of the Minkowski distance (default: 2 = Euclidean)}
 
