@@ -15,3 +15,10 @@ an integer
 \description{
 Get the number of multivariate summary statistics.
 }
+\seealso{
+Other ABC summary functions: 
+\code{\link{get_optimized_summary_statistics_cpp}()},
+\code{\link{get_standard_summary_statistics_cpp}()},
+\code{\link{get_summary_statistics_cpp}()}
+}
+\concept{ABC summary functions}

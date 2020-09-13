@@ -30,3 +30,10 @@ The between-source alpha hyperparameter used to generate the source parameters i
 this function uses R's RNG seed.
 }
 }
+\seealso{
+Other RNG functions: 
+\code{\link{rdirdirgamma_cpp}()},
+\code{\link{rdirichlet_beta_cpp}()},
+\code{\link{rdirichlet_cpp}()}
+}
+\concept{RNG functions}

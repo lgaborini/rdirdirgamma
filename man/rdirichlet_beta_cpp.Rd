@@ -21,3 +21,10 @@ a numeric matrix, n*p
 \details{
 this function uses R's RNG seed.
 }
+\seealso{
+Other RNG functions: 
+\code{\link{rdirdirgamma_beta_cpp}()},
+\code{\link{rdirdirgamma_cpp}()},
+\code{\link{rdirichlet_cpp}()}
+}
+\concept{RNG functions}

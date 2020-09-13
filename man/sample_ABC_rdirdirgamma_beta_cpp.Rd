@@ -65,3 +65,10 @@ or a set of column-wise moments (mean, sd, skewness, kurtosis).
 this function uses R's RNG seed.
 }
 }
+\seealso{
+Other ABC functions: 
+\code{\link{compute_ABC_cpp}()},
+\code{\link{compute_distances_gen_obs_cpp}()},
+\code{\link{generate_acceptable_data_cpp}()}
+}
+\concept{ABC functions}

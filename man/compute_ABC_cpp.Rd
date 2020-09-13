@@ -49,3 +49,10 @@ if \code{return_distances} is TRUE, a list, with components \code{d_ABC} (a max_
 Perform ABC sampling using the stick breaking procedure, returning the acceptance ratio.
 Similar to \code{\link[=sample_ABC_rdirdirgamma_beta_cpp]{sample_ABC_rdirdirgamma_beta_cpp()}} but also performs the acceptance step.
 }
+\seealso{
+Other ABC functions: 
+\code{\link{compute_distances_gen_obs_cpp}()},
+\code{\link{generate_acceptable_data_cpp}()},
+\code{\link{sample_ABC_rdirdirgamma_beta_cpp}()}
+}
+\concept{ABC functions}

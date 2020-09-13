@@ -42,6 +42,7 @@ using namespace Rcpp;
 //' @export
 //' @return a reps*2 matrix of distances between summary statistics
 //' @inheritParams get_number_summary_statistics
+//' @family ABC functions
 // [[Rcpp::export]]
 Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
       const unsigned int &n_sample, const unsigned int &m_sample,
@@ -63,6 +64,7 @@ Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(
 //' @export
 //' @inheritParams sample_ABC_rdirdirgamma_beta_cpp
 //' @inheritParams get_number_summary_statistics
+//' @family ABC functions
 // [[Rcpp::export]]
 arma::cube generate_acceptable_data_cpp(
       const unsigned int &n_sample,
@@ -90,6 +92,7 @@ arma::cube generate_acceptable_data_cpp(
 //' @inheritParams sample_ABC_rdirdirgamma_beta_cpp
 //' @inheritParams generate_acceptable_data_cpp
 //' @inheritParams get_number_summary_statistics
+//' @family ABC functions
 // [[Rcpp::export]]
 Rcpp::List compute_ABC_cpp(
       const unsigned int &n_sample,
@@ -113,6 +116,7 @@ Rcpp::List compute_ABC_cpp(
 //' @param use_optimized_summary if TRUE, use quantile matrix, else compute mean and sd vectors
 //' @export
 //' @return a vector of distances between summary statistics: as many entries as summary statistics
+//' @family ABC functions
 // [[Rcpp::export(rng = false)]]
 Rcpp::NumericVector compute_distances_gen_obs_cpp(
       const Rcpp::NumericMatrix &mtx_gen,
@@ -128,6 +132,7 @@ Rcpp::NumericVector compute_distances_gen_obs_cpp(
 //' @param use_optimized_summary if TRUE, return the optimized summary statistics (mean, sd, skewness, kurtosis), else standard (mean, sd)
 //' @export
 //' @return an integer
+//' @family ABC summary functions
 // [[Rcpp::export(rng = false)]]
 unsigned int get_number_summary_statistics(bool use_optimized_summary);
 
@@ -138,6 +143,7 @@ unsigned int get_number_summary_statistics(bool use_optimized_summary);
 //' @return a kxp matrix of summary statistics
 //' @inheritParams get_summary_statistics_cpp
 //' @inheritParams get_number_summary_statistics
+//' @family ABC summary functions
 // [[Rcpp::export(rng = false)]]
 Rcpp::NumericMatrix get_optimized_summary_statistics_cpp(const Rcpp::NumericMatrix &mtx);
 
@@ -147,6 +153,7 @@ Rcpp::NumericMatrix get_optimized_summary_statistics_cpp(const Rcpp::NumericMatr
 //' @return a kxp matrix of summary statistics
 //' @inheritParams get_summary_statistics_cpp
 //' @inheritParams get_number_summary_statistics
+//' @family ABC summary functions
 // [[Rcpp::export(rng = false)]]
 Rcpp::NumericMatrix get_standard_summary_statistics_cpp(const Rcpp::NumericMatrix &mtx);
 
@@ -156,6 +163,7 @@ Rcpp::NumericMatrix get_standard_summary_statistics_cpp(const Rcpp::NumericMatri
 //' @inheritParams get_number_summary_statistics
 //' @export
 //' @return a kxp matrix of summary statistics
+//' @family ABC summary functions
 // [[Rcpp::export(rng = false)]]
 Rcpp::NumericMatrix get_summary_statistics_cpp(
       const Rcpp::NumericMatrix &mtx,

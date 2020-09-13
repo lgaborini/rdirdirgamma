@@ -11,6 +11,7 @@ using namespace Rcpp;
 //'
 //' @param mtx a nxp matrix
 //' @return a 1xp vector
+//' @family column-wise and utilities
 // [[Rcpp::export(rng = false)]]
 Rcpp::NumericVector colsd(const Rcpp::NumericMatrix &mtx);
 
@@ -18,6 +19,7 @@ Rcpp::NumericVector colsd(const Rcpp::NumericMatrix &mtx);
 //'
 //' @param mtx a nxp matrix
 //' @return a 1xp vector
+//' @family column-wise and utilities
 // [[Rcpp::export(rng = false)]]
 arma::rowvec colkurtosis(const arma::mat &mtx);
 
@@ -25,6 +27,7 @@ arma::rowvec colkurtosis(const arma::mat &mtx);
 //'
 //' @param mtx a nxp matrix
 //' @return a 1xp vector
+//' @family column-wise and utilities
 // [[Rcpp::export(rng = false)]]
 arma::rowvec colskewness(const arma::mat &mtx);
 
@@ -36,6 +39,7 @@ arma::rowvec colskewness(const arma::mat &mtx);
 //' @param v a vector
 //' @param p exponent of the Minkowski norm (from 1 to Inf)
 //' @return a double
+//' @family column-wise and utilities
 // [[Rcpp::export(rng = false)]]
 double norm_minkowski(const Rcpp::NumericVector &v, const double p = 2);
 

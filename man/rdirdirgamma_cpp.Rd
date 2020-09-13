@@ -32,3 +32,10 @@ The between-source alpha hyperparameter used to generate the source parameters i
 this function uses GSL's RNG seed, unaffected by R's RNG.
 }
 }
+\seealso{
+Other RNG functions: 
+\code{\link{rdirdirgamma_beta_cpp}()},
+\code{\link{rdirichlet_beta_cpp}()},
+\code{\link{rdirichlet_cpp}()}
+}
+\concept{RNG functions}

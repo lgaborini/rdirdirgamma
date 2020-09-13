@@ -47,3 +47,10 @@ a (n x n_obs x p) array of generated data
 \description{
 Generate data that is accepted by ABC.
 }
+\seealso{
+Other ABC functions: 
+\code{\link{compute_ABC_cpp}()},
+\code{\link{compute_distances_gen_obs_cpp}()},
+\code{\link{sample_ABC_rdirdirgamma_beta_cpp}()}
+}
+\concept{ABC functions}

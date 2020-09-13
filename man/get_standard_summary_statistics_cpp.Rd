@@ -15,3 +15,10 @@ a kxp matrix of summary statistics
 \description{
 Compute standard summary statistics.
 }
+\seealso{
+Other ABC summary functions: 
+\code{\link{get_number_summary_statistics}()},
+\code{\link{get_optimized_summary_statistics_cpp}()},
+\code{\link{get_summary_statistics_cpp}()}
+}
+\concept{ABC summary functions}

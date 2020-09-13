@@ -25,6 +25,7 @@ unsigned long int random_seed();
 //' @param seed the RNG seed: if 0 (default), generate a time-based seed
 //' @return a numeric vector
 //' @export
+//' @family RNG functions
 // [[Rcpp::export]]
 Rcpp::NumericVector rdirichlet_cpp(const Rcpp::NumericVector &alpha, const unsigned long int seed = 0);
 
@@ -38,6 +39,7 @@ Rcpp::NumericVector rdirichlet_cpp(const Rcpp::NumericVector &alpha, const unsig
 //' @param alpha the Dirichlet hyperparameter, with p entries
 //' @return a numeric matrix, n*p
 //' @export
+//' @family RNG functions
 // [[Rcpp::export]]
 Rcpp::NumericMatrix rdirichlet_beta_cpp(const unsigned int n, Rcpp::NumericVector alpha);
 
@@ -58,6 +60,7 @@ Rcpp::NumericMatrix rdirichlet_beta_cpp(const unsigned int n, Rcpp::NumericVecto
 //' @export
 //' @return a matrix with n*m rows
 //' @inheritParams rdirichlet_cpp
+//' @family RNG functions
 // [[Rcpp::export]]
 RcppGSL::Matrix rdirdirgamma_cpp(
       const unsigned int &n, const unsigned int &m,
@@ -80,6 +83,7 @@ RcppGSL::Matrix rdirdirgamma_cpp(
 //' @export
 //' @return a matrix with n*m rows
 //' @inheritParams rdirdirgamma_cpp
+//' @family RNG functions
 // [[Rcpp::export]]
 Rcpp::NumericMatrix rdirdirgamma_beta_cpp(
       const unsigned int &n, const unsigned int &m,

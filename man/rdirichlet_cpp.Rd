@@ -21,3 +21,10 @@ a numeric vector
 \details{
 this function uses GSL's RNG seed, unaffected by R's RNG.
 }
+\seealso{
+Other RNG functions: 
+\code{\link{rdirdirgamma_beta_cpp}()},
+\code{\link{rdirdirgamma_cpp}()},
+\code{\link{rdirichlet_beta_cpp}()}
+}
+\concept{RNG functions}

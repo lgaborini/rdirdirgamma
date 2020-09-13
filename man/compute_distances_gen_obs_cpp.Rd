@@ -26,3 +26,10 @@ a vector of distances between summary statistics: as many entries as summary sta
 \description{
 Compute distances between summary statistics.
 }
+\seealso{
+Other ABC functions: 
+\code{\link{compute_ABC_cpp}()},
+\code{\link{generate_acceptable_data_cpp}()},
+\code{\link{sample_ABC_rdirdirgamma_beta_cpp}()}
+}
+\concept{ABC functions}

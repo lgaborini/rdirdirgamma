@@ -18,3 +18,10 @@ a double
 Compute the Minkowski norm of a vector.
 $p$ can range from 1 to infinity.
 }
+\seealso{
+Other column-wise and utilities: 
+\code{\link{colkurtosis}()},
+\code{\link{colsd}()},
+\code{\link{colskewness}()}
+}
+\concept{column-wise and utilities}

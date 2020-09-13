@@ -15,3 +15,10 @@ a 1xp vector
 \description{
 Compute column-wise skewness
 }
+\seealso{
+Other column-wise and utilities: 
+\code{\link{colkurtosis}()},
+\code{\link{colsd}()},
+\code{\link{norm_minkowski}()}
+}
+\concept{column-wise and utilities}

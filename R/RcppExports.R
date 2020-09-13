@@ -34,6 +34,7 @@
 #' @export
 #' @return a reps*2 matrix of distances between summary statistics
 #' @inheritParams get_number_summary_statistics
+#' @family ABC functions
 sample_ABC_rdirdirgamma_beta_cpp <- function(n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, reps, p_norm = 2, use_optimized_summary = FALSE) {
     .Call('_rdirdirgamma_sample_ABC_rdirdirgamma_beta_cpp', PACKAGE = 'rdirdirgamma', n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, reps, p_norm, use_optimized_summary)
 }
@@ -47,6 +48,7 @@ sample_ABC_rdirdirgamma_beta_cpp <- function(n_sample, m_sample, alpha_0, beta_0
 #' @export
 #' @inheritParams sample_ABC_rdirdirgamma_beta_cpp
 #' @inheritParams get_number_summary_statistics
+#' @family ABC functions
 generate_acceptable_data_cpp <- function(n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, summarize_eps, reps, max_iter, p_norm, use_optimized_summary) {
     .Call('_rdirdirgamma_generate_acceptable_data_cpp', PACKAGE = 'rdirdirgamma', n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, summarize_eps, reps, max_iter, p_norm, use_optimized_summary)
 }
@@ -63,6 +65,7 @@ generate_acceptable_data_cpp <- function(n_sample, m_sample, alpha_0, beta_0, nu
 #' @inheritParams sample_ABC_rdirdirgamma_beta_cpp
 #' @inheritParams generate_acceptable_data_cpp
 #' @inheritParams get_number_summary_statistics
+#' @family ABC functions
 compute_ABC_cpp <- function(n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, summarize_eps, reps, p_norm, use_optimized_summary, return_distances = FALSE) {
     .Call('_rdirdirgamma_compute_ABC_cpp', PACKAGE = 'rdirdirgamma', n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, summarize_eps, reps, p_norm, use_optimized_summary, return_distances)
 }
@@ -75,6 +78,7 @@ compute_ABC_cpp <- function(n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, 
 #' @param use_optimized_summary if TRUE, use quantile matrix, else compute mean and sd vectors
 #' @export
 #' @return a vector of distances between summary statistics: as many entries as summary statistics
+#' @family ABC functions
 compute_distances_gen_obs_cpp <- function(mtx_gen, mtx_obs, p_norm = 2, use_optimized_summary = FALSE) {
     .Call('_rdirdirgamma_compute_distances_gen_obs_cpp', PACKAGE = 'rdirdirgamma', mtx_gen, mtx_obs, p_norm, use_optimized_summary)
 }
@@ -84,6 +88,7 @@ compute_distances_gen_obs_cpp <- function(mtx_gen, mtx_obs, p_norm = 2, use_opti
 #' @param use_optimized_summary if TRUE, return the optimized summary statistics (mean, sd, skewness, kurtosis), else standard (mean, sd)
 #' @export
 #' @return an integer
+#' @family ABC summary functions
 get_number_summary_statistics <- function(use_optimized_summary) {
     .Call('_rdirdirgamma_get_number_summary_statistics', PACKAGE = 'rdirdirgamma', use_optimized_summary)
 }
@@ -94,6 +99,7 @@ get_number_summary_statistics <- function(use_optimized_summary) {
 #' @return a kxp matrix of summary statistics
 #' @inheritParams get_summary_statistics_cpp
 #' @inheritParams get_number_summary_statistics
+#' @family ABC summary functions
 get_optimized_summary_statistics_cpp <- function(mtx) {
     .Call('_rdirdirgamma_get_optimized_summary_statistics_cpp', PACKAGE = 'rdirdirgamma', mtx)
 }
@@ -104,6 +110,7 @@ get_optimized_summary_statistics_cpp <- function(mtx) {
 #' @return a kxp matrix of summary statistics
 #' @inheritParams get_summary_statistics_cpp
 #' @inheritParams get_number_summary_statistics
+#' @family ABC summary functions
 get_standard_summary_statistics_cpp <- function(mtx) {
     .Call('_rdirdirgamma_get_standard_summary_statistics_cpp', PACKAGE = 'rdirdirgamma', mtx)
 }
@@ -114,6 +121,7 @@ get_standard_summary_statistics_cpp <- function(mtx) {
 #' @inheritParams get_number_summary_statistics
 #' @export
 #' @return a kxp matrix of summary statistics
+#' @family ABC summary functions
 get_summary_statistics_cpp <- function(mtx, use_optimized_summary) {
     .Call('_rdirdirgamma_get_summary_statistics_cpp', PACKAGE = 'rdirdirgamma', mtx, use_optimized_summary)
 }
@@ -128,6 +136,7 @@ get_summary_statistics_cpp <- function(mtx, use_optimized_summary) {
 #' @param seed the RNG seed: if 0 (default), generate a time-based seed
 #' @return a numeric vector
 #' @export
+#' @family RNG functions
 rdirichlet_cpp <- function(alpha, seed = 0L) {
     .Call('_rdirdirgamma_rdirichlet_cpp', PACKAGE = 'rdirdirgamma', alpha, seed)
 }
@@ -142,6 +151,7 @@ rdirichlet_cpp <- function(alpha, seed = 0L) {
 #' @param alpha the Dirichlet hyperparameter, with p entries
 #' @return a numeric matrix, n*p
 #' @export
+#' @family RNG functions
 rdirichlet_beta_cpp <- function(n, alpha) {
     .Call('_rdirdirgamma_rdirichlet_beta_cpp', PACKAGE = 'rdirdirgamma', n, alpha)
 }
@@ -163,6 +173,7 @@ rdirichlet_beta_cpp <- function(n, alpha) {
 #' @export
 #' @return a matrix with n*m rows
 #' @inheritParams rdirichlet_cpp
+#' @family RNG functions
 rdirdirgamma_cpp <- function(n, m, alpha_0, beta_0, nu_0, seed = 0L) {
     .Call('_rdirdirgamma_rdirdirgamma_cpp', PACKAGE = 'rdirdirgamma', n, m, alpha_0, beta_0, nu_0, seed)
 }
@@ -179,6 +190,7 @@ rdirdirgamma_cpp <- function(n, m, alpha_0, beta_0, nu_0, seed = 0L) {
 #' @export
 #' @return a matrix with n*m rows
 #' @inheritParams rdirdirgamma_cpp
+#' @family RNG functions
 rdirdirgamma_beta_cpp <- function(n, m, alpha_0, beta_0, nu_0) {
     .Call('_rdirdirgamma_rdirdirgamma_beta_cpp', PACKAGE = 'rdirdirgamma', n, m, alpha_0, beta_0, nu_0)
 }
@@ -187,6 +199,7 @@ rdirdirgamma_beta_cpp <- function(n, m, alpha_0, beta_0, nu_0) {
 #'
 #' @param mtx a nxp matrix
 #' @return a 1xp vector
+#' @family column-wise and utilities
 colsd <- function(mtx) {
     .Call('_rdirdirgamma_colsd', PACKAGE = 'rdirdirgamma', mtx)
 }
@@ -195,6 +208,7 @@ colsd <- function(mtx) {
 #'
 #' @param mtx a nxp matrix
 #' @return a 1xp vector
+#' @family column-wise and utilities
 colkurtosis <- function(mtx) {
     .Call('_rdirdirgamma_colkurtosis', PACKAGE = 'rdirdirgamma', mtx)
 }
@@ -203,6 +217,7 @@ colkurtosis <- function(mtx) {
 #'
 #' @param mtx a nxp matrix
 #' @return a 1xp vector
+#' @family column-wise and utilities
 colskewness <- function(mtx) {
     .Call('_rdirdirgamma_colskewness', PACKAGE = 'rdirdirgamma', mtx)
 }
@@ -215,6 +230,7 @@ colskewness <- function(mtx) {
 #' @param v a vector
 #' @param p exponent of the Minkowski norm (from 1 to Inf)
 #' @return a double
+#' @family column-wise and utilities
 norm_minkowski <- function(v, p = 2) {
     .Call('_rdirdirgamma_norm_minkowski', PACKAGE = 'rdirdirgamma', v, p)
 }
