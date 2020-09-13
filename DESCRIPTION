@@ -8,6 +8,7 @@ Maintainer: Lorenzo Gaborini <lorenzo.gaborini@gmail.com>
 Description: Generate samples from Dirichlet-Dirichlet-Gamma
     model, and perform ABC.
 License: MIT + file LICENSE
+SystemRequirements: GNU GSL
 Suggests: 
     moments,
     testthat
