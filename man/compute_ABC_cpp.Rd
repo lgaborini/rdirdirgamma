@@ -14,7 +14,8 @@ compute_ABC_cpp(
   summarize_eps,
   max_iter,
   p_norm,
-  use_optimized_summary
+  use_optimized_summary,
+  return_distances = FALSE
 )
 }
 \arguments{
@@ -37,9 +38,12 @@ compute_ABC_cpp(
 \item{p_norm}{exponent of the L^p norm (can be `Inf`)}
 
 \item{use_optimized_summary}{if TRUE, return the optimized summary statistics, else standard (mean, sd)}
+
+\item{return_distances}{if TRUE, also return distances for all samples}
 }
 \value{
-the acceptance ratio, where 1 means that all max_iter samples were accepted.
+if `return_distances` is FALSE, a list with the acceptance ratio, where 1 means that all max_iter samples were accepted.
+if `return_distances` is TRUE, a list, with components `d_ABC` (a max_iter x n_summary matrix) and the acceptance ratio
 }
 \description{
 Perform ABC sampling using the stick breaking procedure, returning the acceptance ratio.

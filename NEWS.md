@@ -1,6 +1,6 @@
 # rdirdirgamma 0.2.1
 
-* Add `compute_ABC_cpp` to directly compute the acceptance ratio.
+* Add `compute_ABC_cpp` to directly compute the acceptance ratio and return the sampled distances.
 
 # rdirdirgamma 0.2
 

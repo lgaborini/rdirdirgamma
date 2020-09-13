@@ -81,12 +81,14 @@ arma::cube generate_acceptable_data_cpp(
 
 //' Perform ABC sampling using the stick breaking procedure, returning the acceptance ratio.
 //'
-//' @return the acceptance ratio, where 1 means that all max_iter samples were accepted.
+//' @param return_distances if TRUE, also return distances for all samples
+//' @return if `return_distances` is FALSE, a list with the acceptance ratio, where 1 means that all max_iter samples were accepted.
+//' if `return_distances` is TRUE, a list, with components `d_ABC` (a max_iter x n_summary matrix) and the acceptance ratio
 //' @export
 //' @inheritParams get_number_summary_statistics
 //' @inheritParams generate_acceptable_data_cpp
 // [[Rcpp::export]]
-double compute_ABC_cpp(
+Rcpp::List compute_ABC_cpp(
       const unsigned int &n_sample,
       const unsigned int &m_sample,
       const double &alpha_0,
@@ -96,7 +98,8 @@ double compute_ABC_cpp(
       const Rcpp::NumericVector &summarize_eps,
       const unsigned int max_iter,
       const double &p_norm,
-      const bool use_optimized_summary
+      const bool use_optimized_summary,
+      const bool return_distances = false
 );
 
 //' Compute distances between summary statistics.

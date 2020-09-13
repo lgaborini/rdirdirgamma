@@ -54,12 +54,14 @@ generate_acceptable_data_cpp <- function(n_sample, m_sample, alpha_0, beta_0, nu
 
 #' Perform ABC sampling using the stick breaking procedure, returning the acceptance ratio.
 #'
-#' @return the acceptance ratio, where 1 means that all max_iter samples were accepted.
+#' @param return_distances if TRUE, also return distances for all samples
+#' @return if `return_distances` is FALSE, a list with the acceptance ratio, where 1 means that all max_iter samples were accepted.
+#' if `return_distances` is TRUE, a list, with components `d_ABC` (a max_iter x n_summary matrix) and the acceptance ratio
 #' @export
 #' @inheritParams get_number_summary_statistics
 #' @inheritParams generate_acceptable_data_cpp
-compute_ABC_cpp <- function(n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, summarize_eps, max_iter, p_norm, use_optimized_summary) {
-    .Call('_rdirdirgamma_compute_ABC_cpp', PACKAGE = 'rdirdirgamma', n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, summarize_eps, max_iter, p_norm, use_optimized_summary)
+compute_ABC_cpp <- function(n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, summarize_eps, max_iter, p_norm, use_optimized_summary, return_distances = FALSE) {
+    .Call('_rdirdirgamma_compute_ABC_cpp', PACKAGE = 'rdirdirgamma', n_sample, m_sample, alpha_0, beta_0, nu_0, mtx_obs, summarize_eps, max_iter, p_norm, use_optimized_summary, return_distances)
 }
 
 #' Compute distances between summary statistics.

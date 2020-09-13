@@ -155,7 +155,7 @@ mtx_accepted[1,,]
 # ABC ---------------------------------------------------------------------
 
 
-test_accept_ratio <- rdirdirgamma::compute_ABC_cpp(
+list_ABC <- rdirdirgamma::compute_ABC_cpp(
    n_sample = n,
    m_sample = m,
    alpha_0 = alpha_0,
@@ -165,6 +165,7 @@ test_accept_ratio <- rdirdirgamma::compute_ABC_cpp(
    max_iter = 1e4,
    p_norm = 1,
    summarize_eps = c(0.1, 0.1, 5, 3),
-   use_optimized_summary = TRUE
+   use_optimized_summary = TRUE,
+   return_distances = TRUE
 )
-test_accept_ratio
+list_ABC
