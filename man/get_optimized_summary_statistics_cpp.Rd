@@ -13,7 +13,15 @@ get_optimized_summary_statistics_cpp(mtx)
 a kxp matrix of summary statistics
 }
 \description{
-Compute optimized summary statistics.
+Compute optimized summary statistics:
+}
+\details{
+\itemize{
+\item column-wise mean
+\item column-wise standard deviation
+\item column-wise kurtosis
+\item column-wise skewess
+}
 }
 \seealso{
 Other ABC summary functions: 

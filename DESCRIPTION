@@ -2,7 +2,7 @@ Type: Package
 Package: rdirdirgamma
 Title: Generate samples from Dirichlet-Dirichlet-Gamma
     model, and perform ABC.
-Version: 0.2.2
+Version: 0.2.3
 Author: Lorenzo Gaborini
 Maintainer: Lorenzo Gaborini <lorenzo.gaborini@gmail.com>
 Description: Generate samples from Dirichlet-Dirichlet-Gamma

@@ -1,3 +1,7 @@
+# rdirdirgamma 0.2.3
+
+* Now summary statistics returned by `compute_ABC_cpp` are documented in the correct order.
+
 # rdirdirgamma 0.2.2
 
 * Interface change: number of ABC samples is always `reps`.

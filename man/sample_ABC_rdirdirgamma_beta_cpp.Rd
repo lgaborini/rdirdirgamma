@@ -33,7 +33,7 @@ sample_ABC_rdirdirgamma_beta_cpp(
 
 \item{p_norm}{exponent of the L^p norm (can be \code{Inf}) (default: 2)}
 
-\item{use_optimized_summary}{if TRUE, return the optimized summary statistics (mean, sd, skewness, kurtosis), else standard (mean, sd)}
+\item{use_optimized_summary}{if TRUE, return the optimized summary statistics (mean, sd, kurtosis, skewness), else standard (mean, sd)}
 }
 \value{
 a reps*2 matrix of distances between summary statistics
@@ -52,7 +52,7 @@ Perform ABC sampling and distance calculation using the stick breaking procedure
 \item column-wise standard deviation
 }
 
-or a set of column-wise moments (mean, sd, skewness, kurtosis).
+or a set of column-wise moments (mean, sd, kurtosis, skewness).
 \enumerate{
 \item the generated dataset is invisibly is truncated to the same amount of rows as the observed dataset.
 \item compute the Minkowski norms of the differences between summary statistics.

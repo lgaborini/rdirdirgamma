@@ -13,7 +13,7 @@
 #' - column-wise mean
 #' - column-wise standard deviation
 #'
-#' or a set of column-wise moments (mean, sd, skewness, kurtosis).
+#' or a set of column-wise moments (mean, sd, kurtosis, skewness).
 #'
 #' 3. the generated dataset is invisibly is truncated to the same amount of rows as the observed dataset.
 #' 4. compute the Minkowski norms of the differences between summary statistics.
@@ -59,8 +59,11 @@ generate_acceptable_data_cpp <- function(n_sample, m_sample, alpha_0, beta_0, nu
 #' Similar to [sample_ABC_rdirdirgamma_beta_cpp()] but also performs the acceptance step.
 #'
 #' @param return_distances if TRUE, also return distances for all samples
-#' @return if `return_distances` is FALSE, a list with the acceptance ratio, where 1 means that all max_iter samples were accepted.
-#' if `return_distances` is TRUE, a list, with components `d_ABC` (a max_iter x n_summary matrix) and the acceptance ratio
+#' @return a list with components:
+#'   - `n_accepted`: number of accepted samples
+#'   - `accept_ratio`: the acceptance ratio, where 1 means that all max_iter samples were accepted.
+#'   - `d_ABC`: a (max_iter x n_summary) matrix of distances (if `return_distances` is TRUE)
+#'
 #' @export
 #' @inheritParams sample_ABC_rdirdirgamma_beta_cpp
 #' @inheritParams generate_acceptable_data_cpp
@@ -85,7 +88,7 @@ compute_distances_gen_obs_cpp <- function(mtx_gen, mtx_obs, p_norm = 2, use_opti
 
 #' Get the number of multivariate summary statistics.
 #'
-#' @param use_optimized_summary if TRUE, return the optimized summary statistics (mean, sd, skewness, kurtosis), else standard (mean, sd)
+#' @param use_optimized_summary if TRUE, return the optimized summary statistics (mean, sd, kurtosis, skewness), else standard (mean, sd)
 #' @export
 #' @return an integer
 #' @family ABC summary functions
@@ -94,6 +97,13 @@ get_number_summary_statistics <- function(use_optimized_summary) {
 }
 
 #' Compute optimized summary statistics.
+#'
+#' Compute optimized summary statistics:
+#'
+#' - column-wise mean
+#' - column-wise standard deviation
+#' - column-wise kurtosis
+#' - column-wise skewess
 #'
 #' @export
 #' @return a kxp matrix of summary statistics
@@ -105,6 +115,11 @@ get_optimized_summary_statistics_cpp <- function(mtx) {
 }
 
 #' Compute standard summary statistics.
+#'
+#' Compute standard summary statistics:
+#'
+#' - column-wise mean
+#' - column-wise standard deviation
 #'
 #' @export
 #' @return a kxp matrix of summary statistics

@@ -9,7 +9,7 @@ get_summary_statistics_cpp(mtx, use_optimized_summary)
 \arguments{
 \item{mtx}{a data matrix (nxp)}
 
-\item{use_optimized_summary}{if TRUE, return the optimized summary statistics (mean, sd, skewness, kurtosis), else standard (mean, sd)}
+\item{use_optimized_summary}{if TRUE, return the optimized summary statistics (mean, sd, kurtosis, skewness), else standard (mean, sd)}
 }
 \value{
 a kxp matrix of summary statistics

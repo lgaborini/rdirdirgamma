@@ -39,7 +39,7 @@ generate_acceptable_data_cpp(
 
 \item{p_norm}{exponent of the L^p norm (can be \code{Inf}) (default: 2)}
 
-\item{use_optimized_summary}{if TRUE, return the optimized summary statistics (mean, sd, skewness, kurtosis), else standard (mean, sd)}
+\item{use_optimized_summary}{if TRUE, return the optimized summary statistics (mean, sd, kurtosis, skewness), else standard (mean, sd)}
 }
 \value{
 a (n x n_obs x p) array of generated data

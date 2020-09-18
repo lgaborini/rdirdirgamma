@@ -13,7 +13,13 @@ get_standard_summary_statistics_cpp(mtx)
 a kxp matrix of summary statistics
 }
 \description{
-Compute standard summary statistics.
+Compute standard summary statistics:
+}
+\details{
+\itemize{
+\item column-wise mean
+\item column-wise standard deviation
+}
 }
 \seealso{
 Other ABC summary functions: 
