@@ -1,3 +1,8 @@
+# rdirdirgamma 0.2.4
+
+* Add URL to Description.
+* Add pkgdown documentation to Rbuildignore.
+
 # rdirdirgamma 0.2.3
 
 * Now summary statistics returned by `compute_ABC_cpp` are documented in the correct order.

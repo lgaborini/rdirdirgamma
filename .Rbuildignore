@@ -3,5 +3,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^dev$
+^docs$
 ^LICENSE\.md$
 ^\.github$
