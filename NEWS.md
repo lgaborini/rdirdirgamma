@@ -1,3 +1,10 @@
+# rdirdirgamma 0.2.5 (unreleased)
+
+* Removed unused function.
+* Add Remotes in DESCRIPTION.
+* Updated `renv` to 0.13.0.
+* Updated `renv` lockfile.
+
 # rdirdirgamma 0.2.4
 
 * Add URL to Description.
