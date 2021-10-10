@@ -683,7 +683,7 @@
     },
     "renv": {
       "Package": "renv",
-      "Version": "0.13.0",
+      "Version": "0.14.0",
       "Source": "Repository"
     },
     "rlang": {

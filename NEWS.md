@@ -2,7 +2,7 @@
 
 * Removed unused function.
 * Add Remotes in DESCRIPTION.
-* Updated `renv` to 0.13.0.
+* Updated `renv` to 0.14.0.
 * Updated `renv` lockfile.
 
 # rdirdirgamma 0.2.4
