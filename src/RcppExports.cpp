@@ -7,6 +7,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // sample_ABC_rdirdirgamma_beta_cpp
 Rcpp::NumericMatrix sample_ABC_rdirdirgamma_beta_cpp(const unsigned int& n_sample, const unsigned int& m_sample, const double& alpha_0, const double& beta_0, const Rcpp::NumericVector& nu_0, const Rcpp::NumericMatrix& mtx_obs, const unsigned int& reps, const double& p_norm, const bool use_optimized_summary);
 RcppExport SEXP _rdirdirgamma_sample_ABC_rdirdirgamma_beta_cpp(SEXP n_sampleSEXP, SEXP m_sampleSEXP, SEXP alpha_0SEXP, SEXP beta_0SEXP, SEXP nu_0SEXP, SEXP mtx_obsSEXP, SEXP repsSEXP, SEXP p_normSEXP, SEXP use_optimized_summarySEXP) {

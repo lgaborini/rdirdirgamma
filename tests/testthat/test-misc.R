@@ -1,3 +1,7 @@
+if (!requireNamespace("moments")) {
+   testthat::skip("Package `moments` not available. Skipping these tests.")
+}
+
 
 # Colwise functions -------------------------------------------------------
 
