@@ -2,7 +2,7 @@ Type: Package
 Package: rdirdirgamma
 Title: Generate samples from Dirichlet-Dirichlet-Gamma
     model, and perform ABC.
-Version: 0.2.4
+Version: 0.2.5
 Author: Lorenzo Gaborini
 Maintainer: Lorenzo Gaborini <lorenzo.gaborini@gmail.com>
 Description: Generate samples from Dirichlet-Dirichlet-Gamma
@@ -10,8 +10,9 @@ Description: Generate samples from Dirichlet-Dirichlet-Gamma
 License: MIT + file LICENSE
 URL: https://github.com/lgaborini/rdirdirgamma
 SystemRequirements: GNU GSL
+Depends:
+    moments
 Suggests: 
-    moments,
     testthat,
     rstanBF,
     rsamplestudy,
@@ -25,5 +26,5 @@ Remotes:
     github::lgaborini/rstanBF
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)
